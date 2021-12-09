@@ -28,10 +28,10 @@ int main()
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_display_event_source(display));
 
-    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoback.png", UP);
-    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\naruto.png", DOWN);
-    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoleft.png", LEFT);
-    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoright.png", RIGHT);
+    player.loadBitmap("assets/narutoback.png", UP);
+    player.loadBitmap("assets/naruto.png", DOWN);
+    player.loadBitmap("assets/narutoleft.png", LEFT);
+    player.loadBitmap("assets/narutoright.png", RIGHT);
 
     player.keyDownInit();
 
