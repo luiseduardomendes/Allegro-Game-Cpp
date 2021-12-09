@@ -3,13 +3,14 @@
 class Player{
 public:
     void loadBitmap(char [], int Dir_);
-    void movePlayer(ALLEGRO_EVENT);
+    void movePlayer();
     void drawPlayer();
     void setPosition(int x_, int y_);
+    void setNewDirectionAfterMove();
     void setDirection(int dir_);
-    void switchMovement(ALLEGRO_EVENT);
-    void stopMovement(ALLEGRO_EVENT);
     void keyDownInit();
+    void setKeyDown(int key_, bool value_);
+
 
 private:
     int x, y;
@@ -22,6 +23,7 @@ private:
     int weaponEquiped;
     float moveSpeed;
     bool keyDown[4];
+    bool endOfGame;
     ALLEGRO_BITMAP* bitmapUp;
     ALLEGRO_BITMAP* bitmapDown;
     ALLEGRO_BITMAP* bitmapLeft;

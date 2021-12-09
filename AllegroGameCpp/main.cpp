@@ -1,18 +1,16 @@
 #include "mainHeader.hpp"
 
-using namespace std;
-
-typedef struct{
-    int width, height;
-}Screen;
-
 int main()
 {
     al_init();
 
     Screen screen;
     Player player;
+    Keyboard keyboard;
+    PauseMenu pauseMenu;
     Colors colors;
+
+    pauseMenu.init();
 
     screen.width = 1024;
     screen.height = 576;
@@ -30,24 +28,34 @@ int main()
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_display_event_source(display));
 
-    player.setPosition(screen.width/2, screen.height/2);
-    player.loadBitmap("naruto.png", UP);
+    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoback.png", UP);
+    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\naruto.png", DOWN);
+    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoleft.png", LEFT);
+    player.loadBitmap("E:\\GitHub\\Allegro-Game-Cpp\\AllegroGameCpp\\assets\\narutoright.png", RIGHT);
+
     player.keyDownInit();
 
+    player.setPosition(screen.width/2, screen.height/2);
+
     al_clear_to_color(colors.black());
+    player.setDirection(DOWN);
+    player.drawPlayer();
     al_flip_display();
 
     do{
         ALLEGRO_EVENT event;
         al_wait_for_event(eventQueue, &event);
 
-        player.movePlayer(event);
+        keyboard.movePlayer(event, &player);
+        player.movePlayer();
+        keyboard.controllerKeys(event, &pauseMenu);
+
         player.drawPlayer();
 
         al_flip_display();
         al_clear_to_color(colors.black());
 
-    } while (1);
+    } while (!pauseMenu.isGameEnded());
 
     return 0;
 }
