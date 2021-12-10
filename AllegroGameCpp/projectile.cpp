@@ -36,5 +36,5 @@ HitBoxRange Projectile::showHitBox(){
 }
 
 void Projectile::drawBitmap(){
-    al_draw_bitmap(bitmap, coord.x, coord.y, 0);
+    al_draw_scaled_bitmap(bitmap, 0, 0, 40, 40, coord.x, coord.y, 40, 40, 0);
 }

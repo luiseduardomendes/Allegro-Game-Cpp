@@ -100,16 +100,16 @@ int main()
 bool isProjectileIn(Player player, Projectile projectile){
     Coordinates aux1, aux2;
 
-    aux1.x = player.showHitBox().inf.x;
-    aux1.y = player.showHitBox().sup.y;
+    aux1.x = projectile.showHitBox().inf.x;
+    aux1.y = projectile.showHitBox().sup.y;
 
-    aux2.x = player.showHitBox().sup.x;
-    aux2.y = player.showHitBox().inf.y;
+    aux2.x = projectile.showHitBox().sup.x;
+    aux2.y = projectile.showHitBox().inf.y;
 
-    if (pointInsideBox(aux1, projectile.showHitBox()) ||
-        pointInsideBox(aux2, projectile.showHitBox()) ||
-        pointInsideBox(player.showHitBox().inf, projectile.showHitBox()) ||
-        pointInsideBox(player.showHitBox().sup, projectile.showHitBox()))
+    if (pointInsideBox(aux1, player.showHitBox()) ||
+        pointInsideBox(aux2, player.showHitBox()) ||
+        pointInsideBox(projectile.showHitBox().inf, player.showHitBox()) ||
+        pointInsideBox(projectile.showHitBox().sup, player.showHitBox()))
         return true;
 }
 

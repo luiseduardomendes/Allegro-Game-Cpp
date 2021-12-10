@@ -63,16 +63,16 @@ void Player::loadBitmap(char nameFile[], int dir_){
 void Player::drawPlayer(){
     switch(directionView){
     case UP:
-        al_draw_bitmap(bitmapUp, coord.x, coord.y, 0);
+        al_draw_scaled_bitmap(bitmapUp, 0, 0, 40, 40, coord.x, coord.y, 60, 60, 0);
         break;
     case DOWN:
-        al_draw_bitmap(bitmapDown, coord.x, coord.y, 0);
+        al_draw_scaled_bitmap(bitmapDown, 0, 0, 40, 40, coord.x, coord.y, 60, 60, 0);
         break;
     case LEFT:
-        al_draw_bitmap(bitmapLeft, coord.x, coord.y, 0);
+        al_draw_scaled_bitmap(bitmapLeft, 0, 0, 40, 40, coord.x, coord.y, 60, 60, 0);
         break;
     case RIGHT:
-        al_draw_bitmap(bitmapRight, coord.x, coord.y, 0);
+        al_draw_scaled_bitmap(bitmapRight, 0, 0, 40, 40, coord.x, coord.y, 60, 60, 0);
         break;
     }
 }
@@ -85,8 +85,8 @@ void Player::setPosition(int x_, int y_){
 void Player::setHitBox(){
     hitBox.inf.x = coord.x;
     hitBox.inf.y = coord.y;
-    hitBox.sup.x = coord.x + 40;
-    hitBox.sup.y = coord.y + 40;
+    hitBox.sup.x = coord.x + 60;
+    hitBox.sup.y = coord.y + 60;
 }
 
 void Player::keyDownInit(){
