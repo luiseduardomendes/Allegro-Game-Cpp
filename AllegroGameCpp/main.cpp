@@ -114,7 +114,7 @@ bool isProjectileIn(Player player, Projectile projectile){
 }
 
 bool pointInsideBox(Coordinates point_, HitBoxRange box_){
-    if (point_.x > box_.inf.x && point_.x < box_.sup.x && point_.y > box_.inf.y && point_.y < box_.sup.y)
+    if (point_.x >= box_.inf.x && point_.x <= box_.sup.x && point_.y >= box_.inf.y && point_.y <= box_.sup.y)
         return true;
     else
         return false;
