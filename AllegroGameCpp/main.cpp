@@ -1,6 +1,6 @@
 #include "mainHeader.hpp"
-
-
+bool isProjectileIn(Player player, Projectile projectile);
+bool pointInsideBox(Coordinates point_, HitBoxRange box_);
 int main()
 {
     al_init();
@@ -21,13 +21,14 @@ int main()
     display = al_create_display(screen.width, screen.height);
 
     al_init_font_addon();
+    al_init_primitives_addon();
     al_init_ttf_addon();
     al_init_image_addon();
     al_install_keyboard();
 
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
     ALLEGRO_TIMER *timerProjectile;
-    timerProjectile = al_create_timer(1.0/10.0);
+    timerProjectile = al_create_timer(1.0/60.0);
     al_start_timer(timerProjectile);
 
     eventQueue = al_create_event_queue();
@@ -54,7 +55,7 @@ int main()
     projectile.setProjDir(UP, 0);
     projectile.setProjDir(DOWN, 0);
     projectile.setProjDir(RIGHT, 0);
-    projectile.setProjDir(LEFT, 50);
+    projectile.setProjDir(LEFT, 10);
 
     do{
         ALLEGRO_EVENT event;
@@ -70,9 +71,17 @@ int main()
                     projectile.moveProj();
                 else
                     projectile.setCoord(0, screen.height/2);
-                projectile.setHitBox();
+
             }
         }
+        projectile.setHitBox();
+        player.setHitBox();
+        HitBoxRange buffHB = player.showHitBox(), buffHBproj = projectile.showHitBox();
+        al_draw_rectangle(buffHB.inf.x, buffHB.inf.y, buffHB.sup.x, buffHB.sup.y, colors.white(), 1);
+        al_draw_rectangle(buffHBproj.inf.x, buffHBproj.inf.y, buffHBproj.sup.x, buffHBproj.sup.y, colors.white(), 1);
+
+        if (isProjectileIn(player, projectile))
+            projectile.setCoord(0, rand() % (screen.height/2));
 
         player.drawPlayer();
         projectile.drawBitmap();
@@ -83,4 +92,30 @@ int main()
     } while (!pauseMenu.isGameEnded());
 
     return 0;
+}
+
+
+
+
+bool isProjectileIn(Player player, Projectile projectile){
+    Coordinates aux1, aux2;
+
+    aux1.x = player.showHitBox().inf.x;
+    aux1.y = player.showHitBox().sup.y;
+
+    aux2.x = player.showHitBox().sup.x;
+    aux2.y = player.showHitBox().inf.y;
+
+    if (pointInsideBox(aux1, projectile.showHitBox()) ||
+        pointInsideBox(aux2, projectile.showHitBox()) ||
+        pointInsideBox(player.showHitBox().inf, projectile.showHitBox()) ||
+        pointInsideBox(player.showHitBox().sup, projectile.showHitBox()))
+        return true;
+}
+
+bool pointInsideBox(Coordinates point_, HitBoxRange box_){
+    if (point_.x > box_.inf.x && point_.x < box_.sup.x && point_.y > box_.inf.y && point_.y < box_.sup.y)
+        return true;
+    else
+        return false;
 }

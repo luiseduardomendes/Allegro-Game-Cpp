@@ -31,6 +31,10 @@ Coordinates Projectile::projectileCoord(){
     return coord;
 }
 
+HitBoxRange Projectile::showHitBox(){
+    return hitBox;
+}
+
 void Projectile::drawBitmap(){
     al_draw_bitmap(bitmap, coord.x, coord.y, 0);
 }

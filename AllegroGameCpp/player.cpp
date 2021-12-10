@@ -82,6 +82,13 @@ void Player::setPosition(int x_, int y_){
     coord.y = y_;
 }
 
+void Player::setHitBox(){
+    hitBox.inf.x = coord.x;
+    hitBox.inf.y = coord.y;
+    hitBox.sup.x = coord.x + 40;
+    hitBox.sup.y = coord.y + 40;
+}
+
 void Player::keyDownInit(){
     for (int i = 0; i < 4; i ++)
         keyDown[i] = false;
@@ -91,4 +98,6 @@ Coordinates Player::showCoord(){
     return coord;
 }
 
-
+HitBoxRange Player::showHitBox(){
+    return hitBox;
+}

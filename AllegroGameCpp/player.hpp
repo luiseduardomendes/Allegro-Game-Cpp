@@ -10,7 +10,9 @@ public:
     void setDirection(int dir_);
     void keyDownInit();
     void setKeyDown(int key_, bool value_);
+    void setHitBox();
     Coordinates showCoord();
+    HitBoxRange showHitBox();
 
 private:
     Coordinates coord;

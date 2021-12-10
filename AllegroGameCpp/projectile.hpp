@@ -7,6 +7,7 @@ public:
     void setCoord(int x_, int y_);
     void setHitBox();
     Coordinates projectileCoord();
+    HitBoxRange showHitBox();
     void loadBitmap(char fileName[]);
     void drawBitmap();
 private:
