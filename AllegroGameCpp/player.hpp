@@ -10,10 +10,11 @@ public:
     void setDirection(int dir_);
     void keyDownInit();
     void setKeyDown(int key_, bool value_);
-
+    Coordinates showCoord();
 
 private:
-    int x, y;
+    Coordinates coord;
+    HitBoxRange hitBox;
     int directionView;
     int health;
     int level;
@@ -24,9 +25,10 @@ private:
     float moveSpeed;
     bool keyDown[4];
     bool endOfGame;
-    ALLEGRO_BITMAP* bitmapUp;
-    ALLEGRO_BITMAP* bitmapDown;
-    ALLEGRO_BITMAP* bitmapLeft;
-    ALLEGRO_BITMAP* bitmapRight;
+
+    ALLEGRO_BITMAP *bitmapUp;
+    ALLEGRO_BITMAP *bitmapDown;
+    ALLEGRO_BITMAP *bitmapLeft;
+    ALLEGRO_BITMAP *bitmapRight;
 
 };

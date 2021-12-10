@@ -47,6 +47,10 @@
 		<Unit filename="pauseMenu.hpp" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.hpp" />
+		<Unit filename="projectile.cpp" />
+		<Unit filename="projectile.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

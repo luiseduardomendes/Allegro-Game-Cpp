@@ -2,10 +2,10 @@
 
 void Player::movePlayer(){
 
-    y -= keyDown[UP] * 5;
-    y += keyDown[DOWN] * 5;
-    x -= keyDown[LEFT] * 5;
-    x += keyDown[RIGHT] * 5;
+    coord.y -= keyDown[UP] * 5;
+    coord.y += keyDown[DOWN] * 5;
+    coord.x -= keyDown[LEFT] * 5;
+    coord.x += keyDown[RIGHT] * 5;
 
     setNewDirectionAfterMove();
 }
@@ -63,23 +63,23 @@ void Player::loadBitmap(char nameFile[], int dir_){
 void Player::drawPlayer(){
     switch(directionView){
     case UP:
-        al_draw_bitmap(bitmapUp, x, y, 0);
+        al_draw_bitmap(bitmapUp, coord.x, coord.y, 0);
         break;
     case DOWN:
-        al_draw_bitmap(bitmapDown, x, y, 0);
+        al_draw_bitmap(bitmapDown, coord.x, coord.y, 0);
         break;
     case LEFT:
-        al_draw_bitmap(bitmapLeft, x, y, 0);
+        al_draw_bitmap(bitmapLeft, coord.x, coord.y, 0);
         break;
     case RIGHT:
-        al_draw_bitmap(bitmapRight, x, y, 0);
+        al_draw_bitmap(bitmapRight, coord.x, coord.y, 0);
         break;
     }
 }
 
 void Player::setPosition(int x_, int y_){
-    x = x_;
-    y = y_;
+    coord.x = x_;
+    coord.y = y_;
 }
 
 void Player::keyDownInit(){
@@ -87,6 +87,8 @@ void Player::keyDownInit(){
         keyDown[i] = false;
 }
 
-
+Coordinates Player::showCoord(){
+    return coord;
+}
 
 
