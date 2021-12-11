@@ -91,13 +91,15 @@ int main()
         HitBoxRange buffPHB = player.projectile.showHitBox();
         al_draw_rectangle(buffHB.inf.x, buffHB.inf.y, buffHB.sup.x, buffHB.sup.y, colors.white(), 1);
         al_draw_rectangle(buffHBproj.inf.x, buffHBproj.inf.y, buffHBproj.sup.x, buffHBproj.sup.y, colors.white(), 1);
-        al_draw_rectangle(buffPHB.inf.x, buffPHB.inf.y, buffPHB.sup.x, buffPHB.sup.y, colors.white(), 1);
+        if (player.projectile.isThrowing())
+            al_draw_rectangle(buffPHB.inf.x, buffPHB.inf.y, buffPHB.sup.x, buffPHB.sup.y, colors.white(), 1);
 
         if (isProjectileIn(player, projectile))
             projectile.setCoord(0, rand() % (screen.height/2));
 
         player.drawPlayer();
-        player.projectile.drawBitmap();
+        if (player.projectile.isThrowing())
+            player.projectile.drawBitmap();
         projectile.drawBitmap();
 
         al_flip_display();
