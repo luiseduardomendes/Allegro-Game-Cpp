@@ -33,3 +33,5 @@
 *.log
 *.depend
 *.layout
+AllegroGameCpp/AllegroGameCpp.layout.save
+*.save

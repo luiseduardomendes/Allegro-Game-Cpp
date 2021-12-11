@@ -15,9 +15,10 @@ typedef struct{
     Coordinates inf, sup;
 }HitBoxRange;
 
+#include "projectile.hpp"
 #include "player.hpp"
 #include "pauseMenu.hpp"
-#include "projectile.hpp"
+
 #include "Colors.hpp"
 #include "keyboard.hpp"
 

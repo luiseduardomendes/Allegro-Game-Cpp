@@ -41,6 +41,7 @@ int main()
     player.loadBitmap("assets/narutoleft.png", LEFT);
     player.loadBitmap("assets/narutoright.png", RIGHT);
     projectile.loadBitmap("assets/shuriken.png");
+    player.projectile.loadBitmap("assets/shuriken.png");
 
     player.keyDownInit();
 
@@ -57,13 +58,18 @@ int main()
     projectile.setProjDir(RIGHT, 0);
     projectile.setProjDir(LEFT, 10);
 
+    player.projectile.setCoord(0,0);
+    player.projectile.setHitBox();
+    player.projectile.setThrowingStatus(0);
+
+
     do{
         ALLEGRO_EVENT event;
         al_wait_for_event(eventQueue, &event);
 
         keyboard.movePlayer(event, &player);
         player.movePlayer();
-        keyboard.controllerKeys(event, &pauseMenu);
+        keyboard.controllerKeys(event, &pauseMenu, &player);
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerProjectile){
@@ -72,18 +78,26 @@ int main()
                 else
                     projectile.setCoord(0, screen.height/2);
 
+                if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing())
+                    player.projectile.moveProj();
+
+
             }
         }
         projectile.setHitBox();
+        player.projectile.setHitBox();
         player.setHitBox();
         HitBoxRange buffHB = player.showHitBox(), buffHBproj = projectile.showHitBox();
+        HitBoxRange buffPHB = player.projectile.showHitBox();
         al_draw_rectangle(buffHB.inf.x, buffHB.inf.y, buffHB.sup.x, buffHB.sup.y, colors.white(), 1);
         al_draw_rectangle(buffHBproj.inf.x, buffHBproj.inf.y, buffHBproj.sup.x, buffHBproj.sup.y, colors.white(), 1);
+        al_draw_rectangle(buffPHB.inf.x, buffPHB.inf.y, buffPHB.sup.x, buffPHB.sup.y, colors.white(), 1);
 
         if (isProjectileIn(player, projectile))
             projectile.setCoord(0, rand() % (screen.height/2));
 
         player.drawPlayer();
+        player.projectile.drawBitmap();
         projectile.drawBitmap();
 
         al_flip_display();

@@ -101,3 +101,12 @@ Coordinates Player::showCoord(){
 HitBoxRange Player::showHitBox(){
     return hitBox;
 }
+
+
+void Player::throwProjectile(){
+    projectile.setThrowingStatus(true);
+    for (int i = 0; i < 4; i ++)
+        projectile.setProjDir(i, 0);
+    projectile.setProjDir(directionView, -10);
+    projectile.setCoord(coord.x, coord.y);
+}

@@ -38,3 +38,13 @@ HitBoxRange Projectile::showHitBox(){
 void Projectile::drawBitmap(){
     al_draw_scaled_bitmap(bitmap, 0, 0, 40, 40, coord.x, coord.y, 40, 40, 0);
 }
+
+void Projectile::setThrowingStatus(int value_){
+    throwing = value_;
+}
+
+bool Projectile::isThrowing(){
+    return throwing;
+}
+
+

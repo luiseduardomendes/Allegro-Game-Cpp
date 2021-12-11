@@ -47,11 +47,14 @@ void Keyboard::stopMovement(ALLEGRO_EVENT event, Player *player){
     }
 }
 
-void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu){
+void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player* player){
     if (event.type == ALLEGRO_EVENT_KEY_DOWN){
         switch (event.keyboard.keycode){
         case ALLEGRO_KEY_ESCAPE:
             pauseMenu->setEndOfGame(true);
+            break;
+        case ALLEGRO_KEY_F:
+            player->throwProjectile();
             break;
         }
     }

@@ -11,8 +11,10 @@ public:
     void keyDownInit();
     void setKeyDown(int key_, bool value_);
     void setHitBox();
+    void throwProjectile();
     Coordinates showCoord();
     HitBoxRange showHitBox();
+    Projectile projectile;
 
 private:
     Coordinates coord;
