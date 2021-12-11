@@ -39,6 +39,8 @@
 		</Compiler>
 		<Unit filename="Colors.cpp" />
 		<Unit filename="Colors.hpp" />
+		<Unit filename="Damage.cpp" />
+		<Unit filename="Damage.hpp" />
 		<Unit filename="keyboard.cpp" />
 		<Unit filename="keyboard.hpp" />
 		<Unit filename="main.cpp" />

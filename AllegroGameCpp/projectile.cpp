@@ -1,15 +1,32 @@
 #include "mainHeader.hpp"
 
+void Projectile::initProjectile(){
+    throwing = false;
+    damage = 100;
+    speed = 10;
+    for (int i = 0; i < 4; i ++)
+        moveDir[i] = 0;
+}
+
 void Projectile::moveProj(){
-    coord.y += moveDir[UP];
-    coord.y -= moveDir[DOWN];
-    coord.x += moveDir[LEFT];
-    coord.x -= moveDir[RIGHT];
+    coord.y -= moveDir[UP]*speed;
+    coord.y += moveDir[DOWN]*speed;
+    coord.x -= moveDir[LEFT]*speed;
+    coord.x += moveDir[RIGHT]*speed;
+
+    setHitBox();
+
+    if (coord.x > 1024 || coord.x < 0 || coord.y > 576 || coord.y < 0)
+        throwing = false;
 }
 
 void Projectile::setCoord(int x_, int y_){
     coord.x = x_;
     coord.y = y_;
+}
+
+void Projectile::setSpeed(int value_){
+    speed = value_;
 }
 
 void Projectile::setProjDir(int dir_, int value_){
@@ -47,4 +64,11 @@ bool Projectile::isThrowing(){
     return throwing;
 }
 
+void Projectile::drawHitbox(){
+    Colors colors;
+    al_draw_rectangle(hitBox.inf.x, hitBox.inf.y, hitBox.sup.x, hitBox.sup.y, colors.pastelBlue(), 1);
+}
 
+int Projectile::showDamage(){
+    return damage;
+}

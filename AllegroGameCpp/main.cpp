@@ -1,6 +1,5 @@
 #include "mainHeader.hpp"
-bool isProjectileIn(Player player, Projectile projectile);
-bool pointInsideBox(Coordinates point_, HitBoxRange box_);
+
 int main()
 {
     al_init();
@@ -11,6 +10,7 @@ int main()
     PauseMenu pauseMenu;
     Colors colors;
     Projectile projectile;
+    Damage damage;
 
     pauseMenu.init();
 
@@ -43,7 +43,10 @@ int main()
     projectile.loadBitmap("assets/shuriken.png");
     player.projectile.loadBitmap("assets/shuriken.png");
 
-    player.keyDownInit();
+    player.initPlayer();
+
+    projectile.initProjectile();
+    player.projectile.initProjectile();
 
     player.setPosition(screen.width/2, screen.height/2);
 
@@ -52,16 +55,9 @@ int main()
     player.drawPlayer();
     al_flip_display();
 
-    projectile.setCoord(0, rand() % screen.height);
-    projectile.setProjDir(UP, 0);
-    projectile.setProjDir(DOWN, 0);
-    projectile.setProjDir(RIGHT, 0);
-    projectile.setProjDir(LEFT, 10);
-
-    player.projectile.setCoord(0,0);
-    player.projectile.setHitBox();
-    player.projectile.setThrowingStatus(0);
-
+    player.projectile.setThrowingStatus(false);
+    projectile.setThrowingStatus(false);
+    projectile.setProjDir(LEFT, 1);
 
     do{
         ALLEGRO_EVENT event;
@@ -73,34 +69,36 @@ int main()
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerProjectile){
-                if(projectile.projectileCoord().x < screen.width)
+                if(projectile.isThrowing())
                     projectile.moveProj();
-                else
-                    projectile.setCoord(0, screen.height/2);
+                else{
+                    projectile.setCoord(0, rand() % (screen.height/2));
+                    projectile.setThrowingStatus(true);
 
+                }
                 if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing())
                     player.projectile.moveProj();
-
-
             }
         }
-        projectile.setHitBox();
-        player.projectile.setHitBox();
-        player.setHitBox();
-        HitBoxRange buffHB = player.showHitBox(), buffHBproj = projectile.showHitBox();
-        HitBoxRange buffPHB = player.projectile.showHitBox();
-        al_draw_rectangle(buffHB.inf.x, buffHB.inf.y, buffHB.sup.x, buffHB.sup.y, colors.white(), 1);
-        al_draw_rectangle(buffHBproj.inf.x, buffHBproj.inf.y, buffHBproj.sup.x, buffHBproj.sup.y, colors.white(), 1);
-        if (player.projectile.isThrowing())
-            al_draw_rectangle(buffPHB.inf.x, buffPHB.inf.y, buffPHB.sup.x, buffPHB.sup.y, colors.white(), 1);
 
-        if (isProjectileIn(player, projectile))
-            projectile.setCoord(0, rand() % (screen.height/2));
+        if (damage.projectileHitPlayer(projectile, &player))
+            projectile.setThrowingStatus(false);
+
+
+        player.drawHealthBar();
+
+        if(player.projectile.isThrowing()){
+            player.projectile.drawHitbox();
+            player.projectile.drawBitmap();
+        }
+
+        if (projectile.isThrowing()){
+            projectile.drawHitbox();
+            projectile.drawBitmap();
+        }
 
         player.drawPlayer();
-        if (player.projectile.isThrowing())
-            player.projectile.drawBitmap();
-        projectile.drawBitmap();
+        player.drawHitbox();
 
         al_flip_display();
         al_clear_to_color(colors.black());
@@ -110,8 +108,12 @@ int main()
     return 0;
 }
 
-
-
+bool pointInsideBox(Coordinates point_, HitBoxRange box_){
+    if (point_.x >= box_.inf.x && point_.x <= box_.sup.x && point_.y >= box_.inf.y && point_.y <= box_.sup.y)
+        return true;
+    else
+        return false;
+}
 
 bool isProjectileIn(Player player, Projectile projectile){
     Coordinates aux1, aux2;
@@ -127,11 +129,5 @@ bool isProjectileIn(Player player, Projectile projectile){
         pointInsideBox(projectile.showHitBox().inf, player.showHitBox()) ||
         pointInsideBox(projectile.showHitBox().sup, player.showHitBox()))
         return true;
-}
-
-bool pointInsideBox(Coordinates point_, HitBoxRange box_){
-    if (point_.x >= box_.inf.x && point_.x <= box_.sup.x && point_.y >= box_.inf.y && point_.y <= box_.sup.y)
-        return true;
-    else
-        return false;
+    return false;
 }

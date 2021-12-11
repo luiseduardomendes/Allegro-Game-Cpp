@@ -3,6 +3,7 @@
 class Player{
 public:
     void loadBitmap(char [], int Dir_);
+    void initPlayer();
     void movePlayer();
     void drawPlayer();
     void setPosition(int x_, int y_);
@@ -12,6 +13,9 @@ public:
     void setKeyDown(int key_, bool value_);
     void setHitBox();
     void throwProjectile();
+    void drawHitbox();
+    void drawHealthBar();
+    void decrementHealth(int value_);
     Coordinates showCoord();
     HitBoxRange showHitBox();
     Projectile projectile;
@@ -21,6 +25,7 @@ private:
     HitBoxRange hitBox;
     int directionView;
     int health;
+    int fullHp;
     int level;
     int experience;
     int coins;

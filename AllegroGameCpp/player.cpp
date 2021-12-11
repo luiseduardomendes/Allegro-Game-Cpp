@@ -8,6 +8,7 @@ void Player::movePlayer(){
     coord.x += keyDown[RIGHT] * 5;
 
     setNewDirectionAfterMove();
+    setHitBox();
 }
 
 void Player::setKeyDown(int key_, bool value_){
@@ -89,6 +90,12 @@ void Player::setHitBox(){
     hitBox.sup.y = coord.y + 60;
 }
 
+void Player::initPlayer(){
+    health = 600;
+    fullHp = 600;
+    keyDownInit();
+}
+
 void Player::keyDownInit(){
     for (int i = 0; i < 4; i ++)
         keyDown[i] = false;
@@ -102,11 +109,24 @@ HitBoxRange Player::showHitBox(){
     return hitBox;
 }
 
+void Player::drawHitbox(){
+    Colors colors;
+    al_draw_rectangle(hitBox.inf.x, hitBox.inf.y, hitBox.sup.x, hitBox.sup.y, colors.pastelBlue(), 1);
+}
+
+void Player::drawHealthBar(){
+    al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((40*health)/fullHp), coord.y , al_map_rgb(0, 255, 0));
+    al_draw_filled_rectangle(coord.x + ((40*health)/fullHp), coord.y -5, coord.x+40, coord.y, al_map_rgb(80, 80, 80));
+}
 
 void Player::throwProjectile(){
     projectile.setThrowingStatus(true);
     for (int i = 0; i < 4; i ++)
         projectile.setProjDir(i, 0);
-    projectile.setProjDir(directionView, -10);
-    projectile.setCoord(coord.x, coord.y);
+    projectile.setProjDir(directionView, 1);
+    projectile.setCoord(coord.x + 10, coord.y + 10);
+}
+
+void Player::decrementHealth(int value_){
+    health -= value_;
 }
