@@ -115,8 +115,8 @@ void Player::drawHitbox(){
 }
 
 void Player::drawHealthBar(){
-    al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((40*health)/fullHp), coord.y , al_map_rgb(0, 255, 0));
-    al_draw_filled_rectangle(coord.x + ((40*health)/fullHp), coord.y -5, coord.x+40, coord.y, al_map_rgb(80, 80, 80));
+    al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(0, 255, 0));
+    al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
 }
 
 void Player::throwProjectile(){

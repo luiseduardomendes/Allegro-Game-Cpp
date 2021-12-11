@@ -57,7 +57,7 @@ int main()
 
     player.projectile.setThrowingStatus(false);
     projectile.setThrowingStatus(false);
-    projectile.setProjDir(LEFT, 1);
+    projectile.setProjDir(RIGHT, 1);
 
     do{
         ALLEGRO_EVENT event;
@@ -81,8 +81,9 @@ int main()
             }
         }
 
-        if (damage.projectileHitPlayer(projectile, &player))
-            projectile.setThrowingStatus(false);
+        if (projectile.isThrowing())
+            if (damage.projectileHitPlayer(projectile, &player))
+                projectile.setThrowingStatus(false);
 
 
         player.drawHealthBar();
