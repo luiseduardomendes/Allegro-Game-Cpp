@@ -15,6 +15,7 @@ public:
     void throwProjectile();
     void drawHitbox();
     void drawHealthBar();
+    int showHealth();
     void decrementHealth(int value_);
     Coordinates showCoord();
     HitBoxRange showHitBox();

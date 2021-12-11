@@ -130,3 +130,7 @@ void Player::throwProjectile(){
 void Player::decrementHealth(int value_){
     health -= value_;
 }
+
+int Player::showHealth(){
+    return health;
+}

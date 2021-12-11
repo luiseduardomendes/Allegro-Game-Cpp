@@ -2,5 +2,5 @@
 
 class Damage{
 public:
-    bool projectileHitPlayer(Projectile projectile, Player *player);
+    bool projectileHitPlayer(Projectile *projectile, Player *player);
 };

@@ -73,17 +73,22 @@ int main()
                     projectile.moveProj();
                 else{
                     projectile.setCoord(0, rand() % (screen.height/2));
+                    projectile.setHitBox();
                     projectile.setThrowingStatus(true);
-
                 }
+
                 if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing())
                     player.projectile.moveProj();
+
+
+                damage.projectileHitPlayer(&projectile, &player);
+
+
+
             }
         }
 
-        if (projectile.isThrowing())
-            if (damage.projectileHitPlayer(projectile, &player))
-                projectile.setThrowingStatus(false);
+
 
 
         player.drawHealthBar();
