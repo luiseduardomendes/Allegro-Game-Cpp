@@ -25,6 +25,7 @@ public:
     void initTimerSlow(double value_);
     void startTimerSlow();
     void stopTimerSlow();
+    void drawTimerSlow();
     ALLEGRO_TIMER* showTimerSlow();
 
 private:
@@ -44,6 +45,8 @@ private:
     bool endOfGame;
 
     ALLEGRO_TIMER *timerSlow;
+    clock_t countingSlowBegin;
+    clock_t countingSlowCurrent;
 
     ALLEGRO_BITMAP *bitmapUp;
     ALLEGRO_BITMAP *bitmapDown;

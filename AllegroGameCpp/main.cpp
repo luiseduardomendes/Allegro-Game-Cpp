@@ -111,9 +111,11 @@ int main()
             projectile.drawHitbox();
             projectile.drawBitmap();
         }
+        al_draw_circle(200,100,5,colors.white(), 5);
 
         player.drawPlayer();
         player.drawHitbox();
+        player.drawTimerSlow();
 
         al_flip_display();
         al_clear_to_color(colors.black());
