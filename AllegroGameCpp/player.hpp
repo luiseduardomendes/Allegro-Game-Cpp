@@ -12,6 +12,7 @@ public:
     void keyDownInit();
     void setKeyDown(int key_, bool value_);
     void setHitBox();
+    void setSpeed(int);
     void throwProjectile();
     void drawHitbox();
     void drawHealthBar();
@@ -27,6 +28,7 @@ private:
     int directionView;
     int health;
     int fullHp;
+    int speed;
     int level;
     int experience;
     int coins;

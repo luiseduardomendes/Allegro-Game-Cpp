@@ -27,7 +27,9 @@ int main()
     al_install_keyboard();
 
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
-    ALLEGRO_TIMER *timerProjectile;
+    ALLEGRO_TIMER *timerProjectile, *timerSlow;
+    timerSlow = al_create_timer(5.0);
+    al_start_timer(timerSlow);
     timerProjectile = al_create_timer(1.0/60.0);
     al_start_timer(timerProjectile);
 
@@ -35,6 +37,9 @@ int main()
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
+    al_register_event_source(eventQueue, al_get_timer_event_source(timerSlow));
+
+    al_stop_timer(timerSlow);
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -81,11 +86,18 @@ int main()
                     player.projectile.moveProj();
 
 
-                damage.projectileHitPlayer(&projectile, &player);
+                if(damage.projectileHitPlayer(&projectile, &player)){
+                    al_start_timer(timerSlow);
+                }
 
 
 
             }
+            if (event.timer.source == timerSlow){
+                al_stop_timer(timerSlow);
+                player.setSpeed(5);
+            }
+
         }
 
 

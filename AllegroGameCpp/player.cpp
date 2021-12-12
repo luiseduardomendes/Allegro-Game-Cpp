@@ -2,10 +2,10 @@
 
 void Player::movePlayer(){
 
-    coord.y -= keyDown[UP] * 5;
-    coord.y += keyDown[DOWN] * 5;
-    coord.x -= keyDown[LEFT] * 5;
-    coord.x += keyDown[RIGHT] * 5;
+    coord.y -= keyDown[UP] * speed;
+    coord.y += keyDown[DOWN] * speed;
+    coord.x -= keyDown[LEFT] * speed;
+    coord.x += keyDown[RIGHT] * speed;
 
     setNewDirectionAfterMove();
     setHitBox();
@@ -93,6 +93,7 @@ void Player::setHitBox(){
 void Player::initPlayer(){
     health = 600;
     fullHp = 600;
+    speed = 5;
     keyDownInit();
 }
 
@@ -117,6 +118,10 @@ void Player::drawHitbox(){
 void Player::drawHealthBar(){
     al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(0, 255, 0));
     al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
+}
+
+void Player::setSpeed(int value_){
+    speed = value_;
 }
 
 void Player::throwProjectile(){
