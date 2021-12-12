@@ -27,19 +27,18 @@ int main()
     al_install_keyboard();
 
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
-    ALLEGRO_TIMER *timerProjectile, *timerSlow;
-    timerSlow = al_create_timer(5.0);
-    al_start_timer(timerSlow);
+    ALLEGRO_TIMER *timerProjectile;
+
     timerProjectile = al_create_timer(1.0/60.0);
     al_start_timer(timerProjectile);
+
+    player.initTimerSlow(1.0);
 
     eventQueue = al_create_event_queue();
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
-    al_register_event_source(eventQueue, al_get_timer_event_source(timerSlow));
-
-    al_stop_timer(timerSlow);
+    al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimerSlow()));
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -87,21 +86,19 @@ int main()
 
 
                 if(damage.projectileHitPlayer(&projectile, &player)){
-                    al_start_timer(timerSlow);
+                    player.startTimerSlow();
                 }
 
 
 
             }
-            if (event.timer.source == timerSlow){
-                al_stop_timer(timerSlow);
+            if (event.timer.source == player.showTimerSlow()){
+                player.stopTimerSlow();
                 player.setSpeed(5);
+                player.initTimerSlow(5.0);
             }
 
         }
-
-
-
 
         player.drawHealthBar();
 

@@ -139,3 +139,20 @@ void Player::decrementHealth(int value_){
 int Player::showHealth(){
     return health;
 }
+
+
+void Player::initTimerSlow(double value_){
+    timerSlow = al_create_timer(value_);
+}
+
+void Player::startTimerSlow(){
+    al_start_timer(timerSlow);
+}
+
+void Player::stopTimerSlow(){
+    al_stop_timer(timerSlow);
+}
+
+ALLEGRO_TIMER* Player::showTimerSlow(){
+    return timerSlow;
+}

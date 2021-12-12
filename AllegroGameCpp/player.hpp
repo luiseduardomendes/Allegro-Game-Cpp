@@ -22,6 +22,11 @@ public:
     HitBoxRange showHitBox();
     Projectile projectile;
 
+    void initTimerSlow(double value_);
+    void startTimerSlow();
+    void stopTimerSlow();
+    ALLEGRO_TIMER* showTimerSlow();
+
 private:
     Coordinates coord;
     HitBoxRange hitBox;
@@ -37,6 +42,8 @@ private:
     float moveSpeed;
     bool keyDown[4];
     bool endOfGame;
+
+    ALLEGRO_TIMER *timerSlow;
 
     ALLEGRO_BITMAP *bitmapUp;
     ALLEGRO_BITMAP *bitmapDown;
