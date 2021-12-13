@@ -13,6 +13,7 @@ int main()
     Damage damage;
 
     pauseMenu.init();
+    player.countSlowInit();
 
     screen.width = 1024;
     screen.height = 576;

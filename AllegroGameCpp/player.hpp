@@ -17,11 +17,13 @@ public:
     void drawHitbox();
     void drawHealthBar();
     int showHealth();
+    void setSlowStatus(bool value_);
     void decrementHealth(int value_);
     Coordinates showCoord();
     HitBoxRange showHitBox();
     Projectile projectile;
 
+    void countSlowInit();
     void initTimerSlow(double value_);
     void startTimerSlow();
     void stopTimerSlow();
@@ -42,7 +44,7 @@ private:
     int weaponEquiped;
     float moveSpeed;
     bool keyDown[4];
-    bool endOfGame;
+    bool slowned;
 
     ALLEGRO_TIMER *timerSlow;
     clock_t countingSlowBegin;
