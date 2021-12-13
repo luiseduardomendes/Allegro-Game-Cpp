@@ -147,7 +147,6 @@ void Player::initTimerSlow(double value_){
 
 void Player::startTimerSlow(){
     al_start_timer(timerSlow);
-    countingSlowBegin = clock()/CLOCKS_PER_SEC;
 }
 
 void Player::stopTimerSlow(){
@@ -165,12 +164,3 @@ void Player::setSlowStatus(bool value_){
 ALLEGRO_TIMER* Player::showTimerSlow(){
     return timerSlow;
 }
-
-void Player::drawTimerSlow(){
-    Colors colors;
-    countingSlowCurrent = clock()/CLOCKS_PER_SEC;
-    double timePassed = (double)((countingSlowCurrent - countingSlowBegin));
-    al_draw_filled_rectangle(coord.x, coord.y-10, coord.x+(((al_get_timer_speed(timerSlow) - timePassed) * 60.0)/ al_get_timer_speed(timerSlow)), coord.y-5, colors.white());
-}
-
-
