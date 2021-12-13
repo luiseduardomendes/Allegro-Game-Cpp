@@ -11,6 +11,7 @@ int main()
     Colors colors;
     Projectile projectile;
     Damage damage;
+    Enemies enemy;
 
     pauseMenu.init();
 
@@ -32,27 +33,39 @@ int main()
     timerProjectile = al_create_timer(1.0/60.0);
     al_start_timer(timerProjectile);
 
-    player.initTimerSlow(1.0);
+
+    player.initTimer(TIMER_SLOW, 1.0);
+    enemy.initTimer(TIMER_MOVE, 1.0/60.0);
+    enemy.startTimer(TIMER_MOVE);
 
     eventQueue = al_create_event_queue();
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
-    al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimerSlow()));
+    al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimer(TIMER_SLOW)));
+    al_register_event_source(eventQueue, al_get_timer_event_source(enemy.showTimer(TIMER_MOVE)));
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
     player.loadBitmap("assets/narutoleft.png", LEFT);
     player.loadBitmap("assets/narutoright.png", RIGHT);
+
+    enemy.loadBitmap("assets/narutoback.png", UP);
+    enemy.loadBitmap("assets/naruto.png", DOWN);
+    enemy.loadBitmap("assets/narutoleft.png", LEFT);
+    enemy.loadBitmap("assets/narutoright.png", RIGHT);
+
     projectile.loadBitmap("assets/shuriken.png");
     player.projectile.loadBitmap("assets/shuriken.png");
 
     player.initPlayer();
+    enemy.initEnemies();
 
     projectile.initProjectile();
     player.projectile.initProjectile();
 
     player.setPosition(screen.width/2, screen.height/2);
+    enemy.setPosition(screen.width/3, screen.height/2);
 
     al_clear_to_color(colors.black());
     player.setDirection(DOWN);
@@ -71,6 +84,7 @@ int main()
         player.movePlayer();
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
+
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerProjectile){
                 if(projectile.isThrowing())
@@ -86,17 +100,19 @@ int main()
 
 
                 if(damage.projectileHitPlayer(&projectile, &player)){
-                    player.startTimerSlow();
+                    player.setSlow(0.5);
+                    player.startTimer(TIMER_SLOW);
                 }
 
 
 
             }
-            if (event.timer.source == player.showTimerSlow()){
-                player.stopTimerSlow();
-                player.setSpeed(5);
-                player.initTimerSlow(5.0);
+            if (event.timer.source == player.showTimer(TIMER_SLOW)){
+                player.resetSpeed();
+                player.stopTimer(TIMER_SLOW);
             }
+            if (event.timer.source == enemy.showTimer(TIMER_MOVE))
+                enemy.moveEnemy(player);
 
         }
 
@@ -114,6 +130,8 @@ int main()
 
         player.drawPlayer();
         player.drawHitbox();
+        enemy.drawBitmap();
+        enemy.drawHitbox();
 
         al_flip_display();
         al_clear_to_color(colors.black());

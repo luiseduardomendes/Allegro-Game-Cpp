@@ -1,11 +1,11 @@
 #pragma once
 
-class Player{
+class Enemies{
 public:
     void loadBitmap(char [], int Dir_);
-    void initPlayer();
-    void movePlayer();
-    void drawPlayer();
+    void initEnemy();
+    void moveEnemy(Player player);
+    void drawBitmap();
     void setPosition(int x_, int y_);
     void setNewDirectionAfterMove();
     void setDirection(int dir_);
@@ -22,35 +22,35 @@ public:
     HitBoxRange showHitBox();
     Projectile projectile;
 
-    void setSlow(double value_);
-    void resetSpeed();
     void initTimer(int timer_, double value_);
     void startTimer(int timer_);
     void stopTimer(int timer_);
     ALLEGRO_TIMER* showTimer(int timer_);
 
+    bool checkPlayerDistance(Player player);
+    void setRangeView();
+    int showRangeView();
 private:
-    Coordinates coord;
-    HitBoxRange hitBox;
-    int directionView;
+    int idEnemy;
+    double moveSpeed;
     int health;
     int fullHp;
-    double stdSpeed;
-    int level;
-    int experience;
+    int directionView;
     int coins;
     int armorEquiped;
     int weaponEquiped;
-    float moveSpeed;
-    bool slowned;
     bool keyDown[4];
-    bool endOfGame;
+    int rangeView;
 
-    ALLEGRO_TIMER *timerSlow;
+    ALLEGRO_TIMER *timerMove;
+
+    Coordinates coord;
+    HitBoxRange hitBox;
+
+
 
     ALLEGRO_BITMAP *bitmapUp;
     ALLEGRO_BITMAP *bitmapDown;
     ALLEGRO_BITMAP *bitmapLeft;
     ALLEGRO_BITMAP *bitmapRight;
-
 };

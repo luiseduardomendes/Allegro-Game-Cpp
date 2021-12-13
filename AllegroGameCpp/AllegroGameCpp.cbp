@@ -41,6 +41,8 @@
 		<Unit filename="Colors.hpp" />
 		<Unit filename="Damage.cpp" />
 		<Unit filename="Damage.hpp" />
+		<Unit filename="enemies.cpp" />
+		<Unit filename="enemies.hpp" />
 		<Unit filename="keyboard.cpp" />
 		<Unit filename="keyboard.hpp" />
 		<Unit filename="main.cpp" />
