@@ -4,10 +4,9 @@ class Enemies{
 public:
     void loadBitmap(char [], int Dir_);
     void initEnemy();
-    void moveEnemy();
+    void moveEnemy(Player player);
     void drawBitmap();
     void setPosition(int x_, int y_);
-    void setDirectionPlayer(Player player);
     void setNewDirectionAfterMove();
     void setDirection(int dir_);
     void keyDownInit();
@@ -29,7 +28,7 @@ public:
     ALLEGRO_TIMER* showTimer(int timer_);
 
     bool checkPlayerDistance(Player player);
-    void setRangeView(int);
+    void setRangeView();
     int showRangeView();
 private:
     int idEnemy;

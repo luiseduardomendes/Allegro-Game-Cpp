@@ -35,7 +35,7 @@ int main()
 
 
     player.initTimer(TIMER_SLOW, 1.0);
-    enemy.initTimer(TIMER_MOVE, 1.0/60.0);
+    enemy.initTimer(TIMER_MOVE, 1.0/2.0);
     enemy.startTimer(TIMER_MOVE);
 
     eventQueue = al_create_event_queue();
@@ -59,7 +59,7 @@ int main()
     player.projectile.loadBitmap("assets/shuriken.png");
 
     player.initPlayer();
-    enemy.initEnemies();
+    enemy.initEnemy();
 
     projectile.initProjectile();
     player.projectile.initProjectile();
@@ -82,6 +82,7 @@ int main()
 
         keyboard.movePlayer(event, &player);
         player.movePlayer();
+        enemy.moveEnemy();
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
 
@@ -112,7 +113,7 @@ int main()
                 player.stopTimer(TIMER_SLOW);
             }
             if (event.timer.source == enemy.showTimer(TIMER_MOVE))
-                enemy.moveEnemy(player);
+                enemy.setDirectionPlayer(player);
 
         }
 

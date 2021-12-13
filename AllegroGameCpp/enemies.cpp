@@ -1,26 +1,44 @@
-#include "enemies.hpp"
+#include "mainHeader.hpp"
 
 void Enemies::initEnemy(){
+    health = 600;
+    fullHp = 600;
+    moveSpeed = 5;
+    stdSpeed = 2;
+    rangeView = 100;
+    keyDownInit();
+}
+
+void Enemies::moveEnemy(){
+
+    coord.y -= keyDown[UP] * moveSpeed;
+    coord.y += keyDown[DOWN] * moveSpeed;
+    coord.x -= keyDown[LEFT] * moveSpeed;
+    coord.x += keyDown[RIGHT] * moveSpeed;
+
+    setNewDirectionAfterMove();
+    setHitBox();
 
 }
 
-void Enemies::moveEnemy(Player player){
+void Enemies::setDirectionPlayer(Player player){
     int flagMove;
+    Coordinates plCoord = player.showCoord();
 
     if (checkPlayerDistance(player)){
-        if (player.coord.x > coord.x){
+        if (plCoord.x > coord.x){
             keyDown[UP] = 1;
             keyDown[DOWN] = 0;
         }
-        else{
-            keyDown[DOWN] = 1;
-            keyDown[UP] = 0;
+        else if (plCoord.x < coord.x){
+            keyDown[DOWN] = 0;
+            keyDown[UP] = 1;
         }
-        if (player.coord.y > coord.y){
+        if (plCoord.y > coord.y){
             keyDown[LEFT] = 0;
             keyDown[RIGHT] = 1;
         }
-        else{
+        else if (plCoord.y < coord.y){
             keyDown[LEFT] = 1;
             keyDown[RIGHT] = 0;
         }
@@ -56,6 +74,12 @@ bool Enemies::checkPlayerDistance(Player player){
     else
         return false;
 }
+
+void Enemies::keyDownInit(){
+    for (int i = 0; i < 4; i ++)
+        keyDown[i] = false;
+}
+
 
 void Enemies::setRangeView(int range_){
     rangeView = range_;
@@ -115,7 +139,7 @@ void Enemies::loadBitmap(char nameFile[], int dir_){
     }
 }
 
-void Enemies::drawEnemies(){
+void Enemies::drawBitmap(){
     switch(directionView){
     case UP:
         al_draw_scaled_bitmap(bitmapUp, 0, 0, 40, 40, coord.x, coord.y, 60, 60, 0);
@@ -144,58 +168,12 @@ void Enemies::setHitBox(){
     hitBox.sup.y = coord.y + 60;
 }
 
-void Enemies::initEnemies(){
-    health = 600;
-    fullHp = 600;
-    moveSpeed = 5;
-    stdSpeed = 5;
-    keyDownInit();
-}
-
-void Enemies::keyDownInit(){
-    for (int i = 0; i < 4; i ++)
-        keyDown[i] = false;
-}
-
-Coordinates Enemies::showCoord(){
-    return coord;
-}
-
-HitBoxRange Enemies::showHitBox(){
-    return hitBox;
-}
-
 void Enemies::drawHitbox(){
     Colors colors;
     al_draw_rectangle(hitBox.inf.x, hitBox.inf.y, hitBox.sup.x, hitBox.sup.y, colors.pastelBlue(), 1);
 }
 
-void Enemies::drawHealthBar(){
-    al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(0, 255, 0));
-    al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
-}
-
-void Enemies::setSpeed(int value_){
-    moveSpeed = value_;
-}
-
-void Enemies::throwProjectile(){
-    projectile.setThrowingStatus(true);
-    for (int i = 0; i < 4; i ++)
-        projectile.setProjDir(i, 0);
-    projectile.setProjDir(directionView, 1);
-    projectile.setCoord(coord.x + 10, coord.y + 10);
-}
-
-void Enemies::decrementHealth(int value_){
-    health -= value_;
-}
-
-int Enemies::showHealth(){
-    return health;
-}
-
-void Player::initTimer(int timer_, double value_){
+void Enemies::initTimer(int timer_, double value_){
     switch (timer_){
     case TIMER_MOVE:
         timerMove = al_create_timer(value_);
@@ -203,7 +181,7 @@ void Player::initTimer(int timer_, double value_){
     }
 }
 
-void Player::startTimer(int timer_){
+void Enemies::startTimer(int timer_){
     switch (timer_){
     case TIMER_MOVE:
         al_start_timer(timerMove);
@@ -211,7 +189,7 @@ void Player::startTimer(int timer_){
     }
 }
 
-void Player::stopTimer(int timer_){
+void Enemies::stopTimer(int timer_){
     switch (timer_){
     case TIMER_MOVE:
         al_stop_timer(timerMove);
@@ -219,7 +197,7 @@ void Player::stopTimer(int timer_){
     }
 }
 
-ALLEGRO_TIMER* Player::showTimer(int timer_){
+ALLEGRO_TIMER* Enemies::showTimer(int timer_){
     switch(timer_){
     case TIMER_MOVE:
         return timerMove;

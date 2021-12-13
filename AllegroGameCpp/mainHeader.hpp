@@ -7,6 +7,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+
 enum {UP= 0, DOWN, LEFT, RIGHT};
 enum {TIMER_SLOW, TIMER_MOVE};
 
@@ -19,19 +20,15 @@ typedef struct{
 }HitBoxRange;
 
 #include "Colors.hpp"
-
 #include "projectile.hpp"
 #include "player.hpp"
+#include "enemies.hpp"
 
 bool isProjectileIn(Player player, Projectile projectile);
 bool pointInsideBox(Coordinates, HitBoxRange);
 
 #include "Damage.hpp"
 #include "pauseMenu.hpp"
-
-#include "enemies.hpp"
-
-
 #include "keyboard.hpp"
 
 using namespace std;
@@ -39,8 +36,3 @@ using namespace std;
 typedef struct{
     int width, height;
 }Screen;
-
-
-
-
-
