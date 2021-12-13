@@ -153,14 +153,6 @@ void Player::stopTimerSlow(){
     al_stop_timer(timerSlow);
 }
 
-void Player::countSlowInit(){
-    countingSlowBegin = 0;
-}
-
-void Player::setSlowStatus(bool value_){
-    slowned = value_;
-}
-
 ALLEGRO_TIMER* Player::showTimerSlow(){
     return timerSlow;
 }
