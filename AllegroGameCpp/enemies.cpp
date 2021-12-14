@@ -6,7 +6,16 @@ void Enemies::initEnemy(){
     moveSpeed = 1;
     stdSpeed = 1;
     rangeView = 200;
+    alive = true;
     keyDownInit();
+}
+
+void Enemies::setAliveStatus(bool value_){
+    alive = value_;
+}
+
+bool Enemies::showAliveStatus(){
+    return alive;
 }
 
 void Enemies::moveEnemy(){
@@ -42,6 +51,10 @@ void Enemies::setDirectionPlayer(Player player){
             keyDown[LEFT] = 1;
             keyDown[RIGHT] = 0;
         }
+        if (abs(plCoord.x - coord.x) > abs(plCoord.y - coord.y))
+            priorityDirection = LEFT;
+        else
+            priorityDirection = UP;
     }
     else{
         flagMove = rand() % 4;
@@ -62,8 +75,6 @@ void Enemies::setDirectionPlayer(Player player){
         }
 
     }
-    setNewDirectionAfterMove();
-    setHitBox();
 }
 
 bool Enemies::checkPlayerDistance(Player player){
@@ -98,7 +109,7 @@ void Enemies::setKeyDown(int key_, bool value_){
 }
 
 void Enemies::setNewDirectionAfterMove(){
-    if(keyDown[UP] + keyDown[DOWN] != 1){
+    if (priorityDirection == LEFT)
         switch(keyDown[RIGHT] - keyDown[LEFT]){
         case -1:
             setDirection(LEFT);
@@ -107,19 +118,17 @@ void Enemies::setNewDirectionAfterMove(){
             setDirection(RIGHT);
             break;
         }
-    }
-    else {
-        if (keyDown[RIGHT] + keyDown[LEFT] == 0){
-            switch(keyDown[DOWN] - keyDown[UP]){
-            case -1:
-                setDirection(UP);
-                break;
-            case 1:
-                setDirection(DOWN);
-                break;
-            }
+    else
+        switch(keyDown[DOWN] - keyDown[UP]){
+        case -1:
+            setDirection(UP);
+            break;
+        case 1:
+            setDirection(DOWN);
+            break;
         }
-    }
+
+
 }
 
 void Enemies::setDirection(int dir_){

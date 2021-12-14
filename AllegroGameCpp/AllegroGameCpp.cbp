@@ -47,6 +47,8 @@
 		<Unit filename="keyboard.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mainHeader.hpp" />
+		<Unit filename="obstacles.cpp" />
+		<Unit filename="obstacles.hpp" />
 		<Unit filename="pauseMenu.cpp" />
 		<Unit filename="pauseMenu.hpp" />
 		<Unit filename="player.cpp" />

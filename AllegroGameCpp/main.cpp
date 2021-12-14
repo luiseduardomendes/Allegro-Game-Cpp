@@ -13,10 +13,13 @@ int main()
     Damage damage;
     Enemies enemy[5];
 
+    Obstacles obstacles[102];
+
+
     pauseMenu.init();
 
-    screen.width = 1024;
-    screen.height = 576;
+    screen.width = 1360;
+    screen.height = 760;
 
     ALLEGRO_DISPLAY *display;
     display = al_create_display(screen.width, screen.height);
@@ -62,6 +65,24 @@ int main()
         enemy[i].loadBitmap("assets/akatsukiright.png", RIGHT);
     }
 
+
+    for (int i = 0; i < 34; i ++){
+        obstacles[i].setCoord(i * 40, 0);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 34; i < 68; i ++){
+        obstacles[i].setCoord((i-34) * 40, screen.height - 40);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 68; i < 85; i ++){
+        obstacles[i].setCoord(0, 40*(i-67));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 85; i < 102; i ++){
+        obstacles[i].setCoord(screen.width-40, 40*(i-84));
+        obstacles[i].setHitBox();
+    }
+
     projectile.loadBitmap("assets/shuriken.png");
     player.projectile.loadBitmap("assets/shuriken.png");
 
@@ -82,9 +103,6 @@ int main()
     enemy[3].setPosition(screen.width*2/3, screen.height*3/4);
     enemy[4].setPosition(screen.width*2/3, screen.height/2);
 
-
-
-
     al_clear_to_color(colors.black());
     player.setDirection(DOWN);
     player.drawPlayer();
@@ -101,7 +119,9 @@ int main()
         keyboard.movePlayer(event, &player);
         player.movePlayer();
         for (int i = 0; i < 5; i ++)
-            enemy[i].moveEnemy();
+            if (enemy[i].showAliveStatus())
+                enemy[i].moveEnemy();
+
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
 
@@ -133,26 +153,27 @@ int main()
             }
             for (int i = 0; i < 5; i ++){
                 if (event.timer.source == enemy[i].showTimer(TIMER_MOVE)){
-                    enemy[i].setDirectionPlayer(player);
+                    if (enemy[i].showAliveStatus())
+                        enemy[i].setDirectionPlayer(player);
 
                 }
                 if (event.timer.source == enemy[i].showTimer(TIMER_DAMAGE)){
-                    enemy[i].setHitPlayer(false);
+                    if (enemy[i].showAliveStatus())
+                        enemy[i].setHitPlayer(false);
                 }
             }
 
 
         }
         for (int i = 0; i < 5; i ++){
-            if(!enemy[i].isHitPlayerOn() && damage.enemyHitPlayer(&enemy[i], &player)){
-                enemy[i].startTimer(TIMER_DAMAGE);
-                enemy[i].setHitPlayer(true);
+            if (enemy[i].showAliveStatus()){
+                if(!enemy[i].isHitPlayerOn() && damage.enemyHitPlayer(&enemy[i], &player)){
+                    enemy[i].startTimer(TIMER_DAMAGE);
+                    enemy[i].setHitPlayer(true);
+                }
+                damage.playerProjectileHit(&enemy[i], &player);
             }
-            if (player.playerProjectileHit(enemy[i].showHitBox())){
-                player.projectile.setThrowingStatus(false);
-                enemy[i].decrementHealth(200);
 
-            }
 
         }
         player.drawHealthBar();
@@ -167,16 +188,19 @@ int main()
             projectile.drawBitmap();
         }
 
-        if(player.showHealth() == 0)
+        if(player.showHealth() <= 0)
             pauseMenu.setEndOfGame(true);
 
         player.drawPlayer();
         player.drawHitbox();
         for (int i = 0; i < 5; i ++){
-            if (enemy[i].showHealth() > 0){
+            if (enemy[i].showAliveStatus()){
                 enemy[i].drawBitmap();
                 enemy[i].drawHitbox();
             }
+        }
+        for (int i = 0; i < 102; i ++){
+            obstacles[i].drawHitBox();
         }
 
         al_flip_display();
@@ -211,7 +235,7 @@ bool isProjectileIn(Player player, Projectile projectile){
     return false;
 }
 
-bool isProjectileInEnemy(HitBoxRange HB, Projectile projectile){
+bool isProjectileIn(HitBoxRange HB, Projectile projectile){
     Coordinates aux1, aux2;
 
     aux1.x = projectile.showHitBox().inf.x;

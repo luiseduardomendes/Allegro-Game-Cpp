@@ -10,6 +10,7 @@
 
 enum {UP= 0, DOWN, LEFT, RIGHT};
 enum {TIMER_SLOW, TIMER_MOVE, TIMER_DAMAGE};
+enum {WALL, SPIKE, ROCK};
 
 typedef struct{
     int x, y;
@@ -19,15 +20,17 @@ typedef struct{
     Coordinates inf, sup;
 }HitBoxRange;
 
+#include "obstacles.hpp"
+
 #include "Colors.hpp"
 #include "projectile.hpp"
 #include "player.hpp"
 #include "enemies.hpp"
 
-bool isProjectileIn(Player player, Projectile projectile);
+
 bool isEnemyIn(Player player, Enemies enemy);
 bool pointInsideBox(Coordinates, HitBoxRange);
-bool isProjectileInEnemy(HitBoxRange HB, Projectile projectile);
+bool isProjectileIn(HitBoxRange HB, Projectile projectile);
 
 #include "Damage.hpp"
 #include "pauseMenu.hpp"

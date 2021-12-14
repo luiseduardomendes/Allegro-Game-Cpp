@@ -40,13 +40,6 @@ void Player::setNewDirectionAfterMove(){
     }
 }
 
-bool Player::playerProjectileHit(HitBoxRange HB){
-    if (isProjectileInEnemy(HB, projectile)){
-        return true;
-    }
-    return false;
-}
-
 void Player::setDirection(int dir_){
     directionView = dir_;
 }

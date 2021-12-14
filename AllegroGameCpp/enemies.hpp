@@ -34,6 +34,9 @@ public:
 
     void setHitPlayer(bool value_);
     bool isHitPlayerOn();
+
+    void setAliveStatus(bool value_);
+    bool showAliveStatus();
 private:
     int idEnemy;
     double moveSpeed;
@@ -42,11 +45,14 @@ private:
     int fullHp;
     int directionView;
     int coins;
+    bool alive;
     int armorEquiped;
     int weaponEquiped;
     bool keyDown[4];
     int rangeView;
     bool hitPlayer;
+
+    int priorityDirection;
 
     ALLEGRO_TIMER *timerMove;
     ALLEGRO_TIMER *timerDamage;
