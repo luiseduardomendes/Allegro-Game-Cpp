@@ -1,4 +1,5 @@
 #include "mainHeader.hpp"
+#define NUM_WALLS 170
 
 int main()
 {
@@ -15,7 +16,9 @@ int main()
 
     bool nextPosValid;
 
-    Obstacles obstacles[102];
+
+
+    Obstacles obstacles[200];
 
 
     pauseMenu.init();
@@ -34,6 +37,7 @@ int main()
 
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
     ALLEGRO_TIMER *timerProjectile, *timerMovePlayer;
+    ALLEGRO_BITMAP *backGround = al_create_bitmap(screen.width, screen.height);
 
     timerProjectile = al_create_timer(1.0/60.0);
 
@@ -84,6 +88,27 @@ int main()
         obstacles[i].setCoord(screen.width-40, 40*(i-84));
         obstacles[i].setHitBox();
     }
+    for (int i = 102; i < 112; i ++){
+        obstacles[i].setCoord(screen.width-(40*5), 40*(i-101));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 112; i < 127; i ++){
+        obstacles[i].setCoord(screen.width-(40*(i-111+5)), 40*10);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 127; i < 140; i ++){
+        obstacles[i].setCoord(40*5, 40*(i-126));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 140; i < 155; i ++){
+        obstacles[i].setCoord(40*(i-139+5), 40*5);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 155; i < 170; i ++){
+        obstacles[i].setCoord(40*(i-154+10), screen.height -(40*6));
+        obstacles[i].setHitBox();
+    }
+
 
     projectile.loadBitmap("assets/shuriken.png");
     player.projectile.loadBitmap("assets/shuriken.png");
@@ -98,12 +123,12 @@ int main()
     projectile.initProjectile();
     player.projectile.initProjectile();
 
-    player.setPosition(screen.width/2, screen.height/2);
+    player.setPosition(45, 45);
     enemy[0].setPosition(screen.width/3, screen.height/2);
-    enemy[1].setPosition(screen.width/3, screen.height/4);
+    enemy[1].setPosition(screen.width/3, screen.height/8);
     enemy[2].setPosition(screen.width/3, screen.height*3/4);
     enemy[3].setPosition(screen.width*2/3, screen.height*3/4);
-    enemy[4].setPosition(screen.width*2/3, screen.height/2);
+    enemy[4].setPosition(screen.width*2/3, screen.height/4);
 
     al_clear_to_color(colors.black());
     player.setDirection(DOWN);
@@ -115,9 +140,10 @@ int main()
     projectile.setThrowingStatus(false);
     projectile.setProjDir(RIGHT, 1);
 
-    for (int i = 0; i < 5; i ++)
+    for (int i = 0; i < 5; i ++){
         enemy[i].setAliveStatus(true);
-
+        enemy[i].setHitBox();
+    }
     do{
         ALLEGRO_EVENT event;
         al_wait_for_event(eventQueue, &event);
@@ -125,7 +151,7 @@ int main()
         keyboard.movePlayer(event, &player);
 
         nextPosValid = true;
-        for (int i = 0; i < 102; i ++)
+        for (int i = 0; i < NUM_WALLS; i ++)
             if (abs(obstacles[i].showCoord().x - player.showCoord().x < 75) &&
                 abs(obstacles[i].showCoord().y - player.showCoord().y < 75))
                 if (!damage.isNextPositionPlayerValid(player, obstacles[i]))
@@ -137,7 +163,7 @@ int main()
         for (int i = 0; i < 5; i ++)
             if (enemy[i].showAliveStatus()){
                 nextPosValid = true;
-                for (int j = 0; j < 102; j ++)
+                for (int j = 0; j < NUM_WALLS; j ++)
                     if (abs(obstacles[j].showCoord().x - enemy[i].showCoord().x < 75) &&
                             abs(obstacles[j].showCoord().y - enemy[i].showCoord().y < 75))
                         if (!damage.isNextPositionEnemyValid(enemy[i], obstacles[j]))
@@ -160,8 +186,11 @@ int main()
                     projectile.setThrowingStatus(true);
                 }
 
-                if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing())
+                if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing()){
+                    player.projectile.setHitBox();
                     player.projectile.moveProj();
+
+                }
 
 
                 if(damage.projectileHitPlayer(&projectile, &player)){
@@ -203,6 +232,12 @@ int main()
 
         }
 
+        if(player.showHealth() <= 0)
+            pauseMenu.setEndOfGame(true);
+
+
+        al_set_target_bitmap(backGround);
+        al_clear_to_color(colors.black());
 
         if(player.projectile.isThrowing()){
             player.projectile.drawHitbox();
@@ -213,10 +248,6 @@ int main()
             projectile.drawHitbox();
             projectile.drawBitmap();
         }
-
-        if(player.showHealth() <= 0)
-            pauseMenu.setEndOfGame(true);
-
         player.drawHealthBar();
         player.drawPlayer();
         player.drawHitbox();
@@ -227,9 +258,16 @@ int main()
                 enemy[i].drawHitbox();
             }
         }
-        for (int i = 0; i < 102; i ++){
+        for (int i = 0; i < NUM_WALLS; i ++){
             obstacles[i].drawHitBox();
         }
+        al_set_target_bitmap(al_get_backbuffer(display));
+
+        al_draw_scaled_bitmap(backGround, 0, 0, screen.width, screen.height,
+                              screen.width/2 - player.showCoord().x*1.5, screen.height/2 - player.showCoord().y*1.5,
+                               screen.width*1.5, screen.height*1.5, 0);
+
+                              //backGround,  0);
 
         al_flip_display();
         al_clear_to_color(colors.black());

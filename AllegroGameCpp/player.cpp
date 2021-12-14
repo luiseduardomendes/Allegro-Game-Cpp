@@ -97,8 +97,8 @@ void Player::setHitBox(){
 void Player::initPlayer(){
     health = 600;
     fullHp = 600;
-    moveSpeed = 3;
-    stdSpeed = 3;
+    moveSpeed = 5;
+    stdSpeed = 5;
     keyDownInit();
 }
 
@@ -135,6 +135,7 @@ void Player::throwProjectile(){
         projectile.setProjDir(i, 0);
     projectile.setProjDir(directionView, 1);
     projectile.setCoord(coord.x + 10, coord.y + 10);
+    projectile.setHitBox();
 }
 
 void Player::decrementHealth(int value_){
