@@ -10,3 +10,11 @@ bool Damage::projectileHitPlayer(Projectile *projectile, Player *player){
     }
     return false;
 }
+
+bool Damage::enemyHitPlayer(Enemies *enemy, Player *player){
+    if (isEnemyIn(*player, *enemy) && player->showHealth() > 0){
+        player->decrementHealth(100);
+        return true;
+    }
+    return false;
+}

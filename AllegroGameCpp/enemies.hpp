@@ -31,6 +31,9 @@ public:
     bool checkPlayerDistance(Player player);
     void setRangeView(int);
     int showRangeView();
+
+    void setHitPlayer(bool value_);
+    bool isHitPlayerOn();
 private:
     int idEnemy;
     double moveSpeed;
@@ -43,8 +46,10 @@ private:
     int weaponEquiped;
     bool keyDown[4];
     int rangeView;
+    bool hitPlayer;
 
     ALLEGRO_TIMER *timerMove;
+    ALLEGRO_TIMER *timerDamage;
 
     Coordinates coord;
     HitBoxRange hitBox;

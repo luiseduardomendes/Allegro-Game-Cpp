@@ -1,11 +1,11 @@
 #include "mainHeader.hpp"
 
 void Enemies::initEnemy(){
-    health = 600;
-    fullHp = 600;
-    moveSpeed = 5;
-    stdSpeed = 2;
-    rangeView = 100;
+    health = 200;
+    fullHp = 200;
+    moveSpeed = 1;
+    stdSpeed = 1;
+    rangeView = 200;
     keyDownInit();
 }
 
@@ -24,28 +24,28 @@ void Enemies::moveEnemy(){
 void Enemies::setDirectionPlayer(Player player){
     int flagMove;
     Coordinates plCoord = player.showCoord();
-
+    keyDownInit();
     if (checkPlayerDistance(player)){
-        if (plCoord.x > coord.x){
-            keyDown[UP] = 1;
-            keyDown[DOWN] = 0;
-        }
-        else if (plCoord.x < coord.x){
-            keyDown[DOWN] = 0;
-            keyDown[UP] = 1;
-        }
         if (plCoord.y > coord.y){
+            keyDown[UP] = 0;
+            keyDown[DOWN] = 1;
+        }
+        else if (plCoord.y < coord.y){
+            keyDown[UP] = 1;
+            keyDown[DOWN] = 0;
+        }
+        if (plCoord.x > coord.x){
             keyDown[LEFT] = 0;
             keyDown[RIGHT] = 1;
         }
-        else if (plCoord.y < coord.y){
+        else if (plCoord.x < coord.x){
             keyDown[LEFT] = 1;
             keyDown[RIGHT] = 0;
         }
     }
     else{
         flagMove = rand() % 4;
-        keyDownInit();
+
         switch (flagMove){
         case 0:
             keyDown[UP] = 1;
@@ -87,6 +87,10 @@ void Enemies::setRangeView(int range_){
 
 int  Enemies::showRangeView(){
     return rangeView;
+}
+
+HitBoxRange Enemies::showHitBox(){
+    return hitBox;
 }
 
 void Enemies::setKeyDown(int key_, bool value_){
@@ -178,6 +182,9 @@ void Enemies::initTimer(int timer_, double value_){
     case TIMER_MOVE:
         timerMove = al_create_timer(value_);
         break;
+    case TIMER_DAMAGE:
+        timerDamage = al_create_timer(value_);
+        break;
     }
 }
 
@@ -185,6 +192,9 @@ void Enemies::startTimer(int timer_){
     switch (timer_){
     case TIMER_MOVE:
         al_start_timer(timerMove);
+        break;
+    case TIMER_DAMAGE:
+        al_start_timer(timerDamage);
         break;
     }
 }
@@ -194,6 +204,10 @@ void Enemies::stopTimer(int timer_){
     case TIMER_MOVE:
         al_stop_timer(timerMove);
         break;
+    case TIMER_DAMAGE:
+        al_stop_timer(timerDamage);
+        break;
+
     }
 }
 
@@ -201,5 +215,24 @@ ALLEGRO_TIMER* Enemies::showTimer(int timer_){
     switch(timer_){
     case TIMER_MOVE:
         return timerMove;
+    case TIMER_DAMAGE:
+        return timerDamage;
     }
+}
+
+void Enemies::setHitPlayer(bool value_){
+    hitPlayer = value_;
+}
+
+bool Enemies::isHitPlayerOn(){
+    return hitPlayer;
+}
+
+void Enemies::decrementHealth(int value_){
+    health -= value_;
+}
+
+
+int Enemies::showHealth(){
+    return health;
 }

@@ -40,6 +40,13 @@ void Player::setNewDirectionAfterMove(){
     }
 }
 
+bool Player::playerProjectileHit(HitBoxRange HB){
+    if (isProjectileInEnemy(HB, projectile)){
+        return true;
+    }
+    return false;
+}
+
 void Player::setDirection(int dir_){
     directionView = dir_;
 }
@@ -93,8 +100,8 @@ void Player::setHitBox(){
 void Player::initPlayer(){
     health = 600;
     fullHp = 600;
-    moveSpeed = 5;
-    stdSpeed = 5;
+    moveSpeed = 3;
+    stdSpeed = 3;
     keyDownInit();
 }
 

@@ -21,6 +21,7 @@ public:
     Coordinates showCoord();
     HitBoxRange showHitBox();
     Projectile projectile;
+    bool playerProjectileHit(HitBoxRange HB);
 
     void setSlow(double value_);
     void resetSpeed();
