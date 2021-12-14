@@ -15,6 +15,10 @@ void Player::setKeyDown(int key_, bool value_){
     keyDown[key_] = value_;
 }
 
+bool* Player::showKeyDown(){
+    return keyDown;
+}
+
 void Player::setNewDirectionAfterMove(){
     if(keyDown[UP] + keyDown[DOWN] != 1){
         switch(keyDown[RIGHT] - keyDown[LEFT]){

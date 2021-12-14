@@ -1,6 +1,6 @@
 #include "mainHeader.hpp"
 
-bool Damage::projectileHitPlayer(Projectile *projectile, Player *player){
+bool DmgAndColision::projectileHitPlayer(Projectile *projectile, Player *player){
 
     if (isProjectileIn(player->showHitBox(), *projectile) && player->showHealth() > 0){
         projectile->setThrowingStatus(false);
@@ -11,7 +11,7 @@ bool Damage::projectileHitPlayer(Projectile *projectile, Player *player){
     return false;
 }
 
-bool Damage::enemyHitPlayer(Enemies *enemy, Player *player){
+bool DmgAndColision::enemyHitPlayer(Enemies *enemy, Player *player){
     if (isEnemyIn(*player, *enemy) && player->showHealth() > 0){
         player->decrementHealth(100);
         return true;
@@ -19,7 +19,7 @@ bool Damage::enemyHitPlayer(Enemies *enemy, Player *player){
     return false;
 }
 
-bool Damage::playerProjectileHit(Enemies *enemy, Player *player){
+bool DmgAndColision::playerProjectileHit(Enemies *enemy, Player *player){
     if (isProjectileIn(enemy->showHitBox(), player->projectile)){
         enemy->decrementHealth(200);
         if (enemy->showHealth() <= 0)
@@ -28,4 +28,30 @@ bool Damage::playerProjectileHit(Enemies *enemy, Player *player){
         return true;
     }
     return false;
+}
+
+bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obst){
+    HitBoxRange newHBPlayer = player.showHitBox();
+    if (player.showKeyDown()[UP]){
+        newHBPlayer.inf.y -= 10;
+
+        newHBPlayer.sup.y -= 10;
+
+    }
+    if (player.showKeyDown()[DOWN]){
+        newHBPlayer.inf.y += 10;
+        newHBPlayer.sup.y += 10;
+    }
+    if (player.showKeyDown()[LEFT]){
+        newHBPlayer.inf.x -= 10;
+        newHBPlayer.sup.x -= 10;
+    }
+    if (player.showKeyDown()[RIGHT]){
+        newHBPlayer.inf.x += 10;
+        newHBPlayer.sup.x += 10;
+    }
+
+    if (isHitboxIn(obst.showHitBox(), newHBPlayer))
+        return false;
+    return true;
 }

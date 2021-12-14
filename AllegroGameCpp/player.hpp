@@ -30,6 +30,8 @@ public:
     void stopTimer(int timer_);
     ALLEGRO_TIMER* showTimer(int timer_);
 
+    bool* showKeyDown();
+
 private:
     Coordinates coord;
     HitBoxRange hitBox;

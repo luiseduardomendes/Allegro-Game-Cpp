@@ -31,6 +31,7 @@ typedef struct{
 bool isEnemyIn(Player player, Enemies enemy);
 bool pointInsideBox(Coordinates, HitBoxRange);
 bool isProjectileIn(HitBoxRange HB, Projectile projectile);
+bool isHitboxIn(HitBoxRange HB1, HitBoxRange HB2);
 
 #include "Damage.hpp"
 #include "pauseMenu.hpp"

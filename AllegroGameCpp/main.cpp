@@ -10,8 +10,10 @@ int main()
     PauseMenu pauseMenu;
     Colors colors;
     Projectile projectile;
-    Damage damage;
+    DmgAndColision damage;
     Enemies enemy[5];
+
+    bool nextPosValid;
 
     Obstacles obstacles[102];
 
@@ -105,19 +107,33 @@ int main()
 
     al_clear_to_color(colors.black());
     player.setDirection(DOWN);
+    player.setHitBox();
     player.drawPlayer();
     al_flip_display();
 
     player.projectile.setThrowingStatus(false);
     projectile.setThrowingStatus(false);
-    projectile.setProjDir(RIGHT, 1);
+    projectile.setProjDir(RIGHT, 0);
+
+    for (int i = 0; i < 5; i ++)
+        enemy[i].setAliveStatus(false);
 
     do{
         ALLEGRO_EVENT event;
         al_wait_for_event(eventQueue, &event);
 
         keyboard.movePlayer(event, &player);
-        player.movePlayer();
+
+        nextPosValid = true;
+        for (int i = 0; i < 102; i ++)
+            if (abs(obstacles[i].showCoord().x - player.showCoord().x < 75) &&
+                abs(obstacles[i].showCoord().y - player.showCoord().y < 75))
+                if (!damage.isNextPositionPlayerValid(player, obstacles[i]))
+                    nextPosValid = false;
+        if (nextPosValid)
+            player.movePlayer();
+
+
         for (int i = 0; i < 5; i ++)
             if (enemy[i].showAliveStatus())
                 enemy[i].moveEnemy();
@@ -147,6 +163,9 @@ int main()
 
 
             }
+
+
+
             if (event.timer.source == player.showTimer(TIMER_SLOW)){
                 player.resetSpeed();
                 player.stopTimer(TIMER_SLOW);
@@ -248,6 +267,21 @@ bool isProjectileIn(HitBoxRange HB, Projectile projectile){
         pointInsideBox(aux2, HB) ||
         pointInsideBox(projectile.showHitBox().inf, HB) ||
         pointInsideBox(projectile.showHitBox().sup, HB))
+        return true;
+    return false;
+}
+
+bool isHitboxIn(HitBoxRange HB1, HitBoxRange HB2){
+    Coordinates aux1, aux2;
+
+    aux1.x = HB2.inf.x;
+    aux1.y = HB2.sup.y;
+
+    aux2.x = HB2.sup.x;
+    aux2.y = HB2.inf.y;
+
+    if (pointInsideBox(aux1, HB1) || pointInsideBox(aux2, HB1) ||
+            pointInsideBox(HB2.inf, HB1) || pointInsideBox(HB2.sup, HB1))
         return true;
     return false;
 }
