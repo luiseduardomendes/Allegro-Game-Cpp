@@ -104,6 +104,10 @@ HitBoxRange Enemies::showHitBox(){
     return hitBox;
 }
 
+Coordinates Enemies::showCoord(){
+    return coord;
+}
+
 void Enemies::setKeyDown(int key_, bool value_){
     keyDown[key_] = value_;
 }
@@ -241,6 +245,9 @@ void Enemies::decrementHealth(int value_){
     health -= value_;
 }
 
+bool* Enemies::showKeyDown(){
+    return keyDown;
+}
 
 int Enemies::showHealth(){
     return health;

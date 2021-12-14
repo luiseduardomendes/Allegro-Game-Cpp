@@ -33,25 +33,51 @@ bool DmgAndColision::playerProjectileHit(Enemies *enemy, Player *player){
 bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obst){
     HitBoxRange newHBPlayer = player.showHitBox();
     if (player.showKeyDown()[UP]){
-        newHBPlayer.inf.y -= 10;
+        newHBPlayer.inf.y -= 5;
 
-        newHBPlayer.sup.y -= 10;
+        newHBPlayer.sup.y -= 5;
 
     }
     if (player.showKeyDown()[DOWN]){
-        newHBPlayer.inf.y += 10;
-        newHBPlayer.sup.y += 10;
+        newHBPlayer.inf.y += 5;
+        newHBPlayer.sup.y += 5;
     }
     if (player.showKeyDown()[LEFT]){
-        newHBPlayer.inf.x -= 10;
-        newHBPlayer.sup.x -= 10;
+        newHBPlayer.inf.x -= 5;
+        newHBPlayer.sup.x -= 5;
     }
     if (player.showKeyDown()[RIGHT]){
-        newHBPlayer.inf.x += 10;
-        newHBPlayer.sup.x += 10;
+        newHBPlayer.inf.x += 5;
+        newHBPlayer.sup.x += 5;
     }
 
     if (isHitboxIn(obst.showHitBox(), newHBPlayer))
+        return false;
+    return true;
+}
+
+bool DmgAndColision::isNextPositionEnemyValid(Enemies enemy, Obstacles obst){
+    HitBoxRange newHBenemy = enemy.showHitBox();
+    if (enemy.showKeyDown()[UP]){
+        newHBenemy.inf.y -= 5;
+
+        newHBenemy.sup.y -= 5;
+
+    }
+    if (enemy.showKeyDown()[DOWN]){
+        newHBenemy.inf.y += 5;
+        newHBenemy.sup.y += 5;
+    }
+    if (enemy.showKeyDown()[LEFT]){
+        newHBenemy.inf.x -= 5;
+        newHBenemy.sup.x -= 5;
+    }
+    if (enemy.showKeyDown()[RIGHT]){
+        newHBenemy.inf.x += 5;
+        newHBenemy.sup.x += 5;
+    }
+
+    if (isHitboxIn(obst.showHitBox(), newHBenemy))
         return false;
     return true;
 }

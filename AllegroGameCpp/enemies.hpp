@@ -37,6 +37,7 @@ public:
 
     void setAliveStatus(bool value_);
     bool showAliveStatus();
+    bool* showKeyDown();
 private:
     int idEnemy;
     double moveSpeed;

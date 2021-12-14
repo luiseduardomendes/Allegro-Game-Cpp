@@ -113,10 +113,10 @@ int main()
 
     player.projectile.setThrowingStatus(false);
     projectile.setThrowingStatus(false);
-    projectile.setProjDir(RIGHT, 0);
+    projectile.setProjDir(RIGHT, 1);
 
     for (int i = 0; i < 5; i ++)
-        enemy[i].setAliveStatus(false);
+        enemy[i].setAliveStatus(true);
 
     do{
         ALLEGRO_EVENT event;
@@ -135,8 +135,17 @@ int main()
 
 
         for (int i = 0; i < 5; i ++)
-            if (enemy[i].showAliveStatus())
-                enemy[i].moveEnemy();
+            if (enemy[i].showAliveStatus()){
+                nextPosValid = true;
+                for (int j = 0; j < 102; j ++)
+                    if (abs(obstacles[j].showCoord().x - enemy[i].showCoord().x < 75) &&
+                            abs(obstacles[j].showCoord().y - enemy[i].showCoord().y < 75))
+                        if (!damage.isNextPositionEnemyValid(enemy[i], obstacles[j]))
+                            nextPosValid = false;
+
+                if (nextPosValid)
+                    enemy[i].moveEnemy();
+            }
 
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
@@ -159,9 +168,6 @@ int main()
                     player.setSlow(0.5);
                     player.startTimer(TIMER_SLOW);
                 }
-
-
-
             }
 
 
@@ -190,12 +196,13 @@ int main()
                     enemy[i].startTimer(TIMER_DAMAGE);
                     enemy[i].setHitPlayer(true);
                 }
-                damage.playerProjectileHit(&enemy[i], &player);
+                if (player.projectile.isThrowing())
+                    damage.playerProjectileHit(&enemy[i], &player);
             }
 
 
         }
-        player.drawHealthBar();
+
 
         if(player.projectile.isThrowing()){
             player.projectile.drawHitbox();
@@ -210,8 +217,10 @@ int main()
         if(player.showHealth() <= 0)
             pauseMenu.setEndOfGame(true);
 
+        player.drawHealthBar();
         player.drawPlayer();
         player.drawHitbox();
+
         for (int i = 0; i < 5; i ++){
             if (enemy[i].showAliveStatus()){
                 enemy[i].drawBitmap();

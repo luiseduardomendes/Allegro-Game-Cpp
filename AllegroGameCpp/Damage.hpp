@@ -6,4 +6,5 @@ public:
     bool enemyHitPlayer(Enemies* enemy, Player* player);
     bool playerProjectileHit(Enemies* enemy, Player *player);
     bool isNextPositionPlayerValid(Player player, Obstacles obst);
+    bool isNextPositionEnemyValid(Enemies enemy, Obstacles obst);
 };

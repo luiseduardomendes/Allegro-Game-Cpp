@@ -15,9 +15,6 @@ void Projectile::moveProj(){
     coord.x += moveDir[RIGHT]*speed;
 
     setHitBox();
-
-    if (coord.x > 1024 || coord.x < 0 || coord.y > 576 || coord.y < 0)
-        throwing = false;
 }
 
 void Projectile::setCoord(int x_, int y_){
