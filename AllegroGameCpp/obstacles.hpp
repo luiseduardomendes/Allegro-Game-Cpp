@@ -15,4 +15,5 @@ private:
     int structure;
     int damage;
     Coordinates coord;
+
 };

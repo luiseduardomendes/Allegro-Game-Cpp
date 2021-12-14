@@ -40,6 +40,7 @@ int main()
     ALLEGRO_EVENT_QUEUE *eventQueue = NULL;
     ALLEGRO_TIMER *timerProjectile, *timerMovePlayer;
     ALLEGRO_BITMAP *backGround = al_create_bitmap(screen.width, screen.height);
+    ALLEGRO_BITMAP *bmpWall = al_load_bitmap("assets/wall.png");
 
     timerProjectile = al_create_timer(1.0/60.0);
 
@@ -267,15 +268,17 @@ int main()
             }
         }
         for (int i = 0; i < NUM_WALLS; i ++){
-            obstacles[i].drawHitBox();
+            //obstacles[i].drawHitBox();
+            al_draw_bitmap(bmpWall, obstacles[i].showCoord().x, obstacles[i].showCoord().y, 0);
         }
+
         al_set_target_bitmap(al_get_backbuffer(display));
 
         al_draw_scaled_bitmap(backGround, 0, 0, screen.width, screen.height,
                               screen.width/2 - player.showCoord().x*screen.zoom, screen.height/2 - player.showCoord().y*screen.zoom,
                                screen.width*screen.zoom, screen.height*screen.zoom, 0);
 
-                              //backGround,  0);
+
 
         al_flip_display();
         al_clear_to_color(colors.black());
