@@ -41,4 +41,5 @@ using namespace std;
 
 typedef struct{
     int width, height;
+    double zoom;
 }Screen;

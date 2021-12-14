@@ -16,6 +16,8 @@ int main()
 
     bool nextPosValid;
 
+    screen.zoom = 1.0;
+
 
 
     Obstacles obstacles[200];
@@ -175,6 +177,14 @@ int main()
 
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
+        if (event.type == ALLEGRO_EVENT_KEY_DOWN){
+            if (event.keyboard.keycode == ALLEGRO_KEY_EQUALS)
+                screen.zoom *= 1.1;
+            else if (event.keyboard.keycode == ALLEGRO_KEY_MINUS )
+                screen.zoom *= 0.9;
+
+        }
+
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerProjectile){
@@ -189,9 +199,7 @@ int main()
                 if(player.projectile.projectileCoord().x < screen.width && player.projectile.isThrowing()){
                     player.projectile.setHitBox();
                     player.projectile.moveProj();
-
                 }
-
 
                 if(damage.projectileHitPlayer(&projectile, &player)){
                     player.setSlow(0.5);
@@ -264,8 +272,8 @@ int main()
         al_set_target_bitmap(al_get_backbuffer(display));
 
         al_draw_scaled_bitmap(backGround, 0, 0, screen.width, screen.height,
-                              screen.width/2 - player.showCoord().x*1.5, screen.height/2 - player.showCoord().y*1.5,
-                               screen.width*1.5, screen.height*1.5, 0);
+                              screen.width/2 - player.showCoord().x*screen.zoom, screen.height/2 - player.showCoord().y*screen.zoom,
+                               screen.width*screen.zoom, screen.height*screen.zoom, 0);
 
                               //backGround,  0);
 
