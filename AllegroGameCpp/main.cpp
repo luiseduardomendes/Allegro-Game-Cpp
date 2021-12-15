@@ -1,5 +1,6 @@
 #include "mainHeader.hpp"
 #define NUM_WALLS 170
+#define NUM_ENEMIES 5
 
 int main()
 {
@@ -12,7 +13,7 @@ int main()
     Colors colors;
     Projectile projectile;
     DmgAndColision damage;
-    Enemies enemy[5];
+    Enemies enemy[NUM_ENEMIES];
 
     bool nextPosValid;
 
@@ -48,7 +49,7 @@ int main()
 
 
     player.initTimer(TIMER_SLOW, 1.0);
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < NUM_ENEMIES; i ++){
         enemy[i].initTimer(TIMER_MOVE, 1.0/4);
         enemy[i].startTimer(TIMER_MOVE);
         enemy[i].initTimer(TIMER_DAMAGE, 3.0);
@@ -59,7 +60,7 @@ int main()
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
     al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimer(TIMER_SLOW)));
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < NUM_ENEMIES; i ++){
         al_register_event_source(eventQueue, al_get_timer_event_source(enemy[i].showTimer(TIMER_MOVE)));
         al_register_event_source(eventQueue, al_get_timer_event_source(enemy[i].showTimer(TIMER_DAMAGE)));
     }
@@ -67,13 +68,33 @@ int main()
     player.loadBitmap("assets/naruto.png", DOWN);
     player.loadBitmap("assets/narutoleft.png", LEFT);
     player.loadBitmap("assets/narutoright.png", RIGHT);
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < NUM_ENEMIES; i ++){
         enemy[i].loadBitmap("assets/akatsukiback.png", UP);
         enemy[i].loadBitmap("assets/akatsuki.png", DOWN);
         enemy[i].loadBitmap("assets/akatsukileft.png", LEFT);
         enemy[i].loadBitmap("assets/akatsukiright.png", RIGHT);
     }
 
+    int flagGrass;
+    ALLEGRO_BITMAP *bmpGrass = al_create_bitmap(screen.width, screen.height);
+    ALLEGRO_BITMAP  *bmpGrass1 = al_load_bitmap("assets/grass1.png"),
+                    *bmpGrass2 = al_load_bitmap("assets/grass2.png"),
+                    *bmpGrass3 = al_load_bitmap("assets/grass3.png");
+
+    al_set_target_bitmap(bmpGrass);
+    for(int i = 0; i < screen.width; i += 40){
+        for (int j = 0; j < screen.height; j += 40){
+            flagGrass = rand() % 20;
+            if (flagGrass == 0)
+                al_draw_bitmap(bmpGrass2, i, j, 0);
+            else if (flagGrass == 1)
+                al_draw_bitmap(bmpGrass3, i, j, 0);
+            else
+                al_draw_bitmap(bmpGrass1, i, j, 0);
+
+        }
+    }
+    al_set_target_bitmap(al_get_backbuffer(display));
 
     for (int i = 0; i < 34; i ++){
         obstacles[i].setCoord(i * 40, 0);
@@ -117,7 +138,7 @@ int main()
     player.projectile.loadBitmap("assets/shuriken.png");
 
     player.initPlayer();
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < NUM_ENEMIES; i ++){
 
         enemy[i].initEnemy();
         enemy[i].setDirection(DOWN);
@@ -143,7 +164,7 @@ int main()
     projectile.setThrowingStatus(false);
     projectile.setProjDir(RIGHT, 1);
 
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < NUM_ENEMIES; i ++){
         enemy[i].setAliveStatus(true);
         enemy[i].setHitBox();
     }
@@ -163,7 +184,7 @@ int main()
             player.movePlayer();
 
 
-        for (int i = 0; i < 5; i ++)
+        for (int i = 0; i < NUM_ENEMIES; i ++)
             if (enemy[i].showAliveStatus()){
                 nextPosValid = true;
                 for (int j = 0; j < NUM_WALLS; j ++)
@@ -214,7 +235,7 @@ int main()
                 player.resetSpeed();
                 player.stopTimer(TIMER_SLOW);
             }
-            for (int i = 0; i < 5; i ++){
+            for (int i = 0; i < NUM_ENEMIES; i ++){
                 if (event.timer.source == enemy[i].showTimer(TIMER_MOVE)){
                     if (enemy[i].showAliveStatus())
                         enemy[i].setDirectionPlayer(player);
@@ -228,7 +249,7 @@ int main()
 
 
         }
-        for (int i = 0; i < 5; i ++){
+        for (int i = 0; i < NUM_ENEMIES; i ++){
             if (enemy[i].showAliveStatus()){
                 if(!enemy[i].isHitPlayerOn() && damage.enemyHitPlayer(&enemy[i], &player)){
                     enemy[i].startTimer(TIMER_DAMAGE);
@@ -248,6 +269,8 @@ int main()
         al_set_target_bitmap(backGround);
         al_clear_to_color(colors.black());
 
+        al_draw_bitmap(bmpGrass, 0, 0, 0);
+
         if(player.projectile.isThrowing()){
             player.projectile.drawHitbox();
             player.projectile.drawBitmap();
@@ -261,7 +284,7 @@ int main()
         player.drawPlayer();
         player.drawHitbox();
 
-        for (int i = 0; i < 5; i ++){
+        for (int i = 0; i < NUM_ENEMIES; i ++){
             if (enemy[i].showAliveStatus()){
                 enemy[i].drawBitmap();
                 enemy[i].drawHitbox();
