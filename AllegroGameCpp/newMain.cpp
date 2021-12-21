@@ -113,7 +113,7 @@ int main(){
                             else
                                 enemies[i].projectile.moveProj();
 
-                        else if (abs(enemies[i].showCoord().x - player.showCoord().x < 5) || abs(enemies[i].showCoord().y - player.showCoord().y < 5)){
+                        else if ((abs(enemies[i].showCoord().x - player.showCoord().x < 5) && abs(player.showCoord().y - enemies[i].showCoord().y) < 100) || (abs(enemies[i].showCoord().y - player.showCoord().y < 5) && abs(player.showCoord().x - enemies[i].showCoord().x) < 100)) {
                             enemies[i].throwProjectile(player);
                             al_start_timer(timerChangeDir);
                         }

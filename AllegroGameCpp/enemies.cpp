@@ -258,15 +258,18 @@ int Enemies::showHealth(){
 
 
 void Enemies::throwProjectile(Player player){
-    if ((abs(player.showCoord().x - coord.x) < rangeView && (directionView == LEFT || directionView == RIGHT)) || (abs(player.showCoord().y - coord.y < rangeView) && (directionView == DOWN || directionView == UP))){
-        setDirectionPlayer(player);
-        projectile.setCoord(coord.x, coord.y);
-        projectile.setProjDir(UP, 0);
-        projectile.setProjDir(DOWN, 0);
-        projectile.setProjDir(LEFT, 0);
-        projectile.setProjDir(RIGHT, 0);
-        projectile.setThrowingStatus(true);
+    
 
-        projectile.setProjDir(directionView, 1);
-    }
+
+    
+    setDirectionPlayer(player);
+    projectile.setCoord(coord.x, coord.y);
+    projectile.setProjDir(UP, 0);
+    projectile.setProjDir(DOWN, 0);
+    projectile.setProjDir(LEFT, 0);
+    projectile.setProjDir(RIGHT, 0);
+    projectile.setThrowingStatus(true);
+
+    projectile.setProjDir(directionView, 1);
+    
 }
