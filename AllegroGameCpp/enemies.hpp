@@ -14,7 +14,7 @@ public:
     void setKeyDown(int key_, bool value_);
     void setHitBox();
     void setSpeed(int);
-    void throwProjectile();
+    void throwProjectile(Player player);
     void drawHitbox();
     void drawHealthBar();
     int showHealth();

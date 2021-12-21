@@ -3,7 +3,7 @@
 void Projectile::initProjectile(){
     throwing = false;
     damage = 100;
-    speed = 10;
+    speed = 8;
     for (int i = 0; i < 4; i ++)
         moveDir[i] = 0;
 }

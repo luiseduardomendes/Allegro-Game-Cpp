@@ -5,7 +5,7 @@ void Enemies::initEnemy(){
     fullHp = 200;
     moveSpeed = 1;
     stdSpeed = 1;
-    rangeView = 200;
+    rangeView = 100;
     alive = true;
     keyDownInit();
 }
@@ -25,7 +25,6 @@ void Enemies::moveEnemy(){
     coord.x -= keyDown[LEFT] * moveSpeed;
     coord.x += keyDown[RIGHT] * moveSpeed;
 
-    setNewDirectionAfterMove();
     setHitBox();
 
 }
@@ -62,19 +61,23 @@ void Enemies::setDirectionPlayer(Player player){
         switch (flagMove){
         case 0:
             keyDown[UP] = 1;
+            priorityDirection = UP;
             break;
         case 1:
             keyDown[DOWN] = 1;
+            priorityDirection = UP;
             break;
         case 2:
             keyDown[LEFT] = 1;
+            priorityDirection = LEFT;
             break;
         case 3:
             keyDown[RIGHT] = 1;
+            priorityDirection = LEFT;
             break;
         }
-
     }
+    setNewDirectionAfterMove();
 }
 
 bool Enemies::checkPlayerDistance(Player player){
@@ -251,4 +254,19 @@ bool* Enemies::showKeyDown(){
 
 int Enemies::showHealth(){
     return health;
+}
+
+
+void Enemies::throwProjectile(Player player){
+    if ((abs(player.showCoord().x - coord.x) < rangeView && (directionView == LEFT || directionView == RIGHT)) || (abs(player.showCoord().y - coord.y < rangeView) && (directionView == DOWN || directionView == UP))){
+        setDirectionPlayer(player);
+        projectile.setCoord(coord.x, coord.y);
+        projectile.setProjDir(UP, 0);
+        projectile.setProjDir(DOWN, 0);
+        projectile.setProjDir(LEFT, 0);
+        projectile.setProjDir(RIGHT, 0);
+        projectile.setThrowingStatus(true);
+
+        projectile.setProjDir(directionView, 1);
+    }
 }
