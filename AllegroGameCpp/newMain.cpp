@@ -1,5 +1,9 @@
 #include "mainHeader.hpp"
 
+
+// compilation
+/* g++ newMain.cpp Colors.cpp enemies.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
+
 int main(){
     Player player;
     Keyboard keyboard;
@@ -7,6 +11,7 @@ int main(){
     Enemies enemies[NUM_ENEMIES];
     Screen scr;
     Draw draw;
+    DmgAndColision damage;
     scr.height = 576;
     scr.width = 1024;
 
@@ -25,6 +30,7 @@ int main(){
 
     draw.createBitmap(BACKGROUND, scr);
     draw.createBitmap(GRASS, scr);
+    
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -38,6 +44,12 @@ int main(){
         enemies[i].loadBitmap("assets/akatsukiright.png", RIGHT);
         enemies[i].projectile.loadBitmap("assets/shuriken.png");
     }
+
+    draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
+    draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
+    draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
+
+    draw.createBitmapGrass(display, scr);
 
     player.projectile.loadBitmap("assets/shuriken.png");
 
@@ -87,6 +99,7 @@ int main(){
             if (event.timer.source == timerFrame){
                 al_set_target_bitmap(draw.getBitmap(BACKGROUND));
                 al_clear_to_color(al_map_rgb(0,0,0));
+                al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
                 draw.drawNonStaticElements(player, enemies);
 
@@ -103,15 +116,21 @@ int main(){
 
                     else   
                         player.projectile.moveProj();
+                    for (int i = 0; i < NUM_ENEMIES; i ++)
+                        if (enemies[i].showAliveStatus())
+                            damage.playerProjectileHit(&enemies[i], &player);
+
                 }
                 for (int i = 0; i < NUM_ENEMIES; i ++){
                     if (enemies[i].showAliveStatus()){
                         enemies[i].moveEnemy();
-                        if (enemies[i].projectile.isThrowing())
+                        if (enemies[i].projectile.isThrowing()){
                             if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.width || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.height)
                                 enemies[i].projectile.setThrowingStatus(false);
                             else
                                 enemies[i].projectile.moveProj();
+                            damage.enemyHitPlayer(&enemies[i], &player);
+                        }
 
                         else if ((abs(enemies[i].showCoord().x - player.showCoord().x < 5) && abs(player.showCoord().y - enemies[i].showCoord().y) < 100) || (abs(enemies[i].showCoord().y - player.showCoord().y < 5) && abs(player.showCoord().x - enemies[i].showCoord().x) < 100)) {
                             enemies[i].throwProjectile(player);

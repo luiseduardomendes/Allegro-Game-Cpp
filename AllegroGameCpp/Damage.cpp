@@ -21,7 +21,7 @@ bool DmgAndColision::enemyHitPlayer(Enemies *enemy, Player *player){
 
 bool DmgAndColision::playerProjectileHit(Enemies *enemy, Player *player){
     if (isProjectileIn(enemy->showHitBox(), player->projectile)){
-        enemy->decrementHealth(200);
+        enemy->decrementHealth(player->projectile.showDamage());
         if (enemy->showHealth() <= 0)
             enemy->setAliveStatus(false);
         player->projectile.setThrowingStatus(false);
