@@ -120,17 +120,14 @@ int main(){
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerFrame){
                 al_set_target_bitmap(draw.getBitmap(BACKGROUND));
-                al_clear_to_color(al_map_rgb(0,0,0));
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
                 draw.drawNonStaticElements(player, enemies);
-                player.drawHealthBar();
-                
-                
+                player.drawHealthBar();                
 
                 al_set_target_bitmap(al_get_backbuffer(display));
-
-                al_draw_bitmap(draw.getBitmap(BACKGROUND), 0, 0, 0);
+                al_clear_to_color(al_map_rgb(0,0,0));
+                al_draw_bitmap(draw.getBitmap(BACKGROUND), scr.width/2-player.showCoord().x, scr.height/2-player.showCoord().y, 0);
                 al_flip_display();
             }
 
