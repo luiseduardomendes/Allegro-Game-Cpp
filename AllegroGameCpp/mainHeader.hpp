@@ -37,7 +37,7 @@ typedef struct{
 #include "player.hpp"
 #include "enemies.hpp"
 
-
+void createObstacles(Obstacles obstacles[], Screen screen);
 bool isEnemyIn(Player player, Enemies enemy);
 bool pointInsideBox(Coordinates, HitBoxRange);
 bool isProjectileIn(HitBoxRange HB, Projectile projectile);

@@ -75,3 +75,43 @@ bool isEnemyIn(Player player, Enemies enemy){
     return false;
 }
 
+
+
+void createObstacles(Obstacles obstacles[], Screen screen) {
+    for (int i = 0; i < 34; i ++){
+        obstacles[i].setCoord(i * 40, 0);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 34; i < 68; i ++){
+        obstacles[i].setCoord((i-34) * 40, screen.height - 40);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 68; i < 85; i ++){
+        obstacles[i].setCoord(0, 40*(i-67));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 85; i < 102; i ++){
+        obstacles[i].setCoord(screen.width-40, 40*(i-84));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 102; i < 112; i ++){
+        obstacles[i].setCoord(screen.width-(40*5), 40*(i-101));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 112; i < 127; i ++){
+        obstacles[i].setCoord(screen.width-(40*(i-111+5)), 40*10);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 127; i < 140; i ++){
+        obstacles[i].setCoord(40*5, 40*(i-126));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 140; i < 155; i ++){
+        obstacles[i].setCoord(40*(i-139+5), 40*5);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 155; i < 170; i ++){
+        obstacles[i].setCoord(40*(i-154+10), screen.height -(40*6));
+        obstacles[i].setHitBox();
+    }
+}

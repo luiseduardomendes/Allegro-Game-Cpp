@@ -12,8 +12,9 @@ int main(){
     Screen scr;
     Draw draw;
     DmgAndColision damage;
-    scr.height = 560;
-    scr.width = 1040;
+    Obstacles obs[NUM_WALLS];
+    scr.width = 1360;
+    scr.height = 760;
 
     pauseMenu.init();
 
@@ -68,6 +69,8 @@ int main(){
         enemies[i].projectile.setThrowingStatus(false);
     }
 
+    createObstacles(obs, scr);
+
     ALLEGRO_TIMER *timerFrame = al_create_timer(1.0/60.0);
     ALLEGRO_TIMER *timerProjectile = al_create_timer(1.0/60.0);
     ALLEGRO_TIMER *timerChangeDir = al_create_timer(1.00);
@@ -99,6 +102,8 @@ int main(){
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
                 draw.drawNonStaticElements(player, enemies);
+                for (int i = 0; i < NUM_WALLS; i++)
+                    obs[i].drawHitBox();
 
                 al_set_target_bitmap(al_get_backbuffer(display));
 
