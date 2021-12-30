@@ -36,3 +36,11 @@ void Obstacles::drawHitBox(){
     Colors colors;
     al_draw_rectangle(hitBox.inf.x, hitBox.inf.y, hitBox.sup.x, hitBox.sup.y, colors.pastelBlue(), 1);
 }
+
+void Obstacles::loadBitmapWall(char* namefile){
+    wallbmp = al_load_bitmap(namefile);
+}
+
+void Obstacles::drawBitmapWall(){
+    al_draw_bitmap(wallbmp, coord.x, coord.y, 0);
+}

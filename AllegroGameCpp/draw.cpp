@@ -54,7 +54,7 @@ void Draw::createBitmapGrass(ALLEGRO_DISPLAY *display, Screen screen){
 
         }
     }
-    al_set_target_bitmap(al_get_backbuffer(display));   
+    //al_set_target_bitmap(al_get_backbuffer(display));   
 }
 
 void Draw::drawNonStaticElements(Player player, Enemies enemies[]){    
@@ -67,6 +67,7 @@ void Draw::drawNonStaticElements(Player player, Enemies enemies[]){
         if (enemies[i].showAliveStatus()){
             enemies[i].drawBitmap();
             enemies[i].drawHitbox();
+            enemies[i].drawHealthBar();
         }
     }
 

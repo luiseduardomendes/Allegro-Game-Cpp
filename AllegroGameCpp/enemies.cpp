@@ -273,3 +273,8 @@ void Enemies::throwProjectile(Player player){
     projectile.setProjDir(directionView, 1);
     
 }
+
+void Enemies::drawHealthBar(){
+    al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(255, 0, 0));
+    al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
+}

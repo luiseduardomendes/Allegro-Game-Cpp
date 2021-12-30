@@ -36,7 +36,7 @@ int main(){
     draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
     draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
     draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
-    draw.createBitmapGrass(display, scr);
+    
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -72,6 +72,15 @@ int main(){
     }
 
     createObstacles(obs, scr);
+    for (int i = 0; i < NUM_WALLS; i ++)
+        obs[i].loadBitmapWall("assets/wall.png");
+
+    draw.createBitmapGrass(display, scr);
+    for (int i = 0; i < NUM_WALLS; i ++)
+        obs[i].drawBitmapWall();
+    
+    al_set_target_bitmap(al_get_backbuffer(display));
+    
 
     ALLEGRO_TIMER *timerFrame = al_create_timer(1.0/60.0);
     ALLEGRO_TIMER *timerProjectile = al_create_timer(1.0/60.0);
@@ -115,8 +124,9 @@ int main(){
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
                 draw.drawNonStaticElements(player, enemies);
-                for (int i = 0; i < NUM_WALLS; i++)
-                    obs[i].drawHitBox();
+                player.drawHealthBar();
+                
+                
 
                 al_set_target_bitmap(al_get_backbuffer(display));
 
