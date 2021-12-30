@@ -7,10 +7,10 @@ void Draw::loadBitmap(int bmpName, char* fileName){
         grassBlock1 = al_load_bitmap(fileName);
         break;
     case GRASSBLOCK2:
-        grassBlock1 = al_load_bitmap(fileName);
+        grassBlock2 = al_load_bitmap(fileName);
         break;
     case GRASSBLOCK3:
-        grassBlock1 = al_load_bitmap(fileName);
+        grassBlock3 = al_load_bitmap(fileName);
         break;
     case GRASS:
         grass = al_load_bitmap(fileName);

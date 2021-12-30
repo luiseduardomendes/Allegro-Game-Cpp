@@ -2,7 +2,7 @@
 
 
 // compilation
-/* g++ newMain.cpp Colors.cpp enemies.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
+/* g++ newMain.cpp Colors.cpp common.cpp Damage.cpp enemies.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
 
 int main(){
     Player player;
@@ -12,8 +12,8 @@ int main(){
     Screen scr;
     Draw draw;
     DmgAndColision damage;
-    scr.height = 576;
-    scr.width = 1024;
+    scr.height = 560;
+    scr.width = 1040;
 
     pauseMenu.init();
 
@@ -30,7 +30,10 @@ int main(){
 
     draw.createBitmap(BACKGROUND, scr);
     draw.createBitmap(GRASS, scr);
-    
+    draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
+    draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
+    draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
+    draw.createBitmapGrass(display, scr);
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -44,12 +47,6 @@ int main(){
         enemies[i].loadBitmap("assets/akatsukiright.png", RIGHT);
         enemies[i].projectile.loadBitmap("assets/shuriken.png");
     }
-
-    draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
-    draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
-    draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
-
-    draw.createBitmapGrass(display, scr);
 
     player.projectile.loadBitmap("assets/shuriken.png");
 
