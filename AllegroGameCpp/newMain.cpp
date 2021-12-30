@@ -16,6 +16,8 @@ int main(){
     scr.width = 1360;
     scr.height = 760;
 
+    bool nextPosValid;
+
     pauseMenu.init();
 
     if(!al_init())
@@ -92,7 +94,18 @@ int main(){
         al_wait_for_event(eventQueue, &event);
 
         keyboard.movePlayer(event, &player);
-        player.movePlayer();
+        
+        nextPosValid = true;
+        for (int i = 0; i < NUM_WALLS; i ++)
+            if (abs(obs[i].showCoord().x - player.showCoord().x < 75) &&
+                abs(obs[i].showCoord().y - player.showCoord().y < 75))
+                if (!damage.isNextPositionPlayerValid(player, obs[i])){
+                    nextPosValid = false;
+                    break;
+                }
+        if (nextPosValid)
+            player.movePlayer();
+
         keyboard.controllerKeys(event, &pauseMenu, &player);
 
         if (event.type == ALLEGRO_EVENT_TIMER){
@@ -125,7 +138,17 @@ int main(){
                 }
                 for (int i = 0; i < NUM_ENEMIES; i ++){
                     if (enemies[i].showAliveStatus()){
-                        enemies[i].moveEnemy();
+                        nextPosValid = true;
+                        for (int j = 0; j < NUM_WALLS; j ++)
+                            if (abs(obs[j].showCoord().x - enemies[i].showCoord().x < 75) &&
+                                    abs(obs[j].showCoord().y - enemies[i].showCoord().y < 75))
+                                if (!damage.isNextPositionEnemyValid(enemies[i], obs[j])){
+                                    nextPosValid = false;
+                                    break;
+                                }
+
+                        if (nextPosValid)
+                            enemies[i].moveEnemy();
                         if (enemies[i].projectile.isThrowing()){
                             if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.width || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.height)
                                 enemies[i].projectile.setThrowingStatus(false);
