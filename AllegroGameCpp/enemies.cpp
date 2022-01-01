@@ -258,23 +258,33 @@ int Enemies::showHealth(){
 
 
 void Enemies::throwProjectile(Player player){
-    
-
-
-    
+       
     setDirectionPlayer(player);
     projectile.setCoord(coord.x, coord.y);
-    projectile.setProjDir(UP, 0);
-    projectile.setProjDir(DOWN, 0);
-    projectile.setProjDir(LEFT, 0);
-    projectile.setProjDir(RIGHT, 0);
     projectile.setThrowingStatus(true);
-
-    projectile.setProjDir(directionView, 1);
-    
+    setDirectionProj(player);
 }
 
 void Enemies::drawHealthBar(){
     al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(255, 0, 0));
     al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
+}
+
+void Enemies::setDirectionProj(Player pl){
+    Coordinates plc = pl.showCoord();
+
+    projectile.setProjDir(UP, 0);
+    projectile.setProjDir(DOWN, 0);
+    projectile.setProjDir(LEFT, 0);
+    projectile.setProjDir(RIGHT, 0);
+
+    double angle = abs(atan((plc.x - coord.x)/(plc.y - coord.y)));
+    if (plc.x < coord.x)
+        projectile.setProjDir(LEFT, cos(angle));
+    else
+        projectile.setProjDir(RIGHT, cos(angle));
+    if (plc.y < coord.y)
+        projectile.setProjDir(UP, sin(angle));
+    else
+        projectile.setProjDir(DOWN, sin(angle));
 }

@@ -115,3 +115,9 @@ void createObstacles(Obstacles obstacles[], Screen screen) {
         obstacles[i].setHitBox();
     }
 }
+
+double distanceBetween(Coordinates a, Coordinates b){
+    double distance;
+    distance = sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+    return distance;
+}

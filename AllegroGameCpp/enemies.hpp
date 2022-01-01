@@ -22,6 +22,7 @@ public:
     Coordinates showCoord();
     HitBoxRange showHitBox();
     Projectile projectile;
+    void setDirectionProj(Player);
 
     void initTimer(int timer_, double value_);
     void startTimer(int timer_);

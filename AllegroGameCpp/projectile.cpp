@@ -26,7 +26,7 @@ void Projectile::setSpeed(int value_){
     speed = value_;
 }
 
-void Projectile::setProjDir(int dir_, int value_){
+void Projectile::setProjDir(int dir_, float value_){
     moveDir[dir_] = value_;
 }
 

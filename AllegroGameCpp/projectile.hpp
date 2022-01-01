@@ -4,7 +4,7 @@ class Projectile{
 public:
     void initProjectile();
     void moveProj();
-    void setProjDir(int dir_, int value_);
+    void setProjDir(int dir_, float value_);
     void setCoord(int x_, int y_);
     void setHitBox();
     Coordinates projectileCoord();
@@ -22,7 +22,7 @@ private:
     HitBoxRange hitBox;
     int damage;
     int speed;
-    int moveDir[4];
+    float moveDir[4];
     bool throwing;
     ALLEGRO_BITMAP *bitmap;
 
