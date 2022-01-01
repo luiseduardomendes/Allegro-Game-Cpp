@@ -288,13 +288,18 @@ void Enemies::setDirectionProj(Player pl){
     projectile.setProjDir(LEFT, 0);
     projectile.setProjDir(RIGHT, 0);
 
-    double angle = abs(atan((plc.x - coord.x)/(plc.y - coord.y)));
+    double angle;
+    if ((float)(plc.x - coord.x != 0))
+        angle = atan(abs((float)((float)(coord.y - plc.y)/(float)(coord.x - plc.x))));
+    else
+        angle = M_PI/2;
+
     if (plc.x < coord.x)
-        projectile.setProjDir(LEFT, sin(angle));
+        projectile.setProjDir(LEFT, cos(angle));
     else
-        projectile.setProjDir(RIGHT, sin(angle));
+        projectile.setProjDir(RIGHT, cos(angle));
     if (plc.y < coord.y)
-        projectile.setProjDir(UP, cos(angle));
+        projectile.setProjDir(UP, sin(angle));
     else
-        projectile.setProjDir(DOWN, cos(angle));
+        projectile.setProjDir(DOWN, sin(angle));
 }

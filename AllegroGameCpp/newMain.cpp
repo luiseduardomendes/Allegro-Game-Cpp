@@ -97,12 +97,15 @@ int main(){
 
     eventQueue = al_create_event_queue();
 
+    player.initTimer(TIMER_INCREASE_SPEED, 1.00);
+
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_timer_event_source(timerFrame));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerChangeDir));
     for (int i = 0; i < NUM_ENEMIES; i ++)
         al_register_event_source(eventQueue, al_get_timer_event_source(enemies[i].showTimer(TIMER_THROWING)));
+    al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimer(TIMER_INCREASE_SPEED)));
 
     do{
         ALLEGRO_EVENT event;
@@ -184,11 +187,15 @@ int main(){
                 }
 
             }
+            else if (event.timer.source == player.showTimer(TIMER_INCREASE_SPEED)){
+                player.resetSpeed();
+                player.stopTimer(TIMER_INCREASE_SPEED);
+            }
             else 
                 for (int i = 0; i < NUM_ENEMIES; i ++)
                     if (enemies[i].showAliveStatus())
                         if(event.timer.source == enemies[i].showTimer(TIMER_THROWING))
-                            if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 250 && !enemies[i].projectile.isThrowing()) {
+                            if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 350 && !enemies[i].projectile.isThrowing()) {
                                 enemies[i].throwProjectile(player);
                                 al_start_timer(timerChangeDir);
                                 enemies[i].startTimer(TIMER_THROWING);

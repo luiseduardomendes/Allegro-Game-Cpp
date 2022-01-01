@@ -50,6 +50,7 @@ private:
     bool endOfGame;
 
     ALLEGRO_TIMER *timerSlow;
+    ALLEGRO_TIMER *timerIncreaseSpeed;
 
     ALLEGRO_BITMAP *bitmapUp;
     ALLEGRO_BITMAP *bitmapDown;

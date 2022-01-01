@@ -56,6 +56,10 @@ void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player*
         case ALLEGRO_KEY_F:
             player->throwProjectile();
             break;
+        case ALLEGRO_KEY_V: 
+            player->setSpeed(5);
+            player->startTimer(TIMER_INCREASE_SPEED);
+            break;
         }
     }
 }
