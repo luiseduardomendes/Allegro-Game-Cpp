@@ -58,6 +58,7 @@ private:
 
     ALLEGRO_TIMER *timerMove;
     ALLEGRO_TIMER *timerDamage;
+    ALLEGRO_TIMER *timerThrowing;
 
     Coordinates coord;
     HitBoxRange hitBox;

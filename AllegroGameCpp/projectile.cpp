@@ -9,10 +9,14 @@ void Projectile::initProjectile(){
 }
 
 void Projectile::moveProj(){
-    coord.y -= moveDir[UP]*speed;
-    coord.y += moveDir[DOWN]*speed;
-    coord.x -= moveDir[LEFT]*speed;
-    coord.x += moveDir[RIGHT]*speed;
+    coord.y -= moveDir[UP]*(float)speed;
+    coord.y += moveDir[DOWN]*(float)speed;
+    coord.x -= moveDir[LEFT]*(float)speed;
+    coord.x += moveDir[RIGHT]*(float)speed;
+
+    for (int i = UP; i <= RIGHT; i ++){
+        cout << moveDir[i] << endl;
+    }
 
     setHitBox();
 }

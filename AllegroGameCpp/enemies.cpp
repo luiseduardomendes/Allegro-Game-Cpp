@@ -201,6 +201,9 @@ void Enemies::initTimer(int timer_, double value_){
     case TIMER_DAMAGE:
         timerDamage = al_create_timer(value_);
         break;
+    case TIMER_THROWING:
+        timerThrowing = al_create_timer(value_);
+        break;
     }
 }
 
@@ -211,6 +214,9 @@ void Enemies::startTimer(int timer_){
         break;
     case TIMER_DAMAGE:
         al_start_timer(timerDamage);
+        break;
+    case TIMER_THROWING:
+        al_start_timer(timerThrowing);
         break;
     }
 }
@@ -223,7 +229,9 @@ void Enemies::stopTimer(int timer_){
     case TIMER_DAMAGE:
         al_stop_timer(timerDamage);
         break;
-
+    case TIMER_THROWING:
+        al_stop_timer(timerThrowing);
+        break;
     }
 }
 
@@ -233,6 +241,8 @@ ALLEGRO_TIMER* Enemies::showTimer(int timer_){
         return timerMove;
     case TIMER_DAMAGE:
         return timerDamage;
+    case TIMER_THROWING:
+        return timerThrowing;
     }
 }
 
@@ -280,11 +290,11 @@ void Enemies::setDirectionProj(Player pl){
 
     double angle = abs(atan((plc.x - coord.x)/(plc.y - coord.y)));
     if (plc.x < coord.x)
-        projectile.setProjDir(LEFT, cos(angle));
+        projectile.setProjDir(LEFT, sin(angle));
     else
-        projectile.setProjDir(RIGHT, cos(angle));
+        projectile.setProjDir(RIGHT, sin(angle));
     if (plc.y < coord.y)
-        projectile.setProjDir(UP, sin(angle));
+        projectile.setProjDir(UP, cos(angle));
     else
-        projectile.setProjDir(DOWN, sin(angle));
+        projectile.setProjDir(DOWN, cos(angle));
 }

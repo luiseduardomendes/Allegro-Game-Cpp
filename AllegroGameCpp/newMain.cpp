@@ -81,6 +81,10 @@ int main(){
     
     al_set_target_bitmap(al_get_backbuffer(display));
     
+    for (int i = 0; i < NUM_ENEMIES;i ++){
+        enemies[i].initTimer(TIMER_THROWING, 2.5);
+        enemies[i].startTimer(TIMER_THROWING);
+    }
 
     ALLEGRO_TIMER *timerFrame = al_create_timer(1.0/60.0);
     ALLEGRO_TIMER *timerProjectile = al_create_timer(1.0/60.0);
@@ -97,6 +101,8 @@ int main(){
     al_register_event_source(eventQueue, al_get_timer_event_source(timerFrame));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerChangeDir));
+    for (int i = 0; i < NUM_ENEMIES; i ++)
+        al_register_event_source(eventQueue, al_get_timer_event_source(enemies[i].showTimer(TIMER_THROWING)));
 
     do{
         ALLEGRO_EVENT event;
@@ -162,12 +168,10 @@ int main(){
                             else
                                 enemies[i].projectile.moveProj();
                             damage.enemyHitPlayer(&enemies[i], &player);
+                            damage.projectileHitPlayer(&enemies[i].projectile, &player);
                         }
 
-                        else if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 250) {
-                            enemies[i].throwProjectile(player);
-                            al_start_timer(timerChangeDir);
-                        }
+                        
                     }
                 }
                 
@@ -180,6 +184,15 @@ int main(){
                 }
 
             }
+            else 
+                for (int i = 0; i < NUM_ENEMIES; i ++)
+                    if (enemies[i].showAliveStatus())
+                        if(event.timer.source == enemies[i].showTimer(TIMER_THROWING))
+                            if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 250 && !enemies[i].projectile.isThrowing()) {
+                                enemies[i].throwProjectile(player);
+                                al_start_timer(timerChangeDir);
+                                enemies[i].startTimer(TIMER_THROWING);
+                            }
         }
 
     } while (!pauseMenu.isGameEnded());
