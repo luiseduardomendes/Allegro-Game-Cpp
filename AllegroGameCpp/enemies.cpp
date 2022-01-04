@@ -201,6 +201,9 @@ void Enemies::initTimer(int timer_, double value_){
     case TIMER_DAMAGE:
         timerDamage = al_create_timer(value_);
         break;
+    case TIMER_THROWING:
+        timerThrowing = al_create_timer(value_);
+        break;
     }
 }
 
@@ -211,6 +214,9 @@ void Enemies::startTimer(int timer_){
         break;
     case TIMER_DAMAGE:
         al_start_timer(timerDamage);
+        break;
+    case TIMER_THROWING:
+        al_start_timer(timerThrowing);
         break;
     }
 }
@@ -223,7 +229,9 @@ void Enemies::stopTimer(int timer_){
     case TIMER_DAMAGE:
         al_stop_timer(timerDamage);
         break;
-
+    case TIMER_THROWING:
+        al_stop_timer(timerThrowing);
+        break;
     }
 }
 
@@ -233,6 +241,8 @@ ALLEGRO_TIMER* Enemies::showTimer(int timer_){
         return timerMove;
     case TIMER_DAMAGE:
         return timerDamage;
+    case TIMER_THROWING:
+        return timerThrowing;
     }
 }
 
@@ -258,23 +268,38 @@ int Enemies::showHealth(){
 
 
 void Enemies::throwProjectile(Player player){
-    
-
-
-    
+       
     setDirectionPlayer(player);
     projectile.setCoord(coord.x, coord.y);
-    projectile.setProjDir(UP, 0);
-    projectile.setProjDir(DOWN, 0);
-    projectile.setProjDir(LEFT, 0);
-    projectile.setProjDir(RIGHT, 0);
     projectile.setThrowingStatus(true);
-
-    projectile.setProjDir(directionView, 1);
-    
+    setDirectionProj(player);
 }
 
 void Enemies::drawHealthBar(){
     al_draw_filled_rectangle(coord.x, coord.y - 5, coord.x + ((60*health)/fullHp), coord.y , al_map_rgb(255, 0, 0));
     al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
+}
+
+void Enemies::setDirectionProj(Player pl){
+    Coordinates plc = pl.showCoord();
+
+    projectile.setProjDir(UP, 0);
+    projectile.setProjDir(DOWN, 0);
+    projectile.setProjDir(LEFT, 0);
+    projectile.setProjDir(RIGHT, 0);
+
+    double angle;
+    if ((float)(plc.x - coord.x != 0))
+        angle = atan(abs((float)((float)(coord.y - plc.y)/(float)(coord.x - plc.x))));
+    else
+        angle = M_PI/2;
+
+    if (plc.x < coord.x)
+        projectile.setProjDir(LEFT, cos(angle));
+    else
+        projectile.setProjDir(RIGHT, cos(angle));
+    if (plc.y < coord.y)
+        projectile.setProjDir(UP, sin(angle));
+    else
+        projectile.setProjDir(DOWN, sin(angle));
 }

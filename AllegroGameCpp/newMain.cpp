@@ -15,6 +15,9 @@ int main(){
     Obstacles obs[NUM_WALLS];
     scr.width = 1360;
     scr.height = 760;
+    scr.bgWidth = scr.width*2;
+    scr.bgHeight = scr.height*2;
+    scr.zoom = 1;
 
     bool nextPosValid;
 
@@ -81,6 +84,10 @@ int main(){
     
     al_set_target_bitmap(al_get_backbuffer(display));
     
+    for (int i = 0; i < NUM_ENEMIES;i ++){
+        enemies[i].initTimer(TIMER_THROWING, 2.5);
+        enemies[i].startTimer(TIMER_THROWING);
+    }
 
     ALLEGRO_TIMER *timerFrame = al_create_timer(1.0/60.0);
     ALLEGRO_TIMER *timerProjectile = al_create_timer(1.0/60.0);
@@ -93,10 +100,15 @@ int main(){
 
     eventQueue = al_create_event_queue();
 
+    player.initTimer(TIMER_INCREASE_SPEED, 1.00);
+
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
     al_register_event_source(eventQueue, al_get_timer_event_source(timerFrame));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerChangeDir));
+    for (int i = 0; i < NUM_ENEMIES; i ++)
+        al_register_event_source(eventQueue, al_get_timer_event_source(enemies[i].showTimer(TIMER_THROWING)));
+    al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimer(TIMER_INCREASE_SPEED)));
 
     do{
         ALLEGRO_EVENT event;
@@ -115,7 +127,7 @@ int main(){
         if (nextPosValid)
             player.movePlayer();
 
-        keyboard.controllerKeys(event, &pauseMenu, &player);
+        keyboard.controllerKeys(event, &pauseMenu, &player, &scr);
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerFrame){
@@ -127,17 +139,13 @@ int main(){
 
                 al_set_target_bitmap(al_get_backbuffer(display));
                 al_clear_to_color(al_map_rgb(0,0,0));
-                al_draw_bitmap(draw.getBitmap(BACKGROUND), scr.width/2-player.showCoord().x, scr.height/2-player.showCoord().y, 0);
+                al_draw_scaled_bitmap(draw.getBitmap(BACKGROUND), player.showCoord().x - scr.width*scr.zoom/2, player.showCoord().y - scr.height*scr.zoom/2, scr.width*scr.zoom, scr.height*scr.zoom, 0, 0, scr.width, scr.height, 0);
                 al_flip_display();
             }
 
             else if(event.timer.source == timerProjectile){
                 if (player.projectile.isThrowing()){
-                    if (player.projectile.projectileCoord().x > scr.width || player.projectile.projectileCoord().x < 0 || player.projectile.projectileCoord().y > scr.height || player.projectile.projectileCoord().y < 0)
-                        player.projectile.setThrowingStatus(false);
-
-                    else   
-                        player.projectile.moveProj();
+                    player.projectile.moveProj();
                     for (int i = 0; i < NUM_ENEMIES; i ++)
                         if (enemies[i].showAliveStatus())
                             damage.playerProjectileHit(&enemies[i], &player);
@@ -157,17 +165,15 @@ int main(){
                         if (nextPosValid)
                             enemies[i].moveEnemy();
                         if (enemies[i].projectile.isThrowing()){
-                            if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.width || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.height)
+                            if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.bgWidth || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.bgHeight)
                                 enemies[i].projectile.setThrowingStatus(false);
                             else
                                 enemies[i].projectile.moveProj();
                             damage.enemyHitPlayer(&enemies[i], &player);
+                            damage.projectileHitPlayer(&enemies[i].projectile, &player);
                         }
 
-                        else if ((abs(enemies[i].showCoord().x - player.showCoord().x < 5) && abs(player.showCoord().y - enemies[i].showCoord().y) < 100) || (abs(enemies[i].showCoord().y - player.showCoord().y < 5) && abs(player.showCoord().x - enemies[i].showCoord().x) < 100)) {
-                            enemies[i].throwProjectile(player);
-                            al_start_timer(timerChangeDir);
-                        }
+                        
                     }
                 }
                 
@@ -180,6 +186,19 @@ int main(){
                 }
 
             }
+            else if (event.timer.source == player.showTimer(TIMER_INCREASE_SPEED)){
+                player.resetSpeed();
+                player.stopTimer(TIMER_INCREASE_SPEED);
+            }
+            else 
+                for (int i = 0; i < NUM_ENEMIES; i ++)
+                    if (enemies[i].showAliveStatus())
+                        if(event.timer.source == enemies[i].showTimer(TIMER_THROWING))
+                            if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 350 && !enemies[i].projectile.isThrowing()) {
+                                enemies[i].throwProjectile(player);
+                                al_start_timer(timerChangeDir);
+                                enemies[i].startTimer(TIMER_THROWING);
+                            }
         }
 
     } while (!pauseMenu.isGameEnded());

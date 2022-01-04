@@ -97,8 +97,8 @@ void Player::setHitBox(){
 void Player::initPlayer(){
     health = 600;
     fullHp = 600;
-    moveSpeed = 5;
-    stdSpeed = 5;
+    moveSpeed = 3;
+    stdSpeed = 3;
     keyDownInit();
 }
 
@@ -152,6 +152,9 @@ void Player::initTimer(int timer_, double value_){
     case TIMER_SLOW:
         timerSlow = al_create_timer(value_);
         break;
+    case TIMER_INCREASE_SPEED:
+        timerIncreaseSpeed = al_create_timer(value_);
+        break;
     }
 }
 
@@ -159,6 +162,9 @@ void Player::startTimer(int timer_){
     switch (timer_){
     case TIMER_SLOW:
         al_start_timer(timerSlow);
+        break;
+    case TIMER_INCREASE_SPEED:
+        al_start_timer(timerIncreaseSpeed);
         break;
     }
 }
@@ -168,6 +174,9 @@ void Player::stopTimer(int timer_){
     case TIMER_SLOW:
         al_stop_timer(timerSlow);
         break;
+    case TIMER_INCREASE_SPEED:
+        al_stop_timer(timerIncreaseSpeed);
+        break;
     }
 }
 
@@ -175,6 +184,8 @@ ALLEGRO_TIMER* Player::showTimer(int timer_){
     switch(timer_){
     case TIMER_SLOW:
         return timerSlow;
+    case TIMER_INCREASE_SPEED:
+        return timerIncreaseSpeed;
     }
 }
 

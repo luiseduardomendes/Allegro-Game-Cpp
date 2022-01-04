@@ -78,22 +78,51 @@ bool isEnemyIn(Player player, Enemies enemy){
 
 
 void createObstacles(Obstacles obstacles[], Screen screen) {
-    for (int i = 0; i < 34; i ++){
+    for (int i = 0; i < NUM_WALLS; i ++){
+        obstacles[i].setCoord(-5000, 0);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 0; i < 67; i ++){
         obstacles[i].setCoord(i * 40, 0);
         obstacles[i].setHitBox();
     }
-    for (int i = 34; i < 68; i ++){
-        obstacles[i].setCoord((i-34) * 40, screen.height - 40);
+    for (int i = 67; i < 134; i ++){
+        obstacles[i].setCoord((i-67) * 40, 40*37);
         obstacles[i].setHitBox();
     }
-    for (int i = 68; i < 85; i ++){
-        obstacles[i].setCoord(0, 40*(i-67));
+    for (int i = 134; i < 170; i ++){
+        obstacles[i].setCoord(0, 40*(i-133));
         obstacles[i].setHitBox();
     }
-    for (int i = 85; i < 102; i ++){
-        obstacles[i].setCoord(screen.width-40, 40*(i-84));
+    for (int i = 170; i < 208; i ++){
+        obstacles[i].setCoord(40*67, 40*(i-170));
         obstacles[i].setHitBox();
     }
+    for (int i = 208; i < 228; i ++){
+        obstacles[i].setCoord(40*15, 40*(i-208));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 228; i < 235; i ++){
+        obstacles[i].setCoord(40*(i-227), 40*10);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 235; i < 250; i ++){
+        obstacles[i].setCoord(40*10, 40*(i-220));
+        obstacles[i].setHitBox();
+    }
+    for (int i = 250; i < 260; i ++){
+        obstacles[i].setCoord(40*(i-240), 40*30);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 260; i < 290; i ++){
+        obstacles[i].setCoord(40*(i-240), 40*25);
+        obstacles[i].setHitBox();
+    }
+    for (int i = 290; i < 300; i ++){
+        obstacles[i].setCoord(40*25, 40*(i-280));
+        obstacles[i].setHitBox();
+    }
+    /*
     for (int i = 102; i < 112; i ++){
         obstacles[i].setCoord(screen.width-(40*5), 40*(i-101));
         obstacles[i].setHitBox();
@@ -113,5 +142,11 @@ void createObstacles(Obstacles obstacles[], Screen screen) {
     for (int i = 155; i < 170; i ++){
         obstacles[i].setCoord(40*(i-154+10), screen.height -(40*6));
         obstacles[i].setHitBox();
-    }
+    }*/
+}
+
+double distanceBetween(Coordinates a, Coordinates b){
+    double distance;
+    distance = sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+    return distance;
 }

@@ -22,6 +22,7 @@ public:
     Coordinates showCoord();
     HitBoxRange showHitBox();
     Projectile projectile;
+    void setDirectionProj(Player);
 
     void initTimer(int timer_, double value_);
     void startTimer(int timer_);
@@ -57,6 +58,7 @@ private:
 
     ALLEGRO_TIMER *timerMove;
     ALLEGRO_TIMER *timerDamage;
+    ALLEGRO_TIMER *timerThrowing;
 
     Coordinates coord;
     HitBoxRange hitBox;
