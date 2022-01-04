@@ -13,7 +13,7 @@ enum {UP= 0, DOWN, LEFT, RIGHT};
 enum {TIMER_SLOW, TIMER_MOVE, TIMER_DAMAGE, TIMER_THROWING, TIMER_INCREASE_SPEED};
 enum {WALL, SPIKE, ROCK, GRASS, GRASSBLOCK1, GRASSBLOCK2, GRASSBLOCK3, BACKGROUND};
 
-#define NUM_WALLS 170
+#define NUM_WALLS 300
 #define NUM_ENEMIES 5
 
 typedef struct{
@@ -26,6 +26,7 @@ typedef struct{
 
 typedef struct{
     int width, height;
+    int bgWidth, bgHeight;
     double zoom;
 }Screen;
 

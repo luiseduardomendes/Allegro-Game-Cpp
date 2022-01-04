@@ -15,6 +15,9 @@ int main(){
     Obstacles obs[NUM_WALLS];
     scr.width = 1360;
     scr.height = 760;
+    scr.bgWidth = scr.width*2;
+    scr.bgHeight = scr.height*2;
+    scr.zoom = 1;
 
     bool nextPosValid;
 
@@ -124,7 +127,7 @@ int main(){
         if (nextPosValid)
             player.movePlayer();
 
-        keyboard.controllerKeys(event, &pauseMenu, &player);
+        keyboard.controllerKeys(event, &pauseMenu, &player, &scr);
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerFrame){
@@ -136,17 +139,13 @@ int main(){
 
                 al_set_target_bitmap(al_get_backbuffer(display));
                 al_clear_to_color(al_map_rgb(0,0,0));
-                al_draw_bitmap(draw.getBitmap(BACKGROUND), scr.width/2-player.showCoord().x, scr.height/2-player.showCoord().y, 0);
+                al_draw_scaled_bitmap(draw.getBitmap(BACKGROUND), player.showCoord().x - scr.width*scr.zoom/2, player.showCoord().y - scr.height*scr.zoom/2, scr.width*scr.zoom, scr.height*scr.zoom, 0, 0, scr.width, scr.height, 0);
                 al_flip_display();
             }
 
             else if(event.timer.source == timerProjectile){
                 if (player.projectile.isThrowing()){
-                    if (player.projectile.projectileCoord().x > scr.width || player.projectile.projectileCoord().x < 0 || player.projectile.projectileCoord().y > scr.height || player.projectile.projectileCoord().y < 0)
-                        player.projectile.setThrowingStatus(false);
-
-                    else   
-                        player.projectile.moveProj();
+                    player.projectile.moveProj();
                     for (int i = 0; i < NUM_ENEMIES; i ++)
                         if (enemies[i].showAliveStatus())
                             damage.playerProjectileHit(&enemies[i], &player);
@@ -166,7 +165,7 @@ int main(){
                         if (nextPosValid)
                             enemies[i].moveEnemy();
                         if (enemies[i].projectile.isThrowing()){
-                            if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.width || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.height)
+                            if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.bgWidth || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.bgHeight)
                                 enemies[i].projectile.setThrowingStatus(false);
                             else
                                 enemies[i].projectile.moveProj();

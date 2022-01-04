@@ -42,8 +42,8 @@ void Draw::createBitmapGrass(ALLEGRO_DISPLAY *display, Screen screen){
     int flagGrass;
     al_set_target_bitmap(grass);
 
-    for(int i = 0; i < screen.width; i += 40){
-        for (int j = 0; j < screen.height; j += 40){
+    for(int i = 0; i < screen.bgWidth; i += 40){
+        for (int j = 0; j < screen.bgHeight; j += 40){
             flagGrass = rand() % 20;
             if (flagGrass == 0)
                 al_draw_bitmap(grassBlock2, i, j, 0);
@@ -87,10 +87,10 @@ void Draw::createBitmap(int bmpName, Screen scr){
     switch (bmpName)
     {
     case BACKGROUND:
-        background = al_create_bitmap(scr.width, scr.height);
+        background = al_create_bitmap(scr.bgWidth, scr.bgHeight);
         break;
     case GRASS:
-        grass = al_create_bitmap(scr.width, scr.height);
+        grass = al_create_bitmap(scr.bgWidth, scr.bgHeight);
         break;
     }
     

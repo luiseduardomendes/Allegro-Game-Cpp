@@ -47,7 +47,7 @@ void Keyboard::stopMovement(ALLEGRO_EVENT event, Player *player){
     }
 }
 
-void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player* player){
+void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player* player, Screen* scr){
     if (event.type == ALLEGRO_EVENT_KEY_DOWN){
         switch (event.keyboard.keycode){
         case ALLEGRO_KEY_ESCAPE:
@@ -59,6 +59,12 @@ void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player*
         case ALLEGRO_KEY_V: 
             player->setSpeed(5);
             player->startTimer(TIMER_INCREASE_SPEED);
+            break;
+        case ALLEGRO_KEY_MINUS:
+            scr->zoom*=0.9;
+            break;
+        case ALLEGRO_KEY_EQUALS:
+            scr->zoom*=1.1;
             break;
         }
     }
