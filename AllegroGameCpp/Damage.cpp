@@ -5,7 +5,6 @@ bool DmgAndColision::projectileHitPlayer(Projectile *projectile, Player *player)
     if (isProjectileIn(player->showHitBox(), *projectile) && player->showHealth() > 0){
         projectile->setThrowingStatus(false);
         player->decrementHealth(projectile->showDamage());
-        player->setSpeed(3);
         return true;
     }
     return false;
@@ -56,20 +55,19 @@ bool DmgAndColision::isNextPositionProjectileValid(Projectile projectile, Obstac
 }
 bool DmgAndColision::isNextPositionProjValid(Projectile proj, Obstacles obs[]){
     for (int j = 0; j < NUM_WALLS; j ++){
-        if (abs(obs[j].showCoord().x - proj.projectileCoord().x) < 100 && abs(obs[j].showCoord().y - proj.projectileCoord().y) < 100){
+        //if (abs(obs[j].showCoord().x - proj.projectileCoord().x) < 100 && abs(obs[j].showCoord().y - proj.projectileCoord().y) < 100){
             if (!isNextPositionProjectileValid(proj, obs[j])){
                 return false;
                 
             }
-        }
+        //}
     }
     return true;
 }
 
 bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obs[]){
     for (int i = 0; i < NUM_WALLS; i ++)
-        if (abs(obs[i].showCoord().x - player.showCoord().x) < 100 &&
-            abs(obs[i].showCoord().y - player.showCoord().y) < 100)
+        //if (abs(obs[i].showCoord().x - player.showCoord().x) < 100 && abs(obs[i].showCoord().y - player.showCoord().y) < 100)
             if (!isNextPositionPlayerValidEach(player, obs[i]))
                 return false;
     return true;
@@ -77,8 +75,7 @@ bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obs[]){
 
 bool DmgAndColision::isNextPositionEnemyValid(Enemies enemy, Obstacles obs[]){
     for (int j = 0; j < NUM_WALLS; j ++)
-        if (abs(obs[j].showCoord().x - enemy.showCoord().x) < 100 &&
-                abs(obs[j].showCoord().y - enemy.showCoord().y) < 100)
+        //if (abs(obs[j].showCoord().x - enemy.showCoord().x) < 100 && abs(obs[j].showCoord().y - enemy.showCoord().y) < 100)
             if (!isNextPositionEnemyValidEach(enemy, obs[j]))
                 return false;
     return true;

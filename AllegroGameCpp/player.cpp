@@ -222,14 +222,14 @@ void Player::insertItem(int itemId){
 }
 
 void Player::deleteItem(int itemId){
-    for (int i = 0; i < numItems; i ++)
+    for (int i = 0; i <= numItems; i ++)
         if (inventory[i] == itemId){
-            inventory[i] = EMPTY;
             int j;
-            for (j = i; j < numItems-1; j ++){
+            for (j = i; j < numItems; j ++){
                 inventory[j] = inventory[j+1];  
             }
             inventory[j] = EMPTY;
+            numItems --;
             break;
         }
 

@@ -122,14 +122,17 @@ void Draw::initInventory(Player player){
 
 void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
     al_set_target_bitmap(inventory);
+    al_clear_to_color(al_map_rgba_f(0, 0, 0, 0));
     for (int i = 0; i < player.showMaxStorage(); i ++){
         al_draw_bitmap(inventorySlot, i*40, 0, 0);
     }
     for (int i = 0; i < player.showMaxStorage(); i ++){
-        al_draw_bitmap(items[player.showItemInSlot(i)], i*40, 0, 0);
+        if (player.showItemInSlot(i) != EMPTY)
+            al_draw_bitmap(items[player.showItemInSlot(i)], i*40, 0, 0);
     }
+
     al_set_target_bitmap(al_get_backbuffer(display));
-    al_draw_bitmap(inventory, 0,0,0);
+    al_draw_bitmap(inventory, 600,650,0);
 }
 
 void Draw::loadAllBitmaps(Screen scr){
@@ -140,6 +143,6 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(GRASSBLOCK3, "assets/grass3.png");
     loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
     loadBitmap(ARMOR_BMP, "assets/heavyarmor.png");
-    loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
+    loadBitmap(THR_KNIFE_BMP, "assets/trowingknife.png");
     loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
 }
