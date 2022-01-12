@@ -122,27 +122,6 @@ void createObstacles(Obstacles obstacles[], Screen screen) {
         obstacles[i].setCoord(40*25, 40*(i-280));
         obstacles[i].setHitBox();
     }
-    /*
-    for (int i = 102; i < 112; i ++){
-        obstacles[i].setCoord(screen.width-(40*5), 40*(i-101));
-        obstacles[i].setHitBox();
-    }
-    for (int i = 112; i < 127; i ++){
-        obstacles[i].setCoord(screen.width-(40*(i-111+5)), 40*10);
-        obstacles[i].setHitBox();
-    }
-    for (int i = 127; i < 140; i ++){
-        obstacles[i].setCoord(40*5, 40*(i-126));
-        obstacles[i].setHitBox();
-    }
-    for (int i = 140; i < 155; i ++){
-        obstacles[i].setCoord(40*(i-139+5), 40*5);
-        obstacles[i].setHitBox();
-    }
-    for (int i = 155; i < 170; i ++){
-        obstacles[i].setCoord(40*(i-154+10), screen.height -(40*6));
-        obstacles[i].setHitBox();
-    }*/
 }
 
 double distanceBetween(Coordinates a, Coordinates b){
