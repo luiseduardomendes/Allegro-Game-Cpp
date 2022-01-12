@@ -16,10 +16,7 @@ private:
     ALLEGRO_BITMAP *grassBlock3;
     ALLEGRO_BITMAP *background;
     ALLEGRO_BITMAP *inventorySlot;
-    ALLEGRO_BITMAP *throwingKnife;
-    ALLEGRO_BITMAP *shuriken;
-    ALLEGRO_BITMAP *armor;
     ALLEGRO_BITMAP *inventory;
 
-    ALLEGRO_BITMAP *items[];
+    ALLEGRO_BITMAP *items[15];
 };

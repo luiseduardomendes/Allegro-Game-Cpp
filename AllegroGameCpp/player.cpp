@@ -226,7 +226,7 @@ void Player::deleteItem(int itemId){
 
 }
 
-bool Player::showItemInInventory(int itemId){
+bool Player::isItemInInventory(int itemId){
     for (int i = 0; i < numItems; i ++)
         if (inventory[i] == itemId)
             return true;
@@ -235,4 +235,8 @@ bool Player::showItemInInventory(int itemId){
 
 int Player::showMaxStorage(){
     return maxStorage;
+}
+
+int Player::showItemInSlot(int slot_){
+    return inventory[slot_];
 }

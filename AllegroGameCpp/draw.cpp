@@ -126,7 +126,7 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
         al_draw_bitmap(inventorySlot, i*40, 0, 0);
     }
     for (int i = 0; i < player.showMaxStorage(); i ++){
-        al_draw_bitmap(items[player.showItemInInventory(i)], i*40, 0, 0);
+        al_draw_bitmap(items[player.showItemInSlot(i)], i*40, 0, 0);
     }
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(inventory, 0,0,0);

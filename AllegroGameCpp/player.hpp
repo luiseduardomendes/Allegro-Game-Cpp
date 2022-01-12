@@ -32,10 +32,11 @@ public:
 
     void insertItem(int itemId);
     void deleteItem(int itemId);
-    bool showItemInInventory(int itemId);
+    bool isItemInInventory(int itemId);
     void initInventory();
     int showMaxStorage();
     bool* showKeyDown();
+    int showItemInSlot(int slot_);
 
 private:
     Coordinates coord;
