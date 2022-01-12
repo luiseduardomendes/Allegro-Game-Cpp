@@ -37,29 +37,12 @@ int main(){
     al_init_image_addon();
     al_init_primitives_addon();
 
-    draw.createBitmap(BACKGROUND, scr);
-    draw.createBitmap(GRASS, scr);
-    draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
-    draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
-    draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
+    draw.loadAllBitmaps(scr);
 
-    draw.loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
-    draw.loadBitmap(ARMOR_BMP, "assets/heavyarmor.png");
-    draw.loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
-    draw.loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
-
-    player.loadBitmap("assets/narutoback.png", UP);
-    player.loadBitmap("assets/naruto.png", DOWN);
-    player.loadBitmap("assets/narutoleft.png", LEFT);
-    player.loadBitmap("assets/narutoright.png", RIGHT);
-    player.initInventory();
+    player.loadAllBitmaps();
 
     for(int i = 0; i < NUM_ENEMIES; i++){
-        enemies[i].loadBitmap("assets/akatsukiback.png", UP);
-        enemies[i].loadBitmap("assets/akatsuki.png", DOWN);
-        enemies[i].loadBitmap("assets/akatsukileft.png", LEFT);
-        enemies[i].loadBitmap("assets/akatsukiright.png", RIGHT);
-        enemies[i].projectile.loadBitmap("assets/shuriken.png");
+        enemies[i].loadAllBitmaps();
     }
 
     for(int i = 0; i < NUM_CHESTS; i++){
@@ -70,7 +53,6 @@ int main(){
         chests[i].setItem(rand() % 5);
     }
 
-    player.projectile.loadBitmap("assets/shuriken.png");
 
     player.initPlayer();
     player.setSpeed(2);
@@ -141,15 +123,7 @@ int main(){
 
         keyboard.movePlayer(event, &player);
         
-        nextPosValid = true;
-        for (int i = 0; i < NUM_WALLS; i ++)
-            if (abs(obs[i].showCoord().x - player.showCoord().x) < 100 &&
-                abs(obs[i].showCoord().y - player.showCoord().y) < 100)
-                if (!damage.isNextPositionPlayerValid(player, obs[i])){
-                    nextPosValid = false;
-                    break;
-                }
-        if (nextPosValid)
+        if (damage.isNextPositionPlayerValid(player, obs))
             player.movePlayer();
 
         keyboard.controllerKeys(event, &pauseMenu, &player, &scr);
@@ -171,18 +145,11 @@ int main(){
 
             else if(event.timer.source == timerProjectile){
                 if (player.projectile.isThrowing()){
-                    nextPosValid = true;
-                    for (int j = 0; j < NUM_WALLS; j ++)
-                        if (abs(obs[j].showCoord().x - player.showCoord().x) < 100 && abs(obs[j].showCoord().y - player.showCoord().y) < 100)
-                            if (!damage.isNextPositionProjectileValid(player.projectile, obs[j])){
-                                nextPosValid = false;
-                                break;
-                            }
-
-                    if (nextPosValid)
+                    if (damage.isNextPositionProjValid(player.projectile, obs))
                         player.projectile.moveProj();
                     else
                         player.projectile.setThrowingStatus(false);
+
                     for (int i = 0; i < NUM_ENEMIES; i ++)
                         if (enemies[i].isAlive())
                             damage.playerProjectileHit(&enemies[i], &player);
@@ -190,31 +157,12 @@ int main(){
                 }
                 for (int i = 0; i < NUM_ENEMIES; i ++){
                     if (enemies[i].isAlive()){
-                        nextPosValid = true;
-                        for (int j = 0; j < NUM_WALLS; j ++)
-                            if (abs(obs[j].showCoord().x - enemies[i].showCoord().x) < 100 &&
-                                    abs(obs[j].showCoord().y - enemies[i].showCoord().y) < 100)
-                                if (!damage.isNextPositionEnemyValid(enemies[i], obs[j])){
-                                    nextPosValid = false;
-                                    break;
-                                }
-
-                        if (nextPosValid)
+                        
+                        if (damage.isNextPositionEnemyValid(enemies[i], obs))
                             enemies[i].moveEnemy();
 
-
                         if (enemies[i].projectile.isThrowing()){
-                            nextPosValid = true;
-                            for (int j = 0; j < NUM_WALLS; j ++){
-                                if (abs(obs[j].showCoord().x - enemies[i].showCoord().x) < 100 && abs(obs[j].showCoord().y - enemies[i].showCoord().y) < 100){
-                                    if (!damage.isNextPositionProjectileValid(enemies[i].projectile, obs[j])){
-                                        nextPosValid = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (nextPosValid)
+                            if (damage.isNextPositionProjValid(enemies[i].projectile, obs))
                                 enemies[i].projectile.moveProj();
                             else
                                 enemies[i].projectile.setThrowingStatus(false);

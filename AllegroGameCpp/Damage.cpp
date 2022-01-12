@@ -30,7 +30,7 @@ bool DmgAndColision::playerProjectileHit(Enemies *enemy, Player *player){
     return false;
 }
 
-bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obst){
+bool DmgAndColision::isNextPositionPlayerValidEach(Player player, Obstacles obst){
     player.movePlayer();
     if (isHitboxIn(player.showHitBox(), obst.showHitBox()))
         return false;
@@ -38,7 +38,7 @@ bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obst){
         return true;
 }
 
-bool DmgAndColision::isNextPositionEnemyValid(Enemies enemy, Obstacles obst){
+bool DmgAndColision::isNextPositionEnemyValidEach(Enemies enemy, Obstacles obst){
     enemy.moveEnemy();
     if (isHitboxIn(enemy.showHitBox(), obst.showHitBox()))
         return false;
@@ -52,5 +52,35 @@ bool DmgAndColision::isNextPositionProjectileValid(Projectile projectile, Obstac
         return false;
     else
         return true;
+
+}
+bool DmgAndColision::isNextPositionProjValid(Projectile proj, Obstacles obs[]){
+    for (int j = 0; j < NUM_WALLS; j ++){
+        if (abs(obs[j].showCoord().x - proj.projectileCoord().x) < 100 && abs(obs[j].showCoord().y - proj.projectileCoord().y) < 100){
+            if (!isNextPositionProjectileValid(proj, obs[j])){
+                return false;
+                
+            }
+        }
+    }
+    return true;
+}
+
+bool DmgAndColision::isNextPositionPlayerValid(Player player, Obstacles obs[]){
+    for (int i = 0; i < NUM_WALLS; i ++)
+        if (abs(obs[i].showCoord().x - player.showCoord().x) < 100 &&
+            abs(obs[i].showCoord().y - player.showCoord().y) < 100)
+            if (!isNextPositionPlayerValidEach(player, obs[i]))
+                return false;
+    return true;
+}
+
+bool DmgAndColision::isNextPositionEnemyValid(Enemies enemy, Obstacles obs[]){
+    for (int j = 0; j < NUM_WALLS; j ++)
+        if (abs(obs[j].showCoord().x - enemy.showCoord().x) < 100 &&
+                abs(obs[j].showCoord().y - enemy.showCoord().y) < 100)
+            if (!isNextPositionEnemyValidEach(enemy, obs[j]))
+                return false;
+    return true;
 
 }

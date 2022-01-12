@@ -280,6 +280,14 @@ void Enemies::drawHealthBar(){
     al_draw_filled_rectangle(coord.x + ((60*health)/fullHp), coord.y -5, coord.x+60, coord.y, al_map_rgb(80, 80, 80));
 }
 
+void Enemies::loadAllBitmaps(){
+    loadBitmap("assets/akatsukiback.png", UP);
+    loadBitmap("assets/akatsuki.png", DOWN);
+    loadBitmap("assets/akatsukileft.png", LEFT);
+    loadBitmap("assets/akatsukiright.png", RIGHT);
+    projectile.loadBitmap("assets/shuriken.png");
+}
+
 void Enemies::setDirectionProj(Player pl){
     Coordinates plc = pl.showCoord();
 

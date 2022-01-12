@@ -131,3 +131,15 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(inventory, 0,0,0);
 }
+
+void Draw::loadAllBitmaps(Screen scr){
+    createBitmap(BACKGROUND, scr);
+    createBitmap(GRASS, scr);
+    loadBitmap(GRASSBLOCK1, "assets/grass1.png");
+    loadBitmap(GRASSBLOCK2, "assets/grass2.png");
+    loadBitmap(GRASSBLOCK3, "assets/grass3.png");
+    loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
+    loadBitmap(ARMOR_BMP, "assets/heavyarmor.png");
+    loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
+    loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
+}

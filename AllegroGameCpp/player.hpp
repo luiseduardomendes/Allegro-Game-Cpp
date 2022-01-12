@@ -23,6 +23,8 @@ public:
     Projectile projectile;
     bool playerProjectileHit(HitBoxRange HB);
 
+    void loadAllBitmaps();
+
     void setSlow(double value_);
     void resetSpeed();
     void initTimer(int timer_, double value_);

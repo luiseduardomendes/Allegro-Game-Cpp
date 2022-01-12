@@ -82,6 +82,15 @@ void Player::drawPlayer(){
     }
 }
 
+void Player::loadAllBitmaps(){
+    loadBitmap("assets/narutoback.png", UP);
+    loadBitmap("assets/naruto.png", DOWN);
+    loadBitmap("assets/narutoleft.png", LEFT);
+    loadBitmap("assets/narutoright.png", RIGHT);
+    initInventory();
+    projectile.loadBitmap("assets/shuriken.png");
+}
+
 void Player::setPosition(int x_, int y_){
     coord.x = x_;
     coord.y = y_;

@@ -23,6 +23,7 @@ public:
     HitBoxRange showHitBox();
     Projectile projectile;
     void setDirectionProj(Player);
+    void loadAllBitmaps();
 
     void initTimer(int timer_, double value_);
     void startTimer(int timer_);
