@@ -7,7 +7,7 @@ public:
     ALLEGRO_BITMAP* getBitmap(int bmpName);
     void drawNonStaticElements(Player player, Enemies enemies[]);
     void createBitmap(int bmpName, Screen scr);
-    void drawInventory(Player player);
+    void drawInventory(Player player, ALLEGRO_DISPLAY* display);
     void initInventory(Player player);
 private:
     ALLEGRO_BITMAP *grass;

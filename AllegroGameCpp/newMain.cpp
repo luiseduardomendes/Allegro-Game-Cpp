@@ -42,7 +42,10 @@ int main(){
     draw.loadBitmap(GRASSBLOCK1, "assets/grass1.png");
     draw.loadBitmap(GRASSBLOCK2, "assets/grass2.png");
     draw.loadBitmap(GRASSBLOCK3, "assets/grass3.png");
-    
+
+    draw.loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
+    draw.loadBitmap(ARMOR_BMP, "assets/heavyarmor.png");
+    draw.loadBitmap(THR_KNIFE_BMP, "assets/throwingKnife.png");
 
     player.loadBitmap("assets/narutoback.png", UP);
     player.loadBitmap("assets/naruto.png", DOWN);
@@ -76,6 +79,8 @@ int main(){
     player.projectile.setThrowingStatus(false);
 
     player.projectile.initProjectile();
+
+    draw.initInventory(player);
 
     for (int i = 0; i < NUM_ENEMIES; i ++){
         do{
@@ -159,6 +164,7 @@ int main(){
                 al_set_target_bitmap(al_get_backbuffer(display));
                 al_clear_to_color(al_map_rgb(0,0,0));
                 al_draw_scaled_bitmap(draw.getBitmap(BACKGROUND), player.showCoord().x - scr.width*scr.zoom/2, player.showCoord().y - scr.height*scr.zoom/2, scr.width*scr.zoom, scr.height*scr.zoom, 0, 0, scr.width, scr.height, 0);
+                draw.drawInventory(player, display);
                 al_flip_display();
             }
 
