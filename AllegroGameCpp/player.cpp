@@ -100,6 +100,7 @@ void Player::initPlayer(){
     moveSpeed = 3;
     stdSpeed = 3;
     keyDownInit();
+    maxStorage = 5;
 }
 
 void Player::keyDownInit(){
@@ -230,4 +231,8 @@ bool Player::showItemInInventory(int itemId){
         if (inventory[i] == itemId)
             return true;
     return false;
+}
+
+int Player::showMaxStorage(){
+    return maxStorage;
 }

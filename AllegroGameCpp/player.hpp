@@ -34,7 +34,7 @@ public:
     void deleteItem(int itemId);
     bool showItemInInventory(int itemId);
     void initInventory();
-    
+    int showMaxStorage();
     bool* showKeyDown();
 
 private:
@@ -54,6 +54,7 @@ private:
     bool keyDown[4];
     bool endOfGame;
 
+    int maxStorage;
     int inventory[5];
     int numItems;
 

@@ -18,6 +18,18 @@ void Draw::loadBitmap(int bmpName, char* fileName){
     case BACKGROUND:
         background = al_load_bitmap(fileName);
         break;
+    case INV_SLOT_BMP:
+        inventorySlot = al_load_bitmap(fileName);
+        break;
+    case THR_KNIFE_BMP:
+        items[THROWING_KNIFE] = al_load_bitmap(fileName);
+        break;
+    case SHURIKEN_BMP:
+        items[SHURIKEN] = al_load_bitmap(fileName);
+        break;
+    case ARMOR_BMP:
+        items[ARMOR] = al_load_bitmap(fileName);
+        break;
     }
 }
 
@@ -34,6 +46,14 @@ ALLEGRO_BITMAP* Draw::getBitmap(int bmpName){
         return grass;
     case BACKGROUND:
         return background;
+    case INV_SLOT_BMP:
+        return inventorySlot;
+    case THR_KNIFE_BMP:
+        return items[THROWING_KNIFE];
+    case SHURIKEN_BMP:
+        return items[SHURIKEN];
+    case ARMOR_BMP:
+        return items[ARMOR];
     }
 
 }
@@ -94,4 +114,17 @@ void Draw::createBitmap(int bmpName, Screen scr){
         break;
     }
     
+}
+
+void Draw::initInventory(Player player){
+    inventory = al_create_bitmap(player.showMaxStorage() * 40, 40);
+}
+
+void Draw::drawInventory(Player player){
+    for (int i = 0; i < player.showMaxStorage(); i ++){
+        al_draw_bitmap(inventorySlot, i*40, 0, 0);
+    }
+    for (int i = 0; i < player.showMaxStorage(); i ++){
+        al_draw_bitmap(items[player.showItemInInventory(i)], i*40, 0, 0);
+    }
 }
