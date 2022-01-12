@@ -14,7 +14,7 @@ void Enemies::setAliveStatus(bool value_){
     alive = value_;
 }
 
-bool Enemies::showAliveStatus(){
+bool Enemies::isAlive(){
     return alive;
 }
 

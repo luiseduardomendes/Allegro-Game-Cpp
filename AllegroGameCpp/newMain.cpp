@@ -13,6 +13,7 @@ int main(){
     Draw draw;
     DmgAndColision damage;
     Obstacles obs[NUM_WALLS];
+    Chests chests[NUM_CHESTS];
     scr.width = 1360;
     scr.height = 760;
     scr.bgWidth = scr.width*2;
@@ -20,6 +21,8 @@ int main(){
     scr.zoom = 1;
 
     bool nextPosValid;
+
+    srand(time(NULL));
 
     pauseMenu.init();
 
@@ -45,6 +48,7 @@ int main(){
     player.loadBitmap("assets/naruto.png", DOWN);
     player.loadBitmap("assets/narutoleft.png", LEFT);
     player.loadBitmap("assets/narutoright.png", RIGHT);
+    player.initInventory();
 
     for(int i = 0; i < NUM_ENEMIES; i++){
         enemies[i].loadBitmap("assets/akatsukiback.png", UP);
@@ -52,6 +56,14 @@ int main(){
         enemies[i].loadBitmap("assets/akatsukileft.png", LEFT);
         enemies[i].loadBitmap("assets/akatsukiright.png", RIGHT);
         enemies[i].projectile.loadBitmap("assets/shuriken.png");
+    }
+
+    for(int i = 0; i < NUM_CHESTS; i++){
+        chests[i].loadBitmapOpen("assets/chestOpen.png");
+        chests[i].loadBitmapClosed("assets/chestClosed.png");
+        chests[i].setCoord((scr.width / 4) + (rand() % (scr.width*3/4)), (scr.height / 4) + (rand() % (scr.height*3/4)));
+        chests[i].setOpenStatus(false);
+        chests[i].setItem(rand() % 5);
     }
 
     player.projectile.loadBitmap("assets/shuriken.png");
@@ -66,10 +78,17 @@ int main(){
     player.projectile.initProjectile();
 
     for (int i = 0; i < NUM_ENEMIES; i ++){
-        enemies[i].initEnemy();
-        enemies[i].setPosition((scr.width / 4) + (rand() % (scr.width*3/4)), (scr.height / 4) + (rand() % (scr.height*3/4)));
-        enemies[i].setDirection(DOWN);
-        enemies[i].setHitBox();
+        do{
+            enemies[i].initEnemy();
+            enemies[i].setPosition((scr.width / 4) + (rand() % (scr.width*3/4)), (scr.height / 4) + (rand() % (scr.height*3/4)));
+            enemies[i].setDirection(DOWN);
+            enemies[i].setHitBox();
+            nextPosValid = true;
+            /*for (int j = 0; j < NUM_WALLS; j ++){
+                if(isHitboxIn(obs[j].showHitBox(), enemies[i].showHitBox()))
+                    nextPosValid = false;
+            }*/
+        } while(!nextPosValid);
         enemies[i].projectile.initProjectile();
         enemies[i].projectile.setThrowingStatus(false);
     }
@@ -118,8 +137,8 @@ int main(){
         
         nextPosValid = true;
         for (int i = 0; i < NUM_WALLS; i ++)
-            if (abs(obs[i].showCoord().x - player.showCoord().x < 75) &&
-                abs(obs[i].showCoord().y - player.showCoord().y < 75))
+            if (abs(obs[i].showCoord().x - player.showCoord().x) < 100 &&
+                abs(obs[i].showCoord().y - player.showCoord().y) < 100)
                 if (!damage.isNextPositionPlayerValid(player, obs[i])){
                     nextPosValid = false;
                     break;
@@ -145,18 +164,29 @@ int main(){
 
             else if(event.timer.source == timerProjectile){
                 if (player.projectile.isThrowing()){
-                    player.projectile.moveProj();
+                    nextPosValid = true;
+                    for (int j = 0; j < NUM_WALLS; j ++)
+                        if (abs(obs[j].showCoord().x - player.showCoord().x) < 100 && abs(obs[j].showCoord().y - player.showCoord().y) < 100)
+                            if (!damage.isNextPositionProjectileValid(player.projectile, obs[j])){
+                                nextPosValid = false;
+                                break;
+                            }
+
+                    if (nextPosValid)
+                        player.projectile.moveProj();
+                    else
+                        player.projectile.setThrowingStatus(false);
                     for (int i = 0; i < NUM_ENEMIES; i ++)
-                        if (enemies[i].showAliveStatus())
+                        if (enemies[i].isAlive())
                             damage.playerProjectileHit(&enemies[i], &player);
 
                 }
                 for (int i = 0; i < NUM_ENEMIES; i ++){
-                    if (enemies[i].showAliveStatus()){
+                    if (enemies[i].isAlive()){
                         nextPosValid = true;
                         for (int j = 0; j < NUM_WALLS; j ++)
-                            if (abs(obs[j].showCoord().x - enemies[i].showCoord().x < 75) &&
-                                    abs(obs[j].showCoord().y - enemies[i].showCoord().y < 75))
+                            if (abs(obs[j].showCoord().x - enemies[i].showCoord().x) < 100 &&
+                                    abs(obs[j].showCoord().y - enemies[i].showCoord().y) < 100)
                                 if (!damage.isNextPositionEnemyValid(enemies[i], obs[j])){
                                     nextPosValid = false;
                                     break;
@@ -164,23 +194,33 @@ int main(){
 
                         if (nextPosValid)
                             enemies[i].moveEnemy();
+
+
                         if (enemies[i].projectile.isThrowing()){
-                            if (enemies[i].projectile.projectileCoord().x < 0 || enemies[i].projectile.projectileCoord().x > scr.bgWidth || enemies[i].projectile.projectileCoord().y < 0 || enemies[i].projectile.projectileCoord().y > scr.bgHeight)
-                                enemies[i].projectile.setThrowingStatus(false);
-                            else
+                            nextPosValid = true;
+                            for (int j = 0; j < NUM_WALLS; j ++){
+                                if (abs(obs[j].showCoord().x - enemies[i].showCoord().x) < 100 && abs(obs[j].showCoord().y - enemies[i].showCoord().y) < 100){
+                                    if (!damage.isNextPositionProjectileValid(enemies[i].projectile, obs[j])){
+                                        nextPosValid = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (nextPosValid)
                                 enemies[i].projectile.moveProj();
+                            else
+                                enemies[i].projectile.setThrowingStatus(false);
+                                
                             damage.enemyHitPlayer(&enemies[i], &player);
                             damage.projectileHitPlayer(&enemies[i].projectile, &player);
-                        }
-
-                        
+                        }   
                     }
                 }
-                
             }
             else if(event.timer.source == timerChangeDir){
                 for (int i = 0; i < NUM_ENEMIES; i ++){
-                    if (enemies[i].showAliveStatus()){
+                    if (enemies[i].isAlive()){
                         enemies[i].setDirectionPlayer(player);
                     }
                 }
@@ -192,7 +232,7 @@ int main(){
             }
             else 
                 for (int i = 0; i < NUM_ENEMIES; i ++)
-                    if (enemies[i].showAliveStatus())
+                    if (enemies[i].isAlive())
                         if(event.timer.source == enemies[i].showTimer(TIMER_THROWING))
                             if (distanceBetween(player.showCoord(), enemies[i].showCoord()) < 350 && !enemies[i].projectile.isThrowing()) {
                                 enemies[i].throwProjectile(player);

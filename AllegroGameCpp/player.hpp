@@ -30,6 +30,11 @@ public:
     void stopTimer(int timer_);
     ALLEGRO_TIMER* showTimer(int timer_);
 
+    void insertItem(int itemId);
+    void deleteItem(int itemId);
+    bool showItemInInventory(int itemId);
+    void initInventory();
+    
     bool* showKeyDown();
 
 private:
@@ -48,6 +53,9 @@ private:
     bool slowned;
     bool keyDown[4];
     bool endOfGame;
+
+    int inventory[5];
+    int numItems;
 
     ALLEGRO_TIMER *timerSlow;
     ALLEGRO_TIMER *timerIncreaseSpeed;

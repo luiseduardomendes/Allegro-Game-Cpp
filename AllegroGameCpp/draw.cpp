@@ -64,7 +64,7 @@ void Draw::drawNonStaticElements(Player player, Enemies enemies[]){
     player.drawPlayer();
 
     for (int i = 0; i < NUM_ENEMIES; i ++){
-        if (enemies[i].showAliveStatus()){
+        if (enemies[i].isAlive()){
             enemies[i].drawBitmap();
             enemies[i].drawHitbox();
             enemies[i].drawHealthBar();

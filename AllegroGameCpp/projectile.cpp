@@ -14,10 +14,6 @@ void Projectile::moveProj(){
     coord.x -= moveDir[LEFT]*(float)speed;
     coord.x += moveDir[RIGHT]*(float)speed;
 
-    /*for (int i = UP; i <= RIGHT; i ++){
-        cout << moveDir[i] << endl;
-    }*/
-
     setHitBox();
 }
 

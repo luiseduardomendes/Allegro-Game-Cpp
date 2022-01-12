@@ -185,7 +185,7 @@ int main()
 
 
         for (int i = 0; i < NUM_ENEMIES; i ++)
-            if (enemy[i].showAliveStatus()){
+            if (enemy[i].isAlive()){
                 nextPosValid = true;
                 for (int j = 0; j < NUM_WALLS; j ++)
                     if (abs(obstacles[j].showCoord().x - enemy[i].showCoord().x < 75) &&
@@ -237,12 +237,12 @@ int main()
             }
             for (int i = 0; i < NUM_ENEMIES; i ++){
                 if (event.timer.source == enemy[i].showTimer(TIMER_MOVE)){
-                    if (enemy[i].showAliveStatus())
+                    if (enemy[i].isAlive())
                         enemy[i].setDirectionPlayer(player);
 
                 }
                 if (event.timer.source == enemy[i].showTimer(TIMER_DAMAGE)){
-                    if (enemy[i].showAliveStatus())
+                    if (enemy[i].isAlive())
                         enemy[i].setHitPlayer(false);
                 }
             }
@@ -250,7 +250,7 @@ int main()
 
         }
         for (int i = 0; i < NUM_ENEMIES; i ++){
-            if (enemy[i].showAliveStatus()){
+            if (enemy[i].isAlive()){
                 if(!enemy[i].isHitPlayerOn() && damage.enemyHitPlayer(&enemy[i], &player)){
                     enemy[i].startTimer(TIMER_DAMAGE);
                     enemy[i].setHitPlayer(true);
@@ -285,7 +285,7 @@ int main()
         player.drawHitbox();
 
         for (int i = 0; i < NUM_ENEMIES; i ++){
-            if (enemy[i].showAliveStatus()){
+            if (enemy[i].isAlive()){
                 enemy[i].drawBitmap();
                 enemy[i].drawHitbox();
             }

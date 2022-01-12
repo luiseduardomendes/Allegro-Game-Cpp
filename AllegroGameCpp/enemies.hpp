@@ -37,7 +37,7 @@ public:
     bool isHitPlayerOn();
 
     void setAliveStatus(bool value_);
-    bool showAliveStatus();
+    bool isAlive();
     bool* showKeyDown();
 private:
     int idEnemy;

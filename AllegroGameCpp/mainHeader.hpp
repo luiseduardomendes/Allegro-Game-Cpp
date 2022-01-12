@@ -12,9 +12,11 @@
 enum {UP= 0, DOWN, LEFT, RIGHT};
 enum {TIMER_SLOW, TIMER_MOVE, TIMER_DAMAGE, TIMER_THROWING, TIMER_INCREASE_SPEED};
 enum {WALL, SPIKE, ROCK, GRASS, GRASSBLOCK1, GRASSBLOCK2, GRASSBLOCK3, BACKGROUND};
+enum items {EMPTY, SHURIKEN, THROWING_KNIFE, LIGHT_ARMOR, ARMOR, HEAVY_ARMOR};
 
 #define NUM_WALLS 300
 #define NUM_ENEMIES 5
+#define NUM_CHESTS 10
 
 typedef struct{
     int x, y;
@@ -32,7 +34,7 @@ typedef struct{
 
 
 #include "obstacles.hpp"
-
+#include "chests.hpp"
 #include "Colors.hpp"
 #include "projectile.hpp"
 #include "player.hpp"

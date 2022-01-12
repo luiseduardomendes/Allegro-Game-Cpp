@@ -198,3 +198,36 @@ void Player::resetSpeed(){
     slowned = false;
     moveSpeed = stdSpeed;
 }
+
+void Player::initInventory(){
+    numItems = 0;
+    for (int i = 0; i < 5; i ++){
+        inventory[i] = EMPTY;
+    }
+}
+
+void Player::insertItem(int itemId){
+    inventory[numItems] = itemId;
+    numItems ++;
+}
+
+void Player::deleteItem(int itemId){
+    for (int i = 0; i < numItems; i ++)
+        if (inventory[i] == itemId){
+            inventory[i] = EMPTY;
+            int j;
+            for (j = i; j < numItems-1; j ++){
+                inventory[j] = inventory[j+1];  
+            }
+            inventory[j] = EMPTY;
+            break;
+        }
+
+}
+
+bool Player::showItemInInventory(int itemId){
+    for (int i = 0; i < numItems; i ++)
+        if (inventory[i] == itemId)
+            return true;
+    return false;
+}
