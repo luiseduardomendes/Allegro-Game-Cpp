@@ -2,7 +2,7 @@
 
 
 // compilation
-/* g++ main.cpp Colors.cpp chests.cpp common.cpp Damage.cpp enemies.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
+/* g++ main.cpp Colors.cpp chests.cpp common.cpp Damage.cpp enemies.cpp items.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
 
 int main(){
     Player player;
@@ -15,7 +15,7 @@ int main(){
     Obstacles obs[NUM_WALLS];
     Chests chests[NUM_CHESTS];
     scr.width = 1360;
-    scr.height = 760;
+    scr.height = 760; 
     scr.bgWidth = scr.width*2;
     scr.bgHeight = scr.height*2;
     scr.zoom = 1;
@@ -36,8 +36,11 @@ int main(){
     al_install_keyboard();
     al_init_image_addon();
     al_init_primitives_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
 
     draw.loadAllBitmaps(scr);
+    draw.initFonts();
 
     player.loadAllBitmaps();
 
@@ -48,11 +51,22 @@ int main(){
     for(int i = 0; i < NUM_CHESTS; i++){
         chests[i].loadBitmapOpen("assets/chestOpen.png");
         chests[i].loadBitmapClosed("assets/chestClosed.png");
-        chests[i].setCoord(rand() % scr.width, rand() % scr.height);
+        chests[i].setCoord(rand() % scr.bgWidth, rand() % scr.bgHeight);
         chests[i].setOpenStatus(false);
         do{
-            chests[i].setItem(1 + (rand() % 5));
-        } while (!(chests[i].returnItem() != HEAVY_ARMOR && chests[i].returnItem() != LIGHT_ARMOR));
+            Item buffer;
+            int randomNumber = rand() % 10;
+            if(randomNumber < 4){
+                buffer = createShuriken();
+            } 
+            else if (randomNumber < 8 && randomNumber >= 4){
+                buffer = createThrowingKnife();
+            }
+            else if (randomNumber <= 10 && randomNumber >= 4){
+                buffer = createArmor();
+            }
+            chests[i].setItem(buffer);
+        } while (!(chests[i].returnItem().returnItemId() != ITEM_ID_EMPTY));
     }
 
 
@@ -137,8 +151,10 @@ int main(){
                 al_set_target_bitmap(draw.getBitmap(BACKGROUND));
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
+                
                 draw.drawNonStaticElements(player, enemies);
                 draw.drawStaticElements(chests);
+                
                 player.drawHealthBar();                
 
                 al_set_target_bitmap(al_get_backbuffer(display));

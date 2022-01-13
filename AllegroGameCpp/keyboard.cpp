@@ -69,6 +69,36 @@ void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player*
         case ALLEGRO_KEY_E:
             checkChests(chests, player);
             break;
+        case ALLEGRO_KEY_1:
+            if (player->showItemInSlot(0).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
+                player->setWeaponEquiped(0);
+            else if (player->showItemInSlot(0).returnItemType() == ITEM_TYPE_ARMOR)
+                player->setArmorEquiped(0);
+            break;
+        case ALLEGRO_KEY_2:
+            if (player->showItemInSlot(1).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
+                player->setWeaponEquiped(1);
+            else if (player->showItemInSlot(1).returnItemType() == ITEM_TYPE_ARMOR)
+                player->setArmorEquiped(1);
+            break;
+        case ALLEGRO_KEY_3:
+            if (player->showItemInSlot(2).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
+                player->setWeaponEquiped(2);
+            else if (player->showItemInSlot(2).returnItemType() == ITEM_TYPE_ARMOR)
+                player->setArmorEquiped(2);
+            break;
+        case ALLEGRO_KEY_4:
+            if (player->showItemInSlot(3).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
+                player->setWeaponEquiped(3);
+            else if (player->showItemInSlot(3).returnItemType() == ITEM_TYPE_ARMOR)
+                player->setArmorEquiped(3);
+            break;
+        case ALLEGRO_KEY_5:
+            if (player->showItemInSlot(4).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
+                player->setWeaponEquiped(4);
+            else if (player->showItemInSlot(4).returnItemType() == ITEM_TYPE_ARMOR)
+                player->setArmorEquiped(4);
+            break;
         }
     }
 }

@@ -37,8 +37,9 @@ void Projectile::setHitBox(){
     hitBox.sup.y = coord.y + 40;
 }
 
-void Projectile::loadBitmap(char fileName[]){
-    bitmap = al_load_bitmap(fileName);
+void Projectile::loadBitmap(char fileName[], char* fileName2){
+    bitmapShuriken = al_load_bitmap(fileName);
+    bitmapThrKnife = al_load_bitmap(fileName2);
 }
 
 Coordinates Projectile::projectileCoord(){
@@ -49,8 +50,12 @@ HitBoxRange Projectile::showHitBox(){
     return hitBox;
 }
 
-void Projectile::drawBitmap(){
-    al_draw_scaled_bitmap(bitmap, 0, 0, 40, 40, coord.x, coord.y, 40, 40, 0);
+void Projectile::drawBitmap(int itemId){
+    if (itemId == ITEM_ID_SHURIKEN)
+        al_draw_scaled_bitmap(bitmapShuriken, 0, 0, 40, 40, coord.x, coord.y, 40, 40, 0);
+    else if (itemId == ITEM_ID_THROWING_KNIFE)
+        al_draw_scaled_bitmap(bitmapThrKnife, 0, 0, 40, 40, coord.x, coord.y, 40, 40, 0);
+        
 }
 
 void Projectile::setThrowingStatus(int value_){

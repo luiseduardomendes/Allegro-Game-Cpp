@@ -1,4 +1,7 @@
 #include "mainHeader.hpp"
+void Draw::initFonts(){
+    font_pixel24 = al_load_font("fonts/pixelfont.ttf", 24, 0);
+}
 
 void Draw::loadBitmap(int bmpName, char* fileName){
     switch (bmpName)
@@ -22,13 +25,13 @@ void Draw::loadBitmap(int bmpName, char* fileName){
         inventorySlot = al_load_bitmap(fileName);
         break;
     case THR_KNIFE_BMP:
-        items[THROWING_KNIFE] = al_load_bitmap(fileName);
+        items[ITEM_ID_THROWING_KNIFE] = al_load_bitmap(fileName);
         break;
     case SHURIKEN_BMP:
-        items[SHURIKEN] = al_load_bitmap(fileName);
+        items[ITEM_ID_SHURIKEN] = al_load_bitmap(fileName);
         break;
     case ARMOR_BMP:
-        items[ARMOR] = al_load_bitmap(fileName);
+        items[ITEM_ID_ARMOR] = al_load_bitmap(fileName);
         break;
     }
 }
@@ -49,11 +52,11 @@ ALLEGRO_BITMAP* Draw::getBitmap(int bmpName){
     case INV_SLOT_BMP:
         return inventorySlot;
     case THR_KNIFE_BMP:
-        return items[THROWING_KNIFE];
+        return items[ITEM_ID_THROWING_KNIFE];
     case SHURIKEN_BMP:
-        return items[SHURIKEN];
+        return items[ITEM_ID_SHURIKEN];
     case ARMOR_BMP:
-        return items[ARMOR];
+        return items[ITEM_ID_ARMOR];
     }
 
 }
@@ -93,12 +96,12 @@ void Draw::drawNonStaticElements(Player player, Enemies enemies[]){
 
     if (player.projectile.isThrowing()){
         player.projectile.drawHitbox();
-        player.projectile.drawBitmap();
+        player.projectile.drawBitmap(player.returnWeaponEquiped().returnItemId());
     }
     for (int i = 0; i < NUM_ENEMIES; i ++){
         if (enemies[i].projectile.isThrowing()){
             enemies[i].projectile.drawHitbox();
-            enemies[i].projectile.drawBitmap();
+            enemies[i].projectile.drawBitmap(ITEM_ID_SHURIKEN);
         }
     }
 }
@@ -121,14 +124,20 @@ void Draw::initInventory(Player player){
 }
 
 void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
+    Colors colors;
     al_set_target_bitmap(inventory);
     al_clear_to_color(al_map_rgba_f(0, 0, 0, 0));
     for (int i = 0; i < player.showMaxStorage(); i ++){
         al_draw_bitmap(inventorySlot, i*40, 0, 0);
-    }
-    for (int i = 0; i < player.showMaxStorage(); i ++){
-        if (player.showItemInSlot(i) != EMPTY)
-            al_draw_bitmap(items[player.showItemInSlot(i)], i*40, 0, 0);
+        if (player.showItemInSlot(i).returnItemId() != ITEM_ID_EMPTY){
+            al_draw_bitmap(items[player.showItemInSlot(i).returnItemId()], i*40, 0, 0);
+            if (player.showItemInSlot(i).returnStack() > 1)
+                al_draw_textf(font_pixel24, al_map_rgb(255,255,255), (i*40)+20, 20, 0, "%d", player.showItemInSlot(i).returnStack());
+            if (player.returnSlotArmorEquiped() == i)
+                al_draw_rectangle((i*40), 0, ((i+1)*40), 40, colors.pastelBlue(), 3);
+            if (player.returnSlotWeaponEquiped() == i)
+                al_draw_rectangle((i*40), 0, ((i+1)*40), 40, colors.pastelRed(), 3);
+        }
     }
 
     al_set_target_bitmap(al_get_backbuffer(display));
@@ -142,8 +151,8 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(GRASSBLOCK2, "assets/grass2.png");
     loadBitmap(GRASSBLOCK3, "assets/grass3.png");
     loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
-    loadBitmap(ARMOR_BMP, "assets/heavyarmor.png");
-    loadBitmap(THR_KNIFE_BMP, "assets/trowingknife.png");
+    loadBitmap(ARMOR_BMP, "assets/armor.png");
+    loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
     loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
 }
 

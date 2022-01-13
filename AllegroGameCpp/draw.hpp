@@ -11,7 +11,9 @@ public:
     void initInventory(Player player);
     void loadAllBitmaps(Screen scr);
     void drawStaticElements(Chests chests[]);
+    void initFonts();
 private:
+    ALLEGRO_FONT* font_pixel24;
     ALLEGRO_BITMAP *grass;
     ALLEGRO_BITMAP *grassBlock1;
     ALLEGRO_BITMAP *grassBlock2;

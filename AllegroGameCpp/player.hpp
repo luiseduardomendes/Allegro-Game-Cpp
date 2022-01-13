@@ -32,14 +32,20 @@ public:
     void stopTimer(int timer_);
     ALLEGRO_TIMER* showTimer(int timer_);
 
-    void insertItem(int itemId);
+    void insertItem(Item item_);
     void deleteItem(int itemId);
     bool isItemInInventory(int itemId);
     void initInventory();
     int showMaxStorage();
     bool* showKeyDown();
-    int showItemInSlot(int slot_);
-
+    Item showItemInSlot(int slot_);
+    int returnSlotOfItem(int itemId);
+    void setWeaponEquiped(int slot_);
+    Item returnWeaponEquiped();
+    int returnSlotWeaponEquiped();
+    void setArmorEquiped(int slot_);
+    Item returnArmorEquiped();
+    int returnSlotArmorEquiped();
 private:
     Coordinates coord;
     HitBoxRange hitBox;
@@ -58,7 +64,7 @@ private:
     bool endOfGame;
 
     int maxStorage;
-    int inventory[5];
+    Item inventory[5];
     int numItems;
 
     ALLEGRO_TIMER *timerSlow;

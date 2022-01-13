@@ -1,6 +1,6 @@
 #include "mainHeader.hpp"
 
-void Chests::setItem(int item_){
+void Chests::setItem(Item item_){
     item = item_;
 }
 
@@ -12,7 +12,7 @@ bool Chests::isOpen(){
     return open;
 }
 
-int Chests::returnItem(){
+Item Chests::returnItem(){
     return item;
 }
 

@@ -285,7 +285,7 @@ void Enemies::loadAllBitmaps(){
     loadBitmap("assets/akatsuki.png", DOWN);
     loadBitmap("assets/akatsukileft.png", LEFT);
     loadBitmap("assets/akatsukiright.png", RIGHT);
-    projectile.loadBitmap("assets/shuriken.png");
+    projectile.loadBitmap("assets/shuriken.png", "assets/throwingknife.png");
 }
 
 void Enemies::setDirectionProj(Player pl){

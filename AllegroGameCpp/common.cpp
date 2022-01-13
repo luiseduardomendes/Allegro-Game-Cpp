@@ -139,3 +139,55 @@ void checkChests(Chests chests[], Player *player){
                 break;
             }
 }
+
+Item createShuriken(){
+    Item item;
+    item.setItemId(ITEM_ID_SHURIKEN);
+    item.setItemType(ITEM_TYPE_THROWING_WEAPON);
+    item.setStack(1);
+    item.setDamage(100);
+    item.setDamageType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+
+}
+Item createThrowingKnife(){
+    Item item;
+    item.setItemId(ITEM_ID_THROWING_KNIFE);
+    item.setItemType(ITEM_TYPE_THROWING_WEAPON);
+    item.setStack(1);
+    item.setDamage(200);
+    item.setDamageType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+}
+
+Item createArmor(){
+    Item item;
+    item.setItemId(ITEM_ID_ARMOR);
+    item.setItemType(ITEM_TYPE_ARMOR);
+    item.setStack(1);
+    item.setDamageReduction(50);
+    item.setProtectionType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+}
+
+Item createEmptyItem(){
+    Item item;
+    item.setItemId(ITEM_ID_EMPTY);
+    item.setEquipedStatus(false);
+    return item;
+}

@@ -9,8 +9,8 @@ public:
     void setHitBox();
     Coordinates projectileCoord();
     HitBoxRange showHitBox();
-    void loadBitmap(char fileName[]);
-    void drawBitmap();
+    void loadBitmap(char fileName[], char* fileName2);
+    void drawBitmap(int item_id);
     void setThrowingStatus(int value_);
     void setSpeed(int value_);
     bool isThrowing();
@@ -24,6 +24,7 @@ private:
     int speed;
     float moveDir[4];
     bool throwing;
-    ALLEGRO_BITMAP *bitmap;
+    ALLEGRO_BITMAP *bitmapShuriken;
+    ALLEGRO_BITMAP *bitmapThrKnife;
 
 };

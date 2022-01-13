@@ -88,7 +88,7 @@ void Player::loadAllBitmaps(){
     loadBitmap("assets/narutoleft.png", LEFT);
     loadBitmap("assets/narutoright.png", RIGHT);
     initInventory();
-    projectile.loadBitmap("assets/shuriken.png");
+    projectile.loadBitmap("assets/shuriken.png", "assets/throwingknife.png");
 }
 
 void Player::setPosition(int x_, int y_){
@@ -104,11 +104,13 @@ void Player::setHitBox(){
 }
 
 void Player::initPlayer(){
-    health = 600;
-    fullHp = 600;
+    health = 300;
+    fullHp = 300;
     moveSpeed = 3;
     stdSpeed = 3;
     keyDownInit();
+    weaponEquiped = -1;
+    armorEquiped = -1;
     maxStorage = 5;
 }
 
@@ -140,17 +142,22 @@ void Player::setSpeed(int value_){
 }
 
 void Player::throwProjectile(){
-    projectile.setThrowingStatus(true);
-    for (int i = 0; i < 4; i ++)
-        projectile.setProjDir(i, 0);
-    projectile.setProjDir(directionView, 1);
-    projectile.setCoord(coord.x + 10, coord.y + 10);
-    projectile.setHitBox();
+    if (weaponEquiped != -1){
+        projectile.setThrowingStatus(true);
+        for (int i = 0; i < 4; i ++)
+            projectile.setProjDir(i, 0);
+        projectile.setProjDir(directionView, 1);
+        projectile.setCoord(coord.x + 10, coord.y + 10);
+        projectile.setHitBox();
+    }
 }
 
 void Player::decrementHealth(int value_){
-    health -= value_;
-}
+    if (armorEquiped != -1)
+        health -= value_ * (inventory[armorEquiped].returnDamageReduction()/100.0);
+    else    
+        health -= value_;
+}   
 
 int Player::showHealth(){
     return health;
@@ -212,23 +219,30 @@ void Player::resetSpeed(){
 void Player::initInventory(){
     numItems = 0;
     for (int i = 0; i < 5; i ++){
-        inventory[i] = EMPTY;
+        inventory[i] = createEmptyItem();
     }
 }
 
-void Player::insertItem(int itemId){
-    inventory[numItems] = itemId;
-    numItems ++;
+void Player::insertItem(Item item_){
+    if(numItems < maxStorage){
+        if(isItemInInventory(item_.returnItemId())){
+            inventory[returnSlotOfItem(item_.returnItemId())].increaseStack();
+        }
+        else{
+            inventory[numItems] = item_;
+            numItems ++;
+        }
+    }
 }
 
 void Player::deleteItem(int itemId){
     for (int i = 0; i <= numItems; i ++)
-        if (inventory[i] == itemId){
+        if (inventory[i].returnItemId() == itemId){
             int j;
             for (j = i; j < numItems; j ++){
                 inventory[j] = inventory[j+1];  
             }
-            inventory[j] = EMPTY;
+            inventory[j] = createEmptyItem();
             numItems --;
             break;
         }
@@ -237,7 +251,7 @@ void Player::deleteItem(int itemId){
 
 bool Player::isItemInInventory(int itemId){
     for (int i = 0; i < numItems; i ++)
-        if (inventory[i] == itemId)
+        if (inventory[i].returnItemId() == itemId)
             return true;
     return false;
 }
@@ -246,6 +260,35 @@ int Player::showMaxStorage(){
     return maxStorage;
 }
 
-int Player::showItemInSlot(int slot_){
+Item Player::showItemInSlot(int slot_){
     return inventory[slot_];
+}
+
+void Player::setWeaponEquiped(int slot_){
+    weaponEquiped = slot_;
+}
+
+Item Player::returnWeaponEquiped(){
+    return inventory[weaponEquiped];
+}
+void Player::setArmorEquiped(int slot_){
+    armorEquiped = slot_;
+}
+
+Item Player::returnArmorEquiped(){
+    return inventory[armorEquiped];
+}
+
+int Player::returnSlotOfItem(int itemId){
+    for(int i = 0; i < maxStorage; i ++)
+        if(showItemInSlot(i).returnItemId() == itemId)
+            return i;
+    return -1;
+}
+int Player::returnSlotArmorEquiped(){
+    return armorEquiped;
+}
+
+int Player::returnSlotWeaponEquiped(){
+    return weaponEquiped;
 }
