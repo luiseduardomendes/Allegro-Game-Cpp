@@ -146,3 +146,9 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(THR_KNIFE_BMP, "assets/trowingknife.png");
     loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
 }
+
+void Draw::drawStaticElements(Chests chests[]){
+    for(int i = 0; i < NUM_CHESTS; i ++)
+        chests[i].drawBitmap();
+    
+}

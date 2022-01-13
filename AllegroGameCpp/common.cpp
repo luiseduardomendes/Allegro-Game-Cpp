@@ -130,4 +130,12 @@ double distanceBetween(Coordinates a, Coordinates b){
     return distance;
 }
 
-
+void checkChests(Chests chests[], Player *player){
+    for (int i = 0; i < NUM_CHESTS; i ++)
+        if(!chests[i].isOpen())
+            if(isHitboxIn(player->showHitBox(), chests[i].returnHitbox())){
+                player->insertItem(chests[i].returnItem());
+                chests[i].setOpenStatus(true);
+                break;
+            }
+}

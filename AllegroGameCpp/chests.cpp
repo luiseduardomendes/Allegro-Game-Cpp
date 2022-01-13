@@ -20,6 +20,10 @@ Coordinates Chests::returnCoord(){
     return coord;
 }
 
+HitBoxRange Chests::returnHitbox(){
+    return hitbox;
+}
+
 void Chests::setCoord(int x_, int y_){
     coord.x = x_;
     coord.y = y_;

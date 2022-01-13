@@ -48,9 +48,11 @@ int main(){
     for(int i = 0; i < NUM_CHESTS; i++){
         chests[i].loadBitmapOpen("assets/chestOpen.png");
         chests[i].loadBitmapClosed("assets/chestClosed.png");
-        chests[i].setCoord((scr.width / 4) + (rand() % (scr.width*3/4)), (scr.height / 4) + (rand() % (scr.height*3/4)));
+        chests[i].setCoord(rand() % scr.width, rand() % scr.height);
         chests[i].setOpenStatus(false);
-        chests[i].setItem(rand() % 5);
+        do{
+            chests[i].setItem(1 + (rand() % 5));
+        } while (!(chests[i].returnItem() != HEAVY_ARMOR && chests[i].returnItem() != LIGHT_ARMOR));
     }
 
 
@@ -66,10 +68,11 @@ int main(){
     draw.initInventory(player);
 
     for (int i = 0; i < NUM_ENEMIES; i ++){
+        enemies[i].initEnemy();
+        enemies[i].setDirection(DOWN);
         do{
-            enemies[i].initEnemy();
-            enemies[i].setPosition((scr.width / 4) + (rand() % (scr.width*3/4)), (scr.height / 4) + (rand() % (scr.height*3/4)));
-            enemies[i].setDirection(DOWN);
+            enemies[i].setPosition(rand() % (scr.bgWidth), rand() % (scr.bgHeight));
+
             enemies[i].setHitBox();
             nextPosValid = true;
             /*for (int j = 0; j < NUM_WALLS; j ++){
@@ -113,6 +116,7 @@ int main(){
     al_register_event_source(eventQueue, al_get_timer_event_source(timerFrame));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerProjectile));
     al_register_event_source(eventQueue, al_get_timer_event_source(timerChangeDir));
+
     for (int i = 0; i < NUM_ENEMIES; i ++)
         al_register_event_source(eventQueue, al_get_timer_event_source(enemies[i].showTimer(TIMER_THROWING)));
     al_register_event_source(eventQueue, al_get_timer_event_source(player.showTimer(TIMER_INCREASE_SPEED)));
@@ -126,7 +130,7 @@ int main(){
         if (damage.isNextPositionPlayerValid(player, obs))
             player.movePlayer();
 
-        keyboard.controllerKeys(event, &pauseMenu, &player, &scr);
+        keyboard.controllerKeys(event, &pauseMenu, &player, &scr, chests);
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerFrame){
@@ -134,6 +138,7 @@ int main(){
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
                 draw.drawNonStaticElements(player, enemies);
+                draw.drawStaticElements(chests);
                 player.drawHealthBar();                
 
                 al_set_target_bitmap(al_get_backbuffer(display));

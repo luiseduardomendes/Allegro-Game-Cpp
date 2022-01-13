@@ -47,7 +47,7 @@ void Keyboard::stopMovement(ALLEGRO_EVENT event, Player *player){
     }
 }
 
-void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player* player, Screen* scr){
+void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player* player, Screen* scr, Chests chests[]){
     if (event.type == ALLEGRO_EVENT_KEY_DOWN){
         switch (event.keyboard.keycode){
         case ALLEGRO_KEY_ESCAPE:
@@ -65,6 +65,9 @@ void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player*
             break;
         case ALLEGRO_KEY_EQUALS:
             scr->zoom*=1.1;
+            break;
+        case ALLEGRO_KEY_E:
+            checkChests(chests, player);
             break;
         }
     }

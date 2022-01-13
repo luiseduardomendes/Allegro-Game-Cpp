@@ -40,6 +40,7 @@ typedef struct{
 #include "player.hpp"
 #include "enemies.hpp"
 
+void checkChests(Chests chests[], Player *player);
 double distanceBetween(Coordinates a, Coordinates b);
 void createObstacles(Obstacles obstacles[], Screen screen);
 bool isEnemyIn(Player player, Enemies enemy);

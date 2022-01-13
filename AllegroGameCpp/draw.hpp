@@ -10,6 +10,7 @@ public:
     void drawInventory(Player player, ALLEGRO_DISPLAY* display);
     void initInventory(Player player);
     void loadAllBitmaps(Screen scr);
+    void drawStaticElements(Chests chests[]);
 private:
     ALLEGRO_BITMAP *grass;
     ALLEGRO_BITMAP *grassBlock1;

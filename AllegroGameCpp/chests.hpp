@@ -4,6 +4,7 @@ class Chests{
 public:
     void setCoord(int x_, int y_);
     Coordinates returnCoord();
+    HitBoxRange returnHitbox();
     void setItem(int item_);
     void setOpenStatus(bool status_);
     bool isOpen();
