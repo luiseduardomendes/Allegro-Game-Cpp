@@ -104,8 +104,8 @@ void Player::setHitBox(){
 }
 
 void Player::initPlayer(){
-    health = 300;
-    fullHp = 300;
+    health = 600;
+    fullHp = 600;
     moveSpeed = 3;
     stdSpeed = 3;
     keyDownInit();
@@ -121,10 +121,10 @@ void Player::initEquips(){
     bootsEquiped = createEmptyItem();
     shieldEquiped = createEmptyItem();
 
-    helmetEquiped = createHelmet();
-    armorEquiped = createArmor();
-    legsEquiped = createLegs();
-    bootsEquiped = createBoots();
+    //helmetEquiped = createHelmet();
+    //armorEquiped = createArmor();
+    //legsEquiped = createLegs();
+    //bootsEquiped = createBoots();
 }
 
 void Player::keyDownInit(){
@@ -167,11 +167,11 @@ void Player::throwProjectile(){
 
 void Player::decrementHealth(int value_){
     
-    health -= value_ * (1.0 -
-        inventory[armorEquiped.returnItemId()].returnDamageReduction() -
-        inventory[helmetEquiped.returnItemId()].returnDamageReduction() -
-        inventory[legsEquiped.returnItemId()].returnDamageReduction() -
-        inventory[bootsEquiped.returnItemId()].returnDamageReduction());
+    health -= (float)value_ * (1.0 - (
+        armorEquiped.returnDamageReduction() +
+        helmetEquiped.returnDamageReduction() +
+        legsEquiped.returnDamageReduction() +
+        bootsEquiped.returnDamageReduction()));
     
 }   
 

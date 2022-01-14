@@ -175,7 +175,7 @@ Item createArmor(){
     item.setItemId(ITEM_ID_ARMOR);
     item.setItemType(ITEM_TYPE_ARMOR);
     item.setStack(1);
-    item.setDamageReduction(0.20);
+    item.setDamageReduction(0.2);
     item.setProtectionType(DMG_TYPE_NORMAL);
     item.setEnchantingSlotUsed(0);
     item.setEnchantingSlotAvailable(3);
@@ -190,7 +190,7 @@ Item createHelmet(){
     item.setItemId(ITEM_ID_HELMET);
     item.setItemType(ITEM_TYPE_HELMET);
     item.setStack(1);
-    item.setDamageReduction(0.10);
+    item.setDamageReduction(0.1);
     item.setProtectionType(DMG_TYPE_NORMAL);
     item.setEnchantingSlotUsed(0);
     item.setEnchantingSlotAvailable(3);
@@ -235,6 +235,7 @@ Item createEmptyItem(){
     item.setItemId(ITEM_ID_EMPTY);
     item.setItemType(-1);
     item.setDamageReduction(0);
+    item.setStack(1);
     item.setEquipedStatus(false);
     return item;
 }
