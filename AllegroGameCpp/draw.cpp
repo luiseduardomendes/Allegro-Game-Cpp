@@ -121,6 +121,9 @@ void Draw::createBitmap(int bmpName, Screen scr){
 
 void Draw::initInventory(Player player){
     inventory = al_create_bitmap(player.showMaxStorage() * 40, 40);
+    equipments = al_create_bitmap(3*40, 4*40);
+    
+
 }
 
 void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
@@ -141,7 +144,7 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
     }
 
     al_set_target_bitmap(al_get_backbuffer(display));
-    al_draw_bitmap(inventory, 600,650,0);
+    al_draw_bitmap(inventory, 600, 650, 0);
 }
 
 void Draw::loadAllBitmaps(Screen scr){
@@ -154,10 +157,52 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(ARMOR_BMP, "assets/armor.png");
     loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
     loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
+
+    shurikenBitmap = al_load_bitmap("assets/shuriken.png");
+    thrKnifeBitmap = al_load_bitmap("assets/throwingknife.png");
+    lightArmorBitmap = al_load_bitmap("assets/armor.png");
+    armorBitmap = al_load_bitmap("assets/armor.png");
+    heavyArmorBitmap = al_load_bitmap("assets/armor.png");
 }
 
 void Draw::drawStaticElements(Chests chests[]){
     for(int i = 0; i < NUM_CHESTS; i ++)
         chests[i].drawBitmap();
     
+}
+
+void Draw::drawEquipedItems(Player player, ALLEGRO_DISPLAY* display){
+    al_set_target_bitmap(equipments);
+    
+    al_clear_to_color(al_map_rgba_f(0, 0, 0, 0));
+
+    al_draw_bitmap(inventorySlot, 40, 0, 0);
+    al_draw_bitmap(inventorySlot, 0, 40, 0);
+    al_draw_bitmap(inventorySlot, 40, 40, 0);
+    al_draw_bitmap(inventorySlot, 80, 40, 0);
+    al_draw_bitmap(inventorySlot, 40, 80, 0);
+    al_draw_bitmap(inventorySlot, 40, 120, 0);
+
+    
+    switch (player.returnWeaponEquiped().returnItemId()){
+    case ITEM_ID_SHURIKEN:
+        al_draw_bitmap(shurikenBitmap, 0, 40, 0);
+        break;
+    case ITEM_ID_THROWING_KNIFE:
+        al_draw_bitmap(thrKnifeBitmap, 0, 40, 0);
+        break;
+    }
+    switch (player.returnArmorEquiped().returnItemId()){
+    case ITEM_ID_ARMOR:
+        al_draw_bitmap(armorBitmap, 40, 40, 0);
+        break;
+    /*case ITEM_ID_LIGHTARMOR:
+        al_draw_bitmap(lightArmorBitmap, 40, 40, 0);
+        break;
+    case ITEM_ID_HEAVYARMOR:
+        al_draw_bitmap(heavyArmorBitmap, 40, 40, 0);
+        break;*/
+    }
+    al_set_target_bitmap(al_get_backbuffer(display));
+    al_draw_bitmap(equipments, 1200, 120, 0);
 }

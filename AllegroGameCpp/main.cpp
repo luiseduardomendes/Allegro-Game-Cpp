@@ -164,6 +164,7 @@ int main(){
                 al_draw_scaled_bitmap(draw.getBitmap(BACKGROUND), player.showCoord().x - scr.width*scr.zoom/2, player.showCoord().y - scr.height*scr.zoom/2, scr.width*scr.zoom, scr.height*scr.zoom, 0, 0, scr.width, scr.height, 0);
                 
                 draw.drawInventory(player, display);
+                draw.drawEquipedItems(player, display);
 
                 al_flip_display();
             }
