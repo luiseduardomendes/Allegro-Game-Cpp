@@ -134,7 +134,7 @@ void checkChests(Chests chests[], Player *player){
     for (int i = 0; i < NUM_CHESTS; i ++)
         if(!chests[i].isOpen())
             if(isHitboxIn(player->showHitBox(), chests[i].returnHitbox())){
-                player->insertItem(chests[i].returnItem());
+                player->insertItemInventory(chests[i].returnItem());
                 chests[i].setOpenStatus(true);
                 break;
             }
@@ -175,7 +175,52 @@ Item createArmor(){
     item.setItemId(ITEM_ID_ARMOR);
     item.setItemType(ITEM_TYPE_ARMOR);
     item.setStack(1);
-    item.setDamageReduction(50);
+    item.setDamageReduction(0.20);
+    item.setProtectionType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+}
+
+Item createHelmet(){
+    Item item;
+    item.setItemId(ITEM_ID_HELMET);
+    item.setItemType(ITEM_TYPE_HELMET);
+    item.setStack(1);
+    item.setDamageReduction(0.10);
+    item.setProtectionType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+}
+
+Item createLegs(){
+    Item item;
+    item.setItemId(ITEM_ID_LEGS);
+    item.setItemType(ITEM_TYPE_LEGS);
+    item.setStack(1);
+    item.setDamageReduction(0.15);
+    item.setProtectionType(DMG_TYPE_NORMAL);
+    item.setEnchantingSlotUsed(0);
+    item.setEnchantingSlotAvailable(3);
+    for (int i = 0; i < item.returnEnchantmentsAvailable(); i++)
+        item.setEnchantingSlot(ENCHANTMENT_EMPTY, i);
+    item.setEquipedStatus(false);
+    return item;
+}
+
+Item createBoots(){
+    Item item;
+    item.setItemId(ITEM_ID_BOOTS);
+    item.setItemType(ITEM_TYPE_BOOTS);
+    item.setStack(1);
+    item.setDamageReduction(0.1);
     item.setProtectionType(DMG_TYPE_NORMAL);
     item.setEnchantingSlotUsed(0);
     item.setEnchantingSlotAvailable(3);
@@ -188,6 +233,8 @@ Item createArmor(){
 Item createEmptyItem(){
     Item item;
     item.setItemId(ITEM_ID_EMPTY);
+    item.setItemType(-1);
+    item.setDamageReduction(0);
     item.setEquipedStatus(false);
     return item;
 }

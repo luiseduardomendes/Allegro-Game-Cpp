@@ -32,20 +32,32 @@ public:
     void stopTimer(int timer_);
     ALLEGRO_TIMER* showTimer(int timer_);
 
-    void insertItem(Item item_);
-    void deleteItem(int itemId);
+    void insertItemInventory(Item item_);
+    void deleteItemInventory(int itemId);
     bool isItemInInventory(int itemId);
     void initInventory();
     int showMaxStorage();
     bool* showKeyDown();
     Item showItemInSlot(int slot_);
     int returnSlotOfItem(int itemId);
-    void setWeaponEquiped(int slot_);
-    Item returnWeaponEquiped();
-    int returnSlotWeaponEquiped();
-    void setArmorEquiped(int slot_);
+
+    void equipHelmet(int slot_);
+    void equipArmor(int slot_);
+    void equipLegs(int slot_);
+    void equipBoots(int slot_);
+    void equipWeapon(int slot_);
+    void equipShield(int slot_);
+
+    Item returnHelmetEquiped();
     Item returnArmorEquiped();
-    int returnSlotArmorEquiped();
+    Item returnLegsEquiped();
+    Item returnBootsEquiped();
+    Item returnWeaponEquiped();
+    Item returnShieldEquiped();
+
+    void removeItemStack(int slot_);
+    void initEquips();
+    
 private:
     Coordinates coord;
     HitBoxRange hitBox;
@@ -56,16 +68,21 @@ private:
     int level;
     int experience;
     int coins;
-    int armorEquiped;
-    int weaponEquiped;
     float moveSpeed;
     bool slowned;
     bool keyDown[4];
     bool endOfGame;
 
     int maxStorage;
-    Item inventory[5];
+    Item inventory[10];
     int numItems;
+
+    Item helmetEquiped;
+    Item armorEquiped;
+    Item legsEquiped;
+    Item bootsEquiped;
+    Item weaponEquiped;
+    Item shieldEquiped;
 
     ALLEGRO_TIMER *timerSlow;
     ALLEGRO_TIMER *timerIncreaseSpeed;

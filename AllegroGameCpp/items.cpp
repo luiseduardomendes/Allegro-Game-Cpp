@@ -12,7 +12,7 @@ int Item::returnStack(){
 int Item::returnDamage(){
     return damage;
 }
-int Item::returnDamageReduction(){
+float Item::returnDamageReduction(){
     return damageReduction;
 }
 int Item::returnDamageType(){
@@ -49,7 +49,7 @@ void Item::decreaseStack(){
 void Item::setDamage(int damage_){
     damage = damage_;
 }
-void Item::setDamageReduction(int damageReduction_){
+void Item::setDamageReduction(float damageReduction_){
     damageReduction = damageReduction_;
 }
 void Item::setDamageType(int type){

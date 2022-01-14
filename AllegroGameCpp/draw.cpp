@@ -21,18 +21,6 @@ void Draw::loadBitmap(int bmpName, char* fileName){
     case BACKGROUND:
         background = al_load_bitmap(fileName);
         break;
-    case INV_SLOT_BMP:
-        inventorySlot = al_load_bitmap(fileName);
-        break;
-    case THR_KNIFE_BMP:
-        items[ITEM_ID_THROWING_KNIFE] = al_load_bitmap(fileName);
-        break;
-    case SHURIKEN_BMP:
-        items[ITEM_ID_SHURIKEN] = al_load_bitmap(fileName);
-        break;
-    case ARMOR_BMP:
-        items[ITEM_ID_ARMOR] = al_load_bitmap(fileName);
-        break;
     }
 }
 
@@ -136,10 +124,6 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
             al_draw_bitmap(items[player.showItemInSlot(i).returnItemId()], i*40, 0, 0);
             if (player.showItemInSlot(i).returnStack() > 1)
                 al_draw_textf(font_pixel24, al_map_rgb(255,255,255), (i*40)+20, 20, 0, "%d", player.showItemInSlot(i).returnStack());
-            if (player.returnSlotArmorEquiped() == i)
-                al_draw_rectangle((i*40), 0, ((i+1)*40), 40, colors.pastelBlue(), 3);
-            if (player.returnSlotWeaponEquiped() == i)
-                al_draw_rectangle((i*40), 0, ((i+1)*40), 40, colors.pastelRed(), 3);
         }
     }
 
@@ -153,16 +137,17 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(GRASSBLOCK1, "assets/grass1.png");
     loadBitmap(GRASSBLOCK2, "assets/grass2.png");
     loadBitmap(GRASSBLOCK3, "assets/grass3.png");
-    loadBitmap(SHURIKEN_BMP, "assets/shuriken.png");
-    loadBitmap(ARMOR_BMP, "assets/armor.png");
-    loadBitmap(THR_KNIFE_BMP, "assets/throwingknife.png");
-    loadBitmap(INV_SLOT_BMP, "assets/itemframe.png");
 
-    shurikenBitmap = al_load_bitmap("assets/shuriken.png");
-    thrKnifeBitmap = al_load_bitmap("assets/throwingknife.png");
-    lightArmorBitmap = al_load_bitmap("assets/armor.png");
-    armorBitmap = al_load_bitmap("assets/armor.png");
-    heavyArmorBitmap = al_load_bitmap("assets/armor.png");
+    inventorySlot = al_load_bitmap("assets/itemframe.png");
+    items[ITEM_ID_THROWING_KNIFE] = al_load_bitmap("assets/throwingknife.png");
+    items[ITEM_ID_SHURIKEN] = al_load_bitmap("assets/shuriken.png");    
+    items[ITEM_ID_ARMOR] = al_load_bitmap("assets/armor.png");
+    items[ITEM_ID_HEAVYARMOR] = al_load_bitmap("assets/armor.png");
+    items[ITEM_ID_LIGHTARMOR] = al_load_bitmap("assets/armor.png");
+    items[ITEM_ID_HELMET] = al_load_bitmap("assets/helmet.png");
+    items[ITEM_ID_LEGS] = al_load_bitmap("assets/legs.png");
+    items[ITEM_ID_BOOTS] = al_load_bitmap("assets/boots.png");
+
 }
 
 void Draw::drawStaticElements(Chests chests[]){
@@ -186,22 +171,37 @@ void Draw::drawEquipedItems(Player player, ALLEGRO_DISPLAY* display){
     
     switch (player.returnWeaponEquiped().returnItemId()){
     case ITEM_ID_SHURIKEN:
-        al_draw_bitmap(shurikenBitmap, 0, 40, 0);
+        al_draw_bitmap(items[ITEM_ID_SHURIKEN], 0, 40, 0);
         break;
     case ITEM_ID_THROWING_KNIFE:
-        al_draw_bitmap(thrKnifeBitmap, 0, 40, 0);
+        al_draw_bitmap(items[ITEM_ID_THROWING_KNIFE], 0, 40, 0);
         break;
     }
     switch (player.returnArmorEquiped().returnItemId()){
     case ITEM_ID_ARMOR:
-        al_draw_bitmap(armorBitmap, 40, 40, 0);
+        al_draw_bitmap(items[ITEM_ID_ARMOR], 40, 40, 0);
         break;
-    /*case ITEM_ID_LIGHTARMOR:
-        al_draw_bitmap(lightArmorBitmap, 40, 40, 0);
+    case ITEM_ID_LIGHTARMOR:
+        al_draw_bitmap(items[ITEM_ID_ARMOR], 40, 40, 0);
         break;
     case ITEM_ID_HEAVYARMOR:
-        al_draw_bitmap(heavyArmorBitmap, 40, 40, 0);
-        break;*/
+        al_draw_bitmap(items[ITEM_ID_ARMOR], 40, 40, 0);
+        break;
+    }
+    switch (player.returnHelmetEquiped().returnItemId()){
+    case ITEM_ID_HELMET:
+        al_draw_bitmap(items[ITEM_ID_HELMET], 40, 0, 0);
+        break;
+    }
+    switch (player.returnLegsEquiped().returnItemId()){
+    case ITEM_ID_LEGS:
+        al_draw_bitmap(items[ITEM_ID_LEGS], 40, 80, 0);
+        break;
+    }
+    switch (player.returnBootsEquiped().returnItemId()){
+    case ITEM_ID_BOOTS:
+        al_draw_bitmap(items[ITEM_ID_BOOTS], 40, 120, 0);
+        break;
     }
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(equipments, 1200, 120, 0);

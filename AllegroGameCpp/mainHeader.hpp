@@ -15,7 +15,7 @@ enum bitmaps{WALL, SPIKE, ROCK, GRASS, GRASSBLOCK1, GRASSBLOCK2, GRASSBLOCK3, BA
 
 #define NUM_WALLS 300
 #define NUM_ENEMIES 5
-#define NUM_CHESTS 15
+#define NUM_CHESTS 30
 
 typedef struct{
     int x, y;
@@ -38,18 +38,7 @@ typedef struct{
 #include "projectile.hpp"
 #include "player.hpp"
 #include "enemies.hpp"
-
-void checkChests(Chests chests[], Player *player);
-double distanceBetween(Coordinates a, Coordinates b);
-void createObstacles(Obstacles obstacles[], Screen screen);
-bool isEnemyIn(Player player, Enemies enemy);
-bool pointInsideBox(Coordinates, HitBoxRange);
-bool isProjectileIn(HitBoxRange HB, Projectile projectile);
-bool isHitboxIn(HitBoxRange HB1, HitBoxRange HB2);
-Item createEmptyItem();
-Item createShuriken();
-Item createThrowingKnife();
-Item createArmor();
+#include "common.hpp"
 
 #include "Damage.hpp"
 #include "draw.hpp"

@@ -70,34 +70,144 @@ void Keyboard::controllerKeys(ALLEGRO_EVENT event, PauseMenu *pauseMenu, Player*
             checkChests(chests, player);
             break;
         case ALLEGRO_KEY_1:
-            if (player->showItemInSlot(0).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
-                player->setWeaponEquiped(0);
-            else if (player->showItemInSlot(0).returnItemType() == ITEM_TYPE_ARMOR)
-                player->setArmorEquiped(0);
+            switch (player->showItemInSlot(0).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(0);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(0);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(0);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(0);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(0);
+                break;
+            }
             break;
         case ALLEGRO_KEY_2:
-            if (player->showItemInSlot(1).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
-                player->setWeaponEquiped(1);
-            else if (player->showItemInSlot(1).returnItemType() == ITEM_TYPE_ARMOR)
-                player->setArmorEquiped(1);
+            switch (player->showItemInSlot(1).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(1);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(1);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(1);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(1);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(1);
+                break;
+            }
             break;
         case ALLEGRO_KEY_3:
-            if (player->showItemInSlot(2).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
-                player->setWeaponEquiped(2);
-            else if (player->showItemInSlot(2).returnItemType() == ITEM_TYPE_ARMOR)
-                player->setArmorEquiped(2);
+            switch (player->showItemInSlot(2).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(2);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(2);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(2);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(2);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(2);
+                break;
+            }
             break;
         case ALLEGRO_KEY_4:
-            if (player->showItemInSlot(3).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
-                player->setWeaponEquiped(3);
-            else if (player->showItemInSlot(3).returnItemType() == ITEM_TYPE_ARMOR)
-                player->setArmorEquiped(3);
+            switch (player->showItemInSlot(3).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(3);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(3);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(3);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(3);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(3);
+                break;
+            }
             break;
         case ALLEGRO_KEY_5:
-            if (player->showItemInSlot(4).returnItemType() == ITEM_TYPE_THROWING_WEAPON)
-                player->setWeaponEquiped(4);
-            else if (player->showItemInSlot(4).returnItemType() == ITEM_TYPE_ARMOR)
-                player->setArmorEquiped(4);
+            switch (player->showItemInSlot(4).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(4);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(4);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(4);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(4);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(4);
+                break;
+            }
+            break;
+        case ALLEGRO_KEY_6:
+            switch (player->showItemInSlot(5).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(5);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(5);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(5);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(5);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(5);
+                break;
+            }
+            break;
+        case ALLEGRO_KEY_7:
+            switch (player->showItemInSlot(6).returnItemType())
+            {
+            case ITEM_TYPE_THROWING_WEAPON:
+                player->equipWeapon(6);
+                break;
+            case ITEM_TYPE_ARMOR:
+                player->equipArmor(6);
+                break;
+            case ITEM_TYPE_HELMET:
+                player->equipHelmet(6);
+                break;
+            case ITEM_TYPE_LEGS:
+                player->equipLegs(6);
+                break;
+            case ITEM_TYPE_BOOTS:
+                player->equipBoots(6);
+                break;
+            }
             break;
         }
     }

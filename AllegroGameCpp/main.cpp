@@ -56,14 +56,29 @@ int main(){
         do{
             Item buffer;
             int randomNumber = rand() % 10;
-            if(randomNumber < 4){
+            switch (randomNumber){
+            case 0:
+            case 1:
+            case 2:
                 buffer = createShuriken();
-            } 
-            else if (randomNumber < 8 && randomNumber >= 4){
+                break;
+            case 3:
+            case 4:
+            case 5:
                 buffer = createThrowingKnife();
-            }
-            else if (randomNumber <= 10 && randomNumber >= 4){
+                break;
+            case 6:
                 buffer = createArmor();
+                break;
+            case 7:
+                buffer = createHelmet();
+                break;
+            case 8:
+                buffer = createLegs();
+                break;
+            case 9:
+                buffer = createBoots();
+                break;
             }
             chests[i].setItem(buffer);
         } while (!(chests[i].returnItem().returnItemId() != ITEM_ID_EMPTY));

@@ -109,9 +109,22 @@ void Player::initPlayer(){
     moveSpeed = 3;
     stdSpeed = 3;
     keyDownInit();
-    weaponEquiped = -1;
-    armorEquiped = -1;
-    maxStorage = 5;
+    initEquips();
+    maxStorage = 10;
+}
+
+void Player::initEquips(){
+    weaponEquiped = createEmptyItem();
+    helmetEquiped = createEmptyItem();
+    armorEquiped = createEmptyItem();
+    legsEquiped = createEmptyItem();
+    bootsEquiped = createEmptyItem();
+    shieldEquiped = createEmptyItem();
+
+    helmetEquiped = createHelmet();
+    armorEquiped = createArmor();
+    legsEquiped = createLegs();
+    bootsEquiped = createBoots();
 }
 
 void Player::keyDownInit(){
@@ -142,7 +155,7 @@ void Player::setSpeed(int value_){
 }
 
 void Player::throwProjectile(){
-    if (weaponEquiped != -1){
+    if (weaponEquiped.returnItemId() != ITEM_ID_EMPTY){
         projectile.setThrowingStatus(true);
         for (int i = 0; i < 4; i ++)
             projectile.setProjDir(i, 0);
@@ -153,10 +166,13 @@ void Player::throwProjectile(){
 }
 
 void Player::decrementHealth(int value_){
-    if (armorEquiped != -1)
-        health -= value_ * (inventory[armorEquiped].returnDamageReduction()/100.0);
-    else    
-        health -= value_;
+    
+    health -= value_ * (1.0 -
+        inventory[armorEquiped.returnItemId()].returnDamageReduction() -
+        inventory[helmetEquiped.returnItemId()].returnDamageReduction() -
+        inventory[legsEquiped.returnItemId()].returnDamageReduction() -
+        inventory[bootsEquiped.returnItemId()].returnDamageReduction());
+    
 }   
 
 int Player::showHealth(){
@@ -223,7 +239,14 @@ void Player::initInventory(){
     }
 }
 
-void Player::insertItem(Item item_){
+int Player::returnSlotOfItem(int itemId){
+    for(int i = 0; i < maxStorage; i ++)
+        if (inventory[i].returnItemId() == itemId)
+            return i;
+    return -1;
+}
+
+void Player::insertItemInventory(Item item_){
     if(numItems < maxStorage){
         if(isItemInInventory(item_.returnItemId())){
             inventory[returnSlotOfItem(item_.returnItemId())].increaseStack();
@@ -235,13 +258,10 @@ void Player::insertItem(Item item_){
     }
 }
 
-void Player::deleteItem(int itemId){
+void Player::deleteItemInventory(int itemId){
     for (int i = 0; i <= numItems; i ++)
         if (inventory[i].returnItemId() == itemId){
             int j;
-            for (j = i; j < numItems; j ++){
-                inventory[j] = inventory[j+1];  
-            }
             inventory[j] = createEmptyItem();
             numItems --;
             break;
@@ -264,31 +284,155 @@ Item Player::showItemInSlot(int slot_){
     return inventory[slot_];
 }
 
-void Player::setWeaponEquiped(int slot_){
-    weaponEquiped = slot_;
+void Player::removeItemStack(int slot_){
+    inventory[slot_].decreaseStack();
+    if (inventory[slot_].returnStack() <= 0){
+        deleteItemInventory(inventory[slot_].returnItemId());
+    }
 }
 
-Item Player::returnWeaponEquiped(){
-    return inventory[weaponEquiped];
-}
-void Player::setArmorEquiped(int slot_){
-    armorEquiped = slot_;
+void Player::equipHelmet(int slot_){
+    if (inventory[slot_].returnItemId() != weaponEquiped.returnItemId()){
+        if (inventory[slot_].returnStack() == 1){
+            Item buffer;
+            buffer = helmetEquiped;
+            helmetEquiped = inventory[slot_];
+            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                inventory[slot_] = buffer;
+        }
+        else if (numItems < maxStorage - 1){
+            Item buffer;
+            buffer = helmetEquiped;
+            helmetEquiped = inventory[slot_];
+            inventory[slot_].decreaseStack();
+            if (isItemInInventory(buffer.returnItemId()))
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                insertItemInventory(buffer);
+        }
+    }
 }
 
+void Player::equipArmor(int slot_){
+    if (inventory[slot_].returnItemId() != weaponEquiped.returnItemId()){
+        if (inventory[slot_].returnStack() == 1){
+            Item buffer;
+            buffer = armorEquiped;
+            armorEquiped = inventory[slot_];
+            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                inventory[slot_] = buffer;
+        }
+        else if (numItems < maxStorage - 1){
+            Item buffer;
+            buffer = armorEquiped;
+            armorEquiped = inventory[slot_];
+            inventory[slot_].decreaseStack();
+            if (isItemInInventory(buffer.returnItemId()))
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                insertItemInventory(buffer);
+        }
+    }
+}
+
+void Player::equipLegs(int slot_){
+    if (inventory[slot_].returnItemId() != legsEquiped.returnItemId()){
+        if (inventory[slot_].returnStack() == 1){
+            Item buffer;
+            buffer = legsEquiped;
+            legsEquiped = inventory[slot_];
+            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                inventory[slot_] = buffer;
+        }
+        else if (numItems < maxStorage - 1){
+            Item buffer;
+            buffer = legsEquiped;
+            legsEquiped = inventory[slot_];
+            inventory[slot_].decreaseStack();
+            if (isItemInInventory(buffer.returnItemId()))
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                insertItemInventory(buffer);
+        }
+    }
+}
+
+void Player::equipBoots(int slot_){
+    if (inventory[slot_].returnItemId() != bootsEquiped.returnItemId()){
+        if (inventory[slot_].returnStack() == 1){
+            Item buffer;
+            buffer = bootsEquiped;
+            bootsEquiped = inventory[slot_];
+            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                inventory[slot_] = buffer;
+        }
+        else if (numItems < maxStorage - 1){
+            Item buffer;
+            buffer = bootsEquiped;
+            bootsEquiped = inventory[slot_];
+            inventory[slot_].decreaseStack();
+            if (isItemInInventory(buffer.returnItemId()))
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                insertItemInventory(buffer);
+        }
+    }
+}
+
+void Player::equipWeapon(int slot_){
+    if (inventory[slot_].returnItemId() != weaponEquiped.returnItemId()){
+        if (inventory[slot_].returnStack() == 1){
+            Item buffer;
+            buffer = weaponEquiped;
+            weaponEquiped = inventory[slot_];
+            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                inventory[slot_] = buffer;
+        }
+        else if (numItems < maxStorage - 1){
+            Item buffer;
+            buffer = weaponEquiped;
+            weaponEquiped = inventory[slot_];
+            inventory[slot_].decreaseStack();
+            if (isItemInInventory(buffer.returnItemId()))
+                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
+            else    
+                insertItemInventory(buffer);
+        }
+    }
+}
+
+void Player::equipShield(int slot_){
+    Item buffer;
+    buffer = shieldEquiped;
+    shieldEquiped = inventory[slot_];
+    inventory[slot_] = buffer;
+}
+
+Item Player::returnHelmetEquiped(){
+    return helmetEquiped;
+}
 Item Player::returnArmorEquiped(){
-    return inventory[armorEquiped];
-}
-
-int Player::returnSlotOfItem(int itemId){
-    for(int i = 0; i < maxStorage; i ++)
-        if(showItemInSlot(i).returnItemId() == itemId)
-            return i;
-    return -1;
-}
-int Player::returnSlotArmorEquiped(){
     return armorEquiped;
 }
-
-int Player::returnSlotWeaponEquiped(){
+Item Player::returnLegsEquiped(){
+    return legsEquiped;
+}
+Item Player::returnBootsEquiped(){
+    return bootsEquiped;
+}
+Item Player::returnWeaponEquiped(){
     return weaponEquiped;
+}
+Item Player::returnShieldEquiped(){
+    return shieldEquiped;
 }
