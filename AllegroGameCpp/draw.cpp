@@ -68,8 +68,11 @@ void Draw::createBitmapGrass(ALLEGRO_DISPLAY *display, Screen screen){
     //al_set_target_bitmap(al_get_backbuffer(display));   
 }
 
-void Draw::drawNonStaticElements(Player player, Enemies enemies[]){    
+void Draw::drawGrass(){
     al_draw_bitmap(grass, 0, 0, 0);
+}
+
+void Draw::drawNonStaticElements(Player player, Enemies enemies[]){    
 
     player.drawHitbox();
     player.drawPlayer();
@@ -128,7 +131,7 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
     }
 
     al_set_target_bitmap(al_get_backbuffer(display));
-    al_draw_bitmap(inventory, 600, 650, 0);
+    al_draw_bitmap(inventory, 500, 650, 0);
 }
 
 void Draw::loadAllBitmaps(Screen scr){
@@ -167,7 +170,6 @@ void Draw::drawEquipedItems(Player player, ALLEGRO_DISPLAY* display){
     al_draw_bitmap(inventorySlot, 80, 40, 0);
     al_draw_bitmap(inventorySlot, 40, 80, 0);
     al_draw_bitmap(inventorySlot, 40, 120, 0);
-
     
     switch (player.returnWeaponEquiped().returnItemId()){
     case ITEM_ID_SHURIKEN:
@@ -203,6 +205,8 @@ void Draw::drawEquipedItems(Player player, ALLEGRO_DISPLAY* display){
         al_draw_bitmap(items[ITEM_ID_BOOTS], 40, 120, 0);
         break;
     }
+    if (player.returnWeaponEquiped().returnStack() > 1)
+        al_draw_textf(font_pixel24, al_map_rgb(255,255,255), 20, 60, 0, "%d", player.returnWeaponEquiped().returnStack());
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(equipments, 1200, 120, 0);
 }

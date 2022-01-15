@@ -120,11 +120,13 @@ void Player::initEquips(){
     legsEquiped = createEmptyItem();
     bootsEquiped = createEmptyItem();
     shieldEquiped = createEmptyItem();
+}
 
-    //helmetEquiped = createHelmet();
-    //armorEquiped = createArmor();
-    //legsEquiped = createLegs();
-    //bootsEquiped = createBoots();
+void Player::decreaseThrowingWeapon(){
+    if(weaponEquiped.returnStack() > 1)
+        weaponEquiped.decreaseStack();
+    else
+        weaponEquiped = createEmptyItem();
 }
 
 void Player::keyDownInit(){
@@ -155,10 +157,11 @@ void Player::setSpeed(int value_){
 }
 
 void Player::throwProjectile(){
-    if (weaponEquiped.returnItemId() != ITEM_ID_EMPTY){
+    if (weaponEquiped.returnItemId() != ITEM_ID_EMPTY && !projectile.isThrowing()){
         projectile.setThrowingStatus(true);
         for (int i = 0; i < 4; i ++)
             projectile.setProjDir(i, 0);
+        decreaseThrowingWeapon();
         projectile.setProjDir(directionView, 1);
         projectile.setCoord(coord.x + 10, coord.y + 10);
         projectile.setHitBox();
@@ -234,7 +237,7 @@ void Player::resetSpeed(){
 
 void Player::initInventory(){
     numItems = 0;
-    for (int i = 0; i < 5; i ++){
+    for (int i = 0; i < maxStorage; i ++){
         inventory[i] = createEmptyItem();
     }
 }
@@ -313,6 +316,7 @@ void Player::equipHelmet(int slot_){
                 insertItemInventory(buffer);
         }
     }
+    numItems --;
 }
 
 void Player::equipArmor(int slot_){
@@ -337,6 +341,7 @@ void Player::equipArmor(int slot_){
                 insertItemInventory(buffer);
         }
     }
+    numItems --;
 }
 
 void Player::equipLegs(int slot_){
@@ -361,6 +366,7 @@ void Player::equipLegs(int slot_){
                 insertItemInventory(buffer);
         }
     }
+    numItems --;
 }
 
 void Player::equipBoots(int slot_){
@@ -385,30 +391,21 @@ void Player::equipBoots(int slot_){
                 insertItemInventory(buffer);
         }
     }
+    numItems --;
 }
 
 void Player::equipWeapon(int slot_){
     if (inventory[slot_].returnItemId() != weaponEquiped.returnItemId()){
-        if (inventory[slot_].returnStack() == 1){
-            Item buffer;
-            buffer = weaponEquiped;
-            weaponEquiped = inventory[slot_];
-            if (isItemInInventory(buffer.returnItemId()) && buffer.returnItemId() != ITEM_ID_EMPTY)
-                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
-            else    
-                inventory[slot_] = buffer;
-        }
-        else if (numItems < maxStorage - 1){
-            Item buffer;
-            buffer = weaponEquiped;
-            weaponEquiped = inventory[slot_];
-            inventory[slot_].decreaseStack();
-            if (isItemInInventory(buffer.returnItemId()))
-                inventory[returnSlotOfItem(buffer.returnItemId())].increaseStack();
-            else    
-                insertItemInventory(buffer);
-        }
+        Item buffer;
+        buffer = weaponEquiped;
+        weaponEquiped = inventory[slot_];
+        inventory[slot_] = buffer;
     }
+    else{
+        weaponEquiped.setStack(weaponEquiped.returnStack() + inventory[slot_].returnStack());
+        inventory[slot_] = createEmptyItem();
+    }
+    numItems --;
 }
 
 void Player::equipShield(int slot_){
@@ -416,6 +413,7 @@ void Player::equipShield(int slot_){
     buffer = shieldEquiped;
     shieldEquiped = inventory[slot_];
     inventory[slot_] = buffer;
+    numItems --;
 }
 
 Item Player::returnHelmetEquiped(){

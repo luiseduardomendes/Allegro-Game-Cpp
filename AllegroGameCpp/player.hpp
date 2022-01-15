@@ -41,6 +41,8 @@ public:
     Item showItemInSlot(int slot_);
     int returnSlotOfItem(int itemId);
 
+    void decreaseThrowingWeapon();
+
     void equipHelmet(int slot_);
     void equipArmor(int slot_);
     void equipLegs(int slot_);

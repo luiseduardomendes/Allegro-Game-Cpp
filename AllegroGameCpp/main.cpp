@@ -48,35 +48,60 @@ int main(){
         enemies[i].loadAllBitmaps();
     }
 
-    for(int i = 0; i < NUM_CHESTS; i++){
+    createObstacles(obs, scr);
+
+    chests[0].loadBitmapOpen("assets/chestOpen.png");
+    chests[0].loadBitmapClosed("assets/chestClosed.png");
+    chests[0].setCoord(120, 40);
+    chests[0].setOpenStatus(false);
+    do {
+        Item buffer;
+        buffer = createShuriken();
+        buffer.setStack(5);
+        chests[0].setItem(buffer);
+    } while(false);
+
+    for(int i = 1; i < NUM_CHESTS; i++){
         chests[i].loadBitmapOpen("assets/chestOpen.png");
         chests[i].loadBitmapClosed("assets/chestClosed.png");
-        chests[i].setCoord(rand() % scr.bgWidth, rand() % scr.bgHeight);
+        do {
+            chests[i].setCoord(rand() % scr.bgWidth, rand() % scr.bgHeight);
+            nextPosValid = true;
+                for (int j = 0; j < NUM_WALLS; j ++)
+                    if(isHitboxIn(obs[j].showHitBox(), chests[i].returnHitbox()))
+                        nextPosValid = false;
+                for (int j = 0; j < i; j ++)
+                    if(isHitboxIn(chests[j].returnHitbox(), chests[i].returnHitbox()))
+                        nextPosValid = false;
+        } while(!nextPosValid);
         chests[i].setOpenStatus(false);
         do{
             Item buffer;
-            int randomNumber = rand() % 10;
+            int randomNumber = rand() % 13;
             switch (randomNumber){
             case 0:
             case 1:
             case 2:
-                buffer = createShuriken();
-                break;
             case 3:
             case 4:
+                buffer = createShuriken();
+                break;
             case 5:
+            case 6:
+            case 7:
+            case 8:
                 buffer = createThrowingKnife();
                 break;
-            case 6:
+            case 9:
                 buffer = createArmor();
                 break;
-            case 7:
+            case 10:
                 buffer = createHelmet();
                 break;
-            case 8:
+            case 11:
                 buffer = createLegs();
                 break;
-            case 9:
+            case 12:
                 buffer = createBoots();
                 break;
             }
@@ -101,19 +126,18 @@ int main(){
         enemies[i].setDirection(DOWN);
         do{
             enemies[i].setPosition(rand() % (scr.bgWidth), rand() % (scr.bgHeight));
-
             enemies[i].setHitBox();
             nextPosValid = true;
-            /*for (int j = 0; j < NUM_WALLS; j ++){
+            for (int j = 0; j < NUM_WALLS; j ++)
                 if(isHitboxIn(obs[j].showHitBox(), enemies[i].showHitBox()))
                     nextPosValid = false;
-            }*/
+            if (enemies[i].showCoord().x < 400 && enemies[i].showCoord().y < 400)
+                nextPosValid = false;
         } while(!nextPosValid);
         enemies[i].projectile.initProjectile();
         enemies[i].projectile.setThrowingStatus(false);
     }
 
-    createObstacles(obs, scr);
     for (int i = 0; i < NUM_WALLS; i ++)
         obs[i].loadBitmapWall("assets/wall.png");
 
@@ -166,10 +190,10 @@ int main(){
                 al_set_target_bitmap(draw.getBitmap(BACKGROUND));
                 al_draw_bitmap(draw.getBitmap(GRASS), 0,0,0);
                 
-                
-                draw.drawNonStaticElements(player, enemies);
+                draw.drawGrass();
                 draw.drawStaticElements(chests);
-                
+                draw.drawNonStaticElements(player, enemies);
+
                 player.drawHealthBar();                
 
                 al_set_target_bitmap(al_get_backbuffer(display));
