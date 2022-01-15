@@ -40,6 +40,10 @@ public:
     void setAliveStatus(bool value_);
     bool isAlive();
     bool* showKeyDown();
+
+
+    int returnExperience();
+    void setExperienceBounty(int experince_);
 private:
     int idEnemy;
     double moveSpeed;
@@ -49,6 +53,7 @@ private:
     int directionView;
     int coins;
     bool alive;
+    int experienceBounty;
     int armorEquiped;
     int weaponEquiped;
     bool keyDown[4];

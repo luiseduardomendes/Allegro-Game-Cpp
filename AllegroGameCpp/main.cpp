@@ -56,8 +56,8 @@ int main(){
     chests[0].setOpenStatus(false);
     do {
         Item buffer;
-        buffer = createShuriken();
-        buffer.setStack(5);
+        buffer = createThrowingKnife();
+        buffer.setStack(25);
         chests[0].setItem(buffer);
     } while(false);
 
@@ -184,6 +184,7 @@ int main(){
             player.movePlayer();
 
         keyboard.controllerKeys(event, &pauseMenu, &player, &scr, chests);
+        player.setNumItems();
 
         if (event.type == ALLEGRO_EVENT_TIMER){
             if (event.timer.source == timerFrame){
@@ -204,6 +205,7 @@ int main(){
                 
                 draw.drawInventory(player, display);
                 draw.drawEquipedItems(player, display);
+                draw.drawExperienceBar(player, display);
 
                 al_flip_display();
             }

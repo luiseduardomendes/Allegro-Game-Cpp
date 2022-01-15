@@ -59,6 +59,16 @@ public:
 
     void removeItemStack(int slot_);
     void initEquips();
+    void setNumItems();
+
+    void increaseXp(int experience);
+    void increaseLevel();
+
+    int returnExperience();
+    int returnExperienceLevelUp();
+    int returnLevel();
+
+    Item itemThrowing;
     
 private:
     Coordinates coord;
@@ -68,6 +78,7 @@ private:
     int fullHp;
     double stdSpeed;
     int level;
+    int levelUpExperience;
     int experience;
     int coins;
     float moveSpeed;

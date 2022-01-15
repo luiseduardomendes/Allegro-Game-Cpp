@@ -5,6 +5,7 @@ void Enemies::initEnemy(){
     fullHp = 200;
     moveSpeed = 1;
     stdSpeed = 1;
+    experienceBounty = 150;
     rangeView = 100;
     alive = true;
     keyDownInit();
@@ -310,4 +311,12 @@ void Enemies::setDirectionProj(Player pl){
         projectile.setProjDir(UP, sin(angle));
     else
         projectile.setProjDir(DOWN, sin(angle));
+}
+
+void Enemies::setExperienceBounty(int experience_){
+    experienceBounty = experience_;
+}
+
+int Enemies::returnExperience(){
+    return experienceBounty;
 }

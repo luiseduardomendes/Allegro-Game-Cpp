@@ -108,6 +108,9 @@ void Player::initPlayer(){
     fullHp = 600;
     moveSpeed = 3;
     stdSpeed = 3;
+    level = 1;
+    levelUpExperience = 1000;
+    experience = 0;
     keyDownInit();
     initEquips();
     maxStorage = 10;
@@ -159,6 +162,7 @@ void Player::setSpeed(int value_){
 void Player::throwProjectile(){
     if (weaponEquiped.returnItemId() != ITEM_ID_EMPTY && !projectile.isThrowing()){
         projectile.setThrowingStatus(true);
+        itemThrowing = weaponEquiped;
         for (int i = 0; i < 4; i ++)
             projectile.setProjDir(i, 0);
         decreaseThrowingWeapon();
@@ -433,4 +437,36 @@ Item Player::returnWeaponEquiped(){
 }
 Item Player::returnShieldEquiped(){
     return shieldEquiped;
+}
+
+void Player::increaseXp(int experience_){
+    experience += experience_;
+    increaseLevel();
+}
+
+void Player::increaseLevel(){
+    if(experience >= levelUpExperience){
+        experience -= levelUpExperience;
+        level ++;
+        levelUpExperience += 250;
+    }
+}
+
+int Player::returnExperience(){
+    return experience;
+}
+
+int Player::returnExperienceLevelUp(){
+    return levelUpExperience;
+}
+
+int Player::returnLevel(){
+    return level;
+}
+
+void Player::setNumItems(){
+    numItems = 0;
+    for(int i = 0; i < maxStorage; i ++)
+        if (inventory[i].returnItemId() != ITEM_ID_EMPTY)
+            numItems++;
 }

@@ -87,7 +87,7 @@ void Draw::drawNonStaticElements(Player player, Enemies enemies[]){
 
     if (player.projectile.isThrowing()){
         player.projectile.drawHitbox();
-        player.projectile.drawBitmap(player.returnWeaponEquiped().returnItemId());
+        player.projectile.drawBitmap(player.itemThrowing.returnItemId());
     }
     for (int i = 0; i < NUM_ENEMIES; i ++){
         if (enemies[i].projectile.isThrowing()){
@@ -113,8 +113,7 @@ void Draw::createBitmap(int bmpName, Screen scr){
 void Draw::initInventory(Player player){
     inventory = al_create_bitmap(player.showMaxStorage() * 40, 40);
     equipments = al_create_bitmap(3*40, 4*40);
-    
-
+    playerExperienceBar = al_create_bitmap(400, 24);
 }
 
 void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
@@ -140,7 +139,8 @@ void Draw::loadAllBitmaps(Screen scr){
     loadBitmap(GRASSBLOCK1, "assets/grass1.png");
     loadBitmap(GRASSBLOCK2, "assets/grass2.png");
     loadBitmap(GRASSBLOCK3, "assets/grass3.png");
-
+    
+    experienceBar = al_load_bitmap("assets/experiencebar.png");
     inventorySlot = al_load_bitmap("assets/itemframe.png");
     items[ITEM_ID_THROWING_KNIFE] = al_load_bitmap("assets/throwingknife.png");
     items[ITEM_ID_SHURIKEN] = al_load_bitmap("assets/shuriken.png");    
@@ -209,4 +209,15 @@ void Draw::drawEquipedItems(Player player, ALLEGRO_DISPLAY* display){
         al_draw_textf(font_pixel24, al_map_rgb(255,255,255), 20, 60, 0, "%d", player.returnWeaponEquiped().returnStack());
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(equipments, 1200, 120, 0);
+}
+
+void Draw::drawExperienceBar(Player player, ALLEGRO_DISPLAY *display){
+    al_set_target_bitmap(playerExperienceBar);
+    al_clear_to_color(al_map_rgba_f(0, 0, 0, 0));
+    al_draw_tinted_bitmap(experienceBar, al_map_rgb(50,50,50), 0,0,0);
+    al_draw_bitmap_region(experienceBar, 0, 0, 400.0*((float)player.returnExperience()/player.returnExperienceLevelUp()), 24, 0,0, 0);
+    
+    al_set_target_bitmap(al_get_backbuffer(display));
+    al_draw_textf(font_pixel24, al_map_rgb(0,200,0), 680, 600, 0, "%d", player.returnLevel());
+    al_draw_bitmap(playerExperienceBar, 500, 620, 0);
 }

@@ -14,6 +14,7 @@ public:
     void drawStaticElements(Chests chests[]);
     void drawEquipedItems(Player player, ALLEGRO_DISPLAY* display);
     void initFonts();
+    void drawExperienceBar(Player player, ALLEGRO_DISPLAY *display);
 private:
     ALLEGRO_FONT* font_pixel24;
     ALLEGRO_BITMAP *grass;
@@ -29,6 +30,8 @@ private:
     ALLEGRO_BITMAP *lightArmorBitmap;
     ALLEGRO_BITMAP *armorBitmap;
     ALLEGRO_BITMAP *heavyArmorBitmap;
+    ALLEGRO_BITMAP *experienceBar;
+    ALLEGRO_BITMAP *playerExperienceBar;
 
     ALLEGRO_BITMAP *items[15];
 };
