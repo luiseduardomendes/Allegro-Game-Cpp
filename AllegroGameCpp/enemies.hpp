@@ -41,9 +41,13 @@ public:
     bool isAlive();
     bool* showKeyDown();
 
+    void setCoins(int value_);
+    int returnCoins();
 
     int returnExperience();
     void setExperienceBounty(int experince_);
+
+    void enemyElimined();
 private:
     int idEnemy;
     double moveSpeed;

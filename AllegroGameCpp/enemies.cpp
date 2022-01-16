@@ -3,8 +3,8 @@
 void Enemies::initEnemy(){
     health = 200;
     fullHp = 200;
-    moveSpeed = 1;
-    stdSpeed = 1;
+    moveSpeed = 2;
+    stdSpeed = 2;
     experienceBounty = 150;
     rangeView = 100;
     alive = true;
@@ -319,4 +319,17 @@ void Enemies::setExperienceBounty(int experience_){
 
 int Enemies::returnExperience(){
     return experienceBounty;
+}
+
+void Enemies::enemyElimined(){
+    alive = false;
+    projectile.setThrowingStatus(false);
+}
+
+void Enemies::setCoins(int value_){
+    coins = value_;
+}
+
+int Enemies::returnCoins(){
+    return coins;
 }

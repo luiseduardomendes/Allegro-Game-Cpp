@@ -2,7 +2,7 @@
 
 
 // compilation
-/* g++ main.cpp Colors.cpp chests.cpp common.cpp Damage.cpp enemies.cpp items.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
+/* g++ main.cpp Colors.cpp chests.cpp common.cpp Damage.cpp enemies.cpp items.cpp keyboard.cpp obstacles.cpp pauseMenu.cpp player.cpp playerItens.cpp projectile.cpp draw.cpp $(pkg-config --libs allegro-5 allegro_font-5  allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_dialog-5 --cflags) -lm -o AllegroGameTest1 */
 
 int main(){
     Player player;
@@ -56,8 +56,8 @@ int main(){
     chests[0].setOpenStatus(false);
     do {
         Item buffer;
-        buffer = createThrowingKnife();
-        buffer.setStack(25);
+        buffer = createShuriken();
+        buffer.setStack(5);
         chests[0].setItem(buffer);
     } while(false);
 
@@ -68,7 +68,7 @@ int main(){
             chests[i].setCoord(rand() % scr.bgWidth, rand() % scr.bgHeight);
             nextPosValid = true;
                 for (int j = 0; j < NUM_WALLS; j ++)
-                    if(isHitboxIn(obs[j].showHitBox(), chests[i].returnHitbox()))
+                    if(isHitboxIn(chests[i].returnHitbox(), obs[j].showHitBox()))
                         nextPosValid = false;
                 for (int j = 0; j < i; j ++)
                     if(isHitboxIn(chests[j].returnHitbox(), chests[i].returnHitbox()))
@@ -77,31 +77,33 @@ int main(){
         chests[i].setOpenStatus(false);
         do{
             Item buffer;
-            int randomNumber = rand() % 13;
+            int randomNumber = rand() % 15;
             switch (randomNumber){
             case 0:
             case 1:
             case 2:
             case 3:
             case 4:
-                buffer = createShuriken();
-                break;
             case 5:
             case 6:
+                buffer = createShuriken();
+                break;
             case 7:
             case 8:
+            case 9:
+            case 10:
                 buffer = createThrowingKnife();
                 break;
-            case 9:
+            case 11:
                 buffer = createArmor();
                 break;
-            case 10:
+            case 12:
                 buffer = createHelmet();
                 break;
-            case 11:
+            case 13:
                 buffer = createLegs();
                 break;
-            case 12:
+            case 14:
                 buffer = createBoots();
                 break;
             }
@@ -124,12 +126,13 @@ int main(){
     for (int i = 0; i < NUM_ENEMIES; i ++){
         enemies[i].initEnemy();
         enemies[i].setDirection(DOWN);
+        enemies[i].setCoins(rand() % 50);
         do{
             enemies[i].setPosition(rand() % (scr.bgWidth), rand() % (scr.bgHeight));
             enemies[i].setHitBox();
             nextPosValid = true;
             for (int j = 0; j < NUM_WALLS; j ++)
-                if(isHitboxIn(obs[j].showHitBox(), enemies[i].showHitBox()))
+                if(isHitboxIn(enemies[i].showHitBox(), obs[j].showHitBox()))
                     nextPosValid = false;
             if (enemies[i].showCoord().x < 400 && enemies[i].showCoord().y < 400)
                 nextPosValid = false;

@@ -22,8 +22,9 @@ bool DmgAndColision::playerProjectileHit(Enemies *enemy, Player *player){
     if (isProjectileIn(enemy->showHitBox(), player->projectile)){
         enemy->decrementHealth(player->itemThrowing.returnDamage());
         if (enemy->showHealth() <= 0){
-            enemy->setAliveStatus(false);
+            enemy->enemyElimined();
             player->increaseXp(enemy->returnExperience());
+            player->increaseCoins(enemy->returnCoins());
         }
         player->projectile.setThrowingStatus(false);
         return true;

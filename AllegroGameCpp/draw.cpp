@@ -131,6 +131,10 @@ void Draw::drawInventory(Player player, ALLEGRO_DISPLAY* display){
 
     al_set_target_bitmap(al_get_backbuffer(display));
     al_draw_bitmap(inventory, 500, 650, 0);
+
+    al_draw_scaled_bitmap(inventorySlot, 0, 0, 40, 40, 500+(player.showMaxStorage()*40), 650, 80, 40, 0);
+    al_draw_bitmap(coinsBitmap, 500+(player.showMaxStorage()*40), 650, 0);
+    al_draw_textf(font_pixel24, al_map_rgb(0,0,0), 500+((player.showMaxStorage()+1)*40), 660,0,"%d", player.returnCoins());
 }
 
 void Draw::loadAllBitmaps(Screen scr){
@@ -142,6 +146,7 @@ void Draw::loadAllBitmaps(Screen scr){
     
     experienceBar = al_load_bitmap("assets/experiencebar.png");
     inventorySlot = al_load_bitmap("assets/itemframe.png");
+    coinsBitmap = al_load_bitmap("assets/coin.png");
     items[ITEM_ID_THROWING_KNIFE] = al_load_bitmap("assets/throwingknife.png");
     items[ITEM_ID_SHURIKEN] = al_load_bitmap("assets/shuriken.png");    
     items[ITEM_ID_ARMOR] = al_load_bitmap("assets/armor.png");

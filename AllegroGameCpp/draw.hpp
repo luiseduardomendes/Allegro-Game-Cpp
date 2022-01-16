@@ -32,6 +32,7 @@ private:
     ALLEGRO_BITMAP *heavyArmorBitmap;
     ALLEGRO_BITMAP *experienceBar;
     ALLEGRO_BITMAP *playerExperienceBar;
+    ALLEGRO_BITMAP *coinsBitmap;
 
     ALLEGRO_BITMAP *items[15];
 };

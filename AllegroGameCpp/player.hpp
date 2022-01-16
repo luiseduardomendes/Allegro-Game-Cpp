@@ -68,6 +68,10 @@ public:
     int returnExperienceLevelUp();
     int returnLevel();
 
+    void increaseCoins(int);
+    void decreaseCoins(int);
+    int returnCoins();
+
     Item itemThrowing;
     
 private:
