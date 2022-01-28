@@ -15,7 +15,7 @@ enum bitmaps{WALL, SPIKE, ROCK, GRASS, GRASSBLOCK1, GRASSBLOCK2, GRASSBLOCK3, BA
 
 #define NUM_WALLS 300
 #define NUM_ENEMIES 10
-#define NUM_CHESTS 15
+#define NUM_CHESTS 30
 
 typedef struct{
     int x, y;
